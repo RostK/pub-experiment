@@ -774,8 +774,8 @@ function renderAuraPhoto(src, el, w, h, q, subject){
   const out=document.createElement("canvas"); out.width=w; out.height=h;
   const ctx=out.getContext("2d"); if(!ctx) return null;
   const sharp=gradedLayer(src, el, w, h); if(!sharp) return null;
-  const sub=subject || {cx:0.5, cy:0.42, r:0.5};
-  const cx=sub.cx*w, cy=sub.cy*h, R=sub.r*Math.max(w,h);
+  const sub=subject || {cx:0.5, cy:0.42, r:0.42};
+  const cx=sub.cx*w, cy=sub.cy*h, R=sub.r*Math.min(w,h);
 
   // background: cheap blur (downscale -> upscale), then desaturate + darken + tint
   const bw=Math.max(10, Math.round(w/9)), bh=Math.max(8, Math.round(h/9));
@@ -817,9 +817,9 @@ function renderAuraPhoto(src, el, w, h, q, subject){
   const halo2=ctx.createRadialGradient(cx,cy,R*0.58, cx,cy,R*0.86);
   halo2.addColorStop(0, hex+"00"); halo2.addColorStop(0.7, hex+"cc"); halo2.addColorStop(1, hex+"00");
   ctx.fillStyle=halo2; ctx.fillRect(0,0,w,h);
-  // top bloom
-  ctx.globalCompositeOperation="screen"; ctx.globalAlpha=0.4;
-  const bloom=ctx.createRadialGradient(w*0.5,h*0.12,0, w*0.5,h*0.12,h*0.9);
+  // subtle top bloom (kept low so it doesn't re-warm the face)
+  ctx.globalCompositeOperation="screen"; ctx.globalAlpha=0.18;
+  const bloom=ctx.createRadialGradient(w*0.5,h*0.06,0, w*0.5,h*0.06,h*0.7);
   bloom.addColorStop(0,hex); bloom.addColorStop(1,"rgba(0,0,0,0)");
   ctx.fillStyle=bloom; ctx.fillRect(0,0,w,h);
   // final, deeper vignette
@@ -851,7 +851,7 @@ function analyzePhoto(src){
   const n=w*h, lum=new Float32Array(n);
   let sumL=0, dark=0, skin=0, skinWarm=0;
   let sumRG=0, sumYB=0, sumRG2=0, sumYB2=0;
-  let sx=0, sy=0, sxx=0, syy=0;                      // skin-pixel centroid + spread
+  let sx=0, sy=0, sw=0;                              // centre-weighted skin centroid
   const hueBins=new Array(12).fill(0);              // 12 x 30° hue buckets
   for(let i=0,p=0;i<d.length;i+=4,p++){
     const R=d[i], G=d[i+1], B=d[i+2];
@@ -861,7 +861,10 @@ function analyzePhoto(src){
     const mx=Math.max(R,G,B), mn=Math.min(R,G,B), delta=mx-mn;
     if(R>95&&G>40&&B>20&&delta>15&&Math.abs(R-G)>15&&R>G&&R>B){
       skin++; skinWarm+=(R-B);
-      const px=p%w, py=(p/w)|0; sx+=px; sy+=py; sxx+=px*px; syy+=py*py;
+      // weight toward the centre/upper area so a warm background can't drag the centroid
+      const px=p%w, py=(p/w)|0, dxc=px/w-0.5, dyc=py/h-0.45;
+      const wgt=Math.exp(-(dxc*dxc/0.10 + dyc*dyc/0.12));
+      sw+=wgt; sx+=px*wgt; sy+=py*wgt;
     }
     const sat = mx<=0?0:delta/mx;
     if(sat>0.25 && mx>50){
@@ -889,15 +892,15 @@ function analyzePhoto(src){
     edgeSum+=Math.sqrt(gx*gx+gy*gy); edgeN++;
   }
   const edges=clamp01((edgeSum/edgeN)/180);
-  // subject (person) location/size from the skin pixels — for the portrait spotlight
+  // subject (face) from the centre-weighted skin centroid, kept in a central band
   let subject;
-  if(skin > n*0.012){
-    const mx2=sx/skin, my2=sy/skin;
-    const spread=Math.sqrt(Math.max(0,(sxx/skin-mx2*mx2)+(syy/skin-my2*my2)));
-    subject={ cx:clamp01(mx2/w), cy:clamp01(my2/h),
-              r:Math.max(0.30, Math.min(0.62, 0.30 + (spread/Math.max(w,h))*1.6)) };
+  if(skin > n*0.012 && sw>0){
+    const cxv=sx/sw/w, cyv=sy/sw/h;
+    subject={ cx:Math.max(0.36, Math.min(0.64, cxv)),
+              cy:Math.max(0.30, Math.min(0.52, cyv)),
+              r:Math.max(0.34, Math.min(0.50, 0.34 + skinFrac*0.45)) };
   } else {
-    subject={ cx:0.5, cy:0.42, r:0.5 };            // no clear face -> centred default
+    subject={ cx:0.5, cy:0.42, r:0.42 };           // no clear face -> centred default
   }
   const hueEl = (domHue<45||domHue>=315)?"f" : (domHue<170)?"e" : (domHue<260)?"w" : "a";
   const scores={f:0,e:0,a:0,w:0};
