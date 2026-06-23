@@ -113,6 +113,25 @@
   .toast.show{transform:translateX(-50%) translateY(0)}
   #confetti{position:fixed;inset:0;pointer-events:none;z-index:40;overflow:hidden}
   .conf{position:absolute;top:-30px;font-size:22px;will-change:transform}
+  /* aura scan */
+  .auraTitle{font-size:26px;font-weight:900;text-align:center;margin:2px 0 4px}
+  .auraHint{text-align:center;font-size:14px;font-weight:600;opacity:.75;margin:0 0 16px}
+  .scanwrap{position:relative;width:100%;max-width:320px;margin:0 auto 8px;border-radius:18px;overflow:hidden;
+    border:3px solid var(--ink);background:#0a0a0a;aspect-ratio:4/3}
+  .scanwrap video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block}
+  .scanline{position:absolute;left:0;right:0;height:4px;top:4%;background:rgba(255,255,255,.9);
+    box-shadow:0 0 18px 5px var(--accent);animation:scan 1.3s ease-in-out infinite}
+  .scangrid{position:absolute;inset:0;background:
+    repeating-linear-gradient(0deg,transparent 0 22px,rgba(255,255,255,.06) 22px 23px),
+    repeating-linear-gradient(90deg,transparent 0 22px,rgba(255,255,255,.06) 22px 23px);pointer-events:none}
+  @keyframes scan{0%{top:4%}50%{top:92%}100%{top:4%}}
+  .auraOrb{width:128px;height:128px;border-radius:50%;margin:8px auto 16px;
+    animation:auraPulse 2.2s ease-in-out infinite}
+  @keyframes auraPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+  .auraName{font-size:clamp(28px,8vw,40px);font-weight:900;text-align:center;line-height:1;margin:0 0 4px}
+  .aurastrip{display:flex;align-items:center;gap:10px;background:#fff;border:3px solid var(--ink);
+    border-radius:14px;padding:10px 12px;margin:0 0 12px;font-weight:800;box-shadow:0 4px 0 rgba(0,0,0,.14)}
+  .aurastrip .dot{width:22px;height:22px;border-radius:50%;flex:none;box-shadow:0 0 10px 1px currentColor}
 </style>
 </head>
 <body>
@@ -127,8 +146,16 @@
       <label class="fieldlabel" for="name">First, who's playing?</label>
       <input id="name" type="text" placeholder="Your name…" autocomplete="off" maxlength="22" />
       <button class="btn" id="startBtn">Read my soul →</button>
+      <button class="btn secondary small" id="auraBtn">👁 Scan my aura first (camera)</button>
       <button class="ghost" id="toTableTop" style="display:none">👀 Compare the table (<span id="tableCountTop">0</span>)</button>
-      <p class="footer">100% offline. Nothing leaves this phone. The only thing being judged is your crisp choices.</p>
+      <p class="footer">100% offline. Nothing leaves this phone — the aura scan reads the camera on-device and the photo is never saved or sent.</p>
+    </div>
+  </section>
+
+  <!-- AURA SCAN -->
+  <section id="aura" class="screen">
+    <div class="card" id="auraCard">
+      <div id="auraStage"></div>
     </div>
   </section>
 
@@ -518,11 +545,14 @@ function revealResult(){
   order.forEach(k=>{
     cells += `<div class="v"><div class="vh">${POOLS[k].icon} ${POOLS[k].label}</div><div class="vb">${v[k]}</div></div>`;
   });
+  const A = window.__aura;
+  const auraStrip = A ? `<div class="aurastrip" style="color:${A.hex}"><span class="dot" style="background:${A.hex}"></span><span style="color:var(--ink)">👁 Aura scan: <span style="color:${A.hex}">${A.name}</span></span></div>` : "";
   $("#resultCard").innerHTML = `
     <p class="crown">${playerName ? esc(playerName)+", you are…" : "You are…"}</p>
     <div class="title">${R.title.t}</div>
     <div class="element">${R.el.emoji} ${R.el.name} element &middot; ${R.el.word}</div>
     <div class="roast">“${R.title.r}”</div>
+    ${auraStrip}
     <div class="verdicts">${cells}</div>
     <button class="btn" id="addBtn">✋ Add me to the table</button>
     <div class="btnrow">
@@ -539,8 +569,10 @@ function revealResult(){
 
 function resultText(R){
   const v=R.verdicts;
+  const A=window.__aura;
   return `${playerName||"I"} — ${R.title.t} ${R.el.emoji}\n`+
     `"${R.title.r}"\n`+
+    (A?`👁 Aura: ${A.name}\n`:"")+
     `🪄 ${v.house}\n🍕 ${v.pizza}\n🪴 ${v.plant}\n🥂 ${v.drink}\n🥔 ${v.crisp}\n🪑 ${v.stool}\n`+
     `— What Are You, Really?`;
 }
@@ -631,7 +663,7 @@ function startGame(){
   renderQuestion();
   show("quiz");
 }
-function resetIntro(){ setAccent("#ff5a3c"); }
+function resetIntro(){ setAccent("#ff5a3c"); window.__aura = null; }
 
 $("#startBtn").onclick=()=>{
   playerName = $("#name").value.trim();
@@ -675,6 +707,125 @@ function confetti(){
     setTimeout(()=>s.remove(), (dur+delay)*1000+200);
   }
 }
+
+/* ---------------- AURA SCAN (on-device camera vision) ---------------- */
+const AURAS = {
+  f:{ bright:{name:"Solar Flare",     hex:"#ff7a18", read:"Pure kinetic energy. You walked in and the room's thermostat rose."},
+      deep:  {name:"Crimson Ember",   hex:"#d22f2f", read:"A banked fire — calm for now, but we all know what you're capable of."} },
+  e:{ bright:{name:"Spring Meadow",   hex:"#6fcf6f", read:"Warm and growing — faintly smells of fresh bread. People relax near you."},
+      deep:  {name:"Deep Forest",     hex:"#2f7d4f", read:"Rooted and unbothered. The steady one the whole table leans on."} },
+  a:{ bright:{name:"Electric Violet", hex:"#b06bff", read:"Crackling and magnetic, slightly chaotic. You are simply happening."},
+      deep:  {name:"Rose Quartz",     hex:"#e87fb0", read:"Soft glow, sharp wit — charm with a second blade hidden behind it."} },
+  w:{ bright:{name:"Cyan Tide",       hex:"#36c5d6", read:"Bright, clear, a little dreamy. Your thoughts run deeper than they look."},
+      deep:  {name:"Midnight Indigo", hex:"#3a4ea8", read:"Still waters. You've been quietly understanding everyone all night."} },
+};
+let auraStream = null;
+const wait = ms => new Promise(r=>setTimeout(r,ms));
+
+function clamp01(x){ return x<0?0:x>1?1:x; }
+
+function grabFrame(video){
+  if(!video.videoWidth) return null;
+  const w=40,h=30, c=document.createElement("canvas"); c.width=w; c.height=h;
+  c.getContext("2d").drawImage(video,0,0,w,h);
+  return { data:c.getContext("2d").getImageData(0,0,w,h).data, w, h };
+}
+
+/* turn two camera frames into an element + variant */
+function readFeatures(f1, f2){
+  const d=f2.data; let r=0,g=0,b=0,n=d.length/4;
+  for(let i=0;i<d.length;i+=4){ r+=d[i]; g+=d[i+1]; b+=d[i+2]; }
+  r/=n; g/=n; b/=n;
+  let motion=0; const a=f1.data;
+  for(let i=0;i<d.length;i+=4){ motion += Math.abs(d[i]-a[i])+Math.abs(d[i+1]-a[i+1])+Math.abs(d[i+2]-a[i+2]); }
+  motion = clamp01((motion/n/3)/35);                 // frame-to-frame energy
+  const bright = clamp01((r+g+b)/3/255);
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b);
+  const sat = clamp01(mx<=0?0:(mx-mn)/mx);
+  const warm = clamp01((r-b)/255 + 0.5);             // red vs blue
+  const green = clamp01((g-(r+b)/2)/128 + 0.5);
+  const cool = clamp01((b-r)/255 + 0.5);
+  const scores = {
+    f: warm*1.1 + motion*1.3 + sat*0.5,
+    a: sat*1.0  + bright*0.7 + motion*0.7,
+    e: green*1.2 + (1-motion)*0.9 + (1-bright)*0.3,
+    w: cool*1.2 + (1-motion)*1.0 + (1-sat)*0.4,
+  };
+  let el="f"; for(const k in scores){ if(scores[k]>scores[el]) el=k; }
+  const variant = bright >= 0.5 ? "bright" : "deep";
+  return {el, variant};
+}
+
+function pickRandomAura(){
+  const els=["f","e","a","w"]; const el=els[(Math.random()*4)|0];
+  const variant = Math.random()<0.5?"bright":"deep";
+  return {el, variant};
+}
+
+function stopAura(){
+  if(auraStream){ auraStream.getTracks().forEach(t=>t.stop()); auraStream=null; }
+}
+
+function scanningMarkup(){
+  return `
+    <p class="auraTitle">👁 Aura Scan</p>
+    <p class="auraHint">Hold still… reading your energy field. (Stays on your phone.)</p>
+    <div class="scanwrap"><video id="auraVideo" playsinline muted autoplay></video><div class="scangrid"></div><div class="scanline"></div></div>
+    <p class="auraHint" id="auraStatus" style="margin-top:12px">Calibrating the aura sensor…</p>`;
+}
+
+async function startAura(){
+  setAccent("#b06bff");
+  show("aura");
+  $("#auraStage").innerHTML = scanningMarkup();
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ return fallbackAura("No camera here — switching to psychic mode 🔮"); }
+  try{
+    auraStream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:"user" }, audio:false });
+  }catch(e){ return fallbackAura("Camera shy? No bother — psychic mode it is 🔮"); }
+  const video=$("#auraVideo");
+  video.srcObject=auraStream;
+  try{ await video.play(); }catch(e){}
+  const status=$("#auraStatus");
+  await wait(700);  if(status) status.textContent="Detecting your colour temperature…";
+  const f1=grabFrame(video);
+  await wait(500);  if(status) status.textContent="Measuring your chaotic energy…";
+  const f2=grabFrame(video);
+  await wait(700);  if(status) status.textContent="Crowning your aura ✨";
+  await wait(500);
+  stopAura();
+  if(!f1||!f2){ return fallbackAura("Couldn't get a clear read — psychic mode 🔮"); }
+  revealAura(readFeatures(f1,f2), null);
+}
+
+function fallbackAura(note){
+  stopAura();
+  revealAura(pickRandomAura(), note);
+}
+
+function revealAura(sel, note){
+  const a = AURAS[sel.el][sel.variant];
+  const el = ELEMENTS[sel.el];
+  window.__aura = { name:a.name, hex:a.hex, el:sel.el, element:el.name };
+  setAccent(a.hex);
+  $("#auraStage").innerHTML = `
+    <p class="crown">Your aura reads…</p>
+    <div class="auraOrb" style="background:radial-gradient(circle at 35% 30%, #fff, ${a.hex} 55%, ${a.hex}); box-shadow:0 0 40px 6px ${a.hex}aa, 0 0 0 5px #fff"></div>
+    <div class="auraName" style="color:${a.hex}">${a.name}</div>
+    <div class="element">${el.emoji} ${el.name} energy</div>
+    <div class="roast">“${a.read}”</div>
+    ${note?`<p class="auraHint">${note}</p>`:""}
+    <button class="btn" id="auraToQuiz">Now take the quiz →</button>
+    <div class="btnrow">
+      <button class="btn secondary small" id="auraRescan">↻ Rescan</button>
+      <button class="btn secondary small" id="auraBack">← Back</button>
+    </div>`;
+  $("#auraToQuiz").onclick=()=>{ playerName=$("#name").value.trim(); startGame(); };
+  $("#auraRescan").onclick=startAura;
+  $("#auraBack").onclick=()=>{ setAccent("#ff5a3c"); show("intro"); };
+  confetti();
+}
+
+$("#auraBtn").onclick=startAura;
 
 /* boot */
 $("#bankCount").textContent = BANK.length;
