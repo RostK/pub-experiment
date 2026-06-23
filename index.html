@@ -664,7 +664,7 @@ function startGame(){
   renderQuestion();
   show("quiz");
 }
-function resetIntro(){ setAccent("#ff5a3c"); window.__aura = null; window.__auraPhoto = null; window.__auraThumb = null; window.__auraFeat = null; window.__auraSrc = null; window.__auraReadout = null; window.__auraSubject = null; }
+function resetIntro(){ setAccent("#ff5a3c"); window.__aura = null; window.__auraPhoto = null; window.__auraThumb = null; window.__auraFeat = null; window.__auraSrc = null; window.__auraReadout = null; window.__auraSubject = null; window.__auraMask = null; }
 
 $("#startBtn").onclick=()=>{
   playerName = $("#name").value.trim();
@@ -804,24 +804,35 @@ function renderAuraPhoto(src, el, w, h, q, subject){
   sc.globalCompositeOperation="source-over";
   ctx.drawImage(subj,0,0);
 
-  // aura HALO ring that sits OUTSIDE the head — punched out so it never washes the face
-  const hl=document.createElement("canvas"); hl.width=w; hl.height=h;
-  const hc=hl.getContext("2d");
-  if(hc){
-    const ring=hc.createRadialGradient(cx,cy,R*0.6, cx,cy,R*1.34);
-    ring.addColorStop(0,    hex+"00");
-    ring.addColorStop(0.52, hex+"00");
-    ring.addColorStop(0.74, hex+"d9");   // bright ring just outside the head
-    ring.addColorStop(0.86, hex+"66");
-    ring.addColorStop(1,    hex+"00");
-    hc.fillStyle=ring; hc.fillRect(0,0,w,h);
-    hc.globalCompositeOperation="destination-out";   // remove the interior (face)
-    const cut=hc.createRadialGradient(cx,cy,R*0.45, cx,cy,R*0.9);
-    cut.addColorStop(0,"rgba(0,0,0,1)"); cut.addColorStop(0.82,"rgba(0,0,0,1)"); cut.addColorStop(1,"rgba(0,0,0,0)");
-    hc.fillStyle=cut; hc.fillRect(0,0,w,h);
-    ctx.globalCompositeOperation="screen"; ctx.globalAlpha=0.72;
-    ctx.drawImage(hl,0,0);
-    ctx.globalAlpha=1;
+  // aura glow that follows YOUR silhouette (from the subject mask), not a plain ring
+  const M=window.__auraMask;
+  if(M && M.data){
+    const mw=M.w, mh=M.h;
+    const base=document.createElement("canvas"); base.width=mw; base.height=mh;
+    const bctx=base.getContext("2d");
+    if(bctx){
+      const id=bctx.createImageData(mw,mh);
+      for(let p=0;p<mw*mh;p++){ id.data[p*4]=255; id.data[p*4+1]=255; id.data[p*4+2]=255; id.data[p*4+3]=M.data[p]; }
+      bctx.putImageData(id,0,0);
+      const glow=document.createElement("canvas"); glow.width=w; glow.height=h;
+      const gx=glow.getContext("2d");
+      if(gx){
+        gx.imageSmoothingEnabled=true;
+        // expand the silhouette (blur via a small intermediate) -> soft glow shaped like you
+        const sw2=Math.max(7,Math.round(mw/3.2)), sh2=Math.max(6,Math.round(mh/3.2));
+        const tmp=document.createElement("canvas"); tmp.width=sw2; tmp.height=sh2;
+        tmp.getContext("2d").drawImage(base,0,0,sw2,sh2);
+        gx.drawImage(tmp,0,0,sw2,sh2,0,0,w,h);
+        gx.globalCompositeOperation="source-in";          // colour the glow with the aura hue
+        gx.fillStyle=hex; gx.fillRect(0,0,w,h);
+        gx.globalCompositeOperation="destination-out";    // cut your body -> outline glow only
+        gx.drawImage(base,0,0,mw,mh,0,0,w,h);
+        gx.globalCompositeOperation="source-over";
+        ctx.globalCompositeOperation="screen"; ctx.globalAlpha=0.9;
+        ctx.drawImage(glow,0,0);
+        ctx.globalAlpha=1;
+      }
+    }
   }
   // subtle top bloom (kept low so it doesn't re-warm the face)
   ctx.globalCompositeOperation="screen"; ctx.globalAlpha=0.18;
@@ -858,6 +869,7 @@ function analyzePhoto(src){
   let sumL=0, dark=0, skin=0, skinWarm=0;
   let sumRG=0, sumYB=0, sumRG2=0, sumYB2=0;
   let sx=0, sy=0, sw=0;                              // centre-weighted skin centroid
+  const mask=new Uint8ClampedArray(n);              // soft subject mask (silhouette)
   const hueBins=new Array(12).fill(0);              // 12 x 30° hue buckets
   for(let i=0,p=0;i<d.length;i+=4,p++){
     const R=d[i], G=d[i+1], B=d[i+2];
@@ -865,13 +877,20 @@ function analyzePhoto(src){
     const rg=R-G, yb=0.5*(R+G)-B;
     sumRG+=rg; sumYB+=yb; sumRG2+=rg*rg; sumYB2+=yb*yb;
     const mx=Math.max(R,G,B), mn=Math.min(R,G,B), delta=mx-mn;
-    if(R>95&&G>40&&B>20&&delta>15&&Math.abs(R-G)>15&&R>G&&R>B){
+    const px=p%w, py=(p/w)|0;
+    const isSkin = (R>95&&G>40&&B>20&&delta>15&&Math.abs(R-G)>15&&R>G&&R>B);
+    if(isSkin){
       skin++; skinWarm+=(R-B);
-      // weight toward the centre/upper area so a warm background can't drag the centroid
-      const px=p%w, py=(p/w)|0, dxc=px/w-0.5, dyc=py/h-0.45;
-      const wgt=Math.exp(-(dxc*dxc/0.10 + dyc*dyc/0.12));
+      const dxc=px/w-0.5, dyc=py/h-0.45;
+      const wgt=Math.exp(-(dxc*dxc/0.10 + dyc*dyc/0.12));  // centre/upper weight
       sw+=wgt; sx+=px*wgt; sy+=py*wgt;
     }
+    // subject mask: skin = solid; otherwise the central head region (incl. dark hair/cap)
+    const cxd=px/w-0.5, cyd=py/h-0.40;
+    const centre=Math.exp(-((cxd*cxd)/0.13 + (cyd*cyd)/0.17));
+    let m = isSkin ? 1 : centre*(L>34?0.92:0.55);
+    if(centre<0.05) m=0;
+    mask[p]=Math.round((m<0?0:m>1?1:m)*255);
     const sat = mx<=0?0:delta/mx;
     if(sat>0.25 && mx>50){
       let hue;
@@ -916,6 +935,7 @@ function analyzePhoto(src){
   scores.e += (1-edges)*0.7 + (1-bright)*0.2 + clamp01(skinFrac*3)*0.3;
   scores.w += darkFrac*1.0 + (1-colourfulness)*0.5 + (1-bright)*0.3;
   return { scores, bright, domHue, colourfulness, edges, skinFrac, subject,
+           mask:{ data:mask, w, h },
            readout: buildReadout(domHue, edges, colourfulness, bright, skinFrac) };
 }
 
@@ -960,7 +980,7 @@ function scanningMarkup(){
 async function startAura(){
   setAccent("#b06bff");
   show("aura");
-  window.__auraFeat = null; window.__auraPhoto = null; window.__auraThumb = null; window.__auraSrc = null; window.__auraReadout = null; window.__auraSubject = null;
+  window.__auraFeat = null; window.__auraPhoto = null; window.__auraThumb = null; window.__auraSrc = null; window.__auraReadout = null; window.__auraSubject = null; window.__auraMask = null;
   $("#auraStage").innerHTML = scanningMarkup();
   if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ return fallbackAura("No camera here — switching to psychic mode 🔮"); }
   try{
@@ -985,6 +1005,7 @@ async function startAura(){
   window.__auraFeat = { scores:photo.scores, bright:photo.bright };
   window.__auraReadout = photo.readout;
   window.__auraSubject = photo.subject;                       // where you are in frame
+  window.__auraMask = photo.mask;                             // your silhouette, for the glow
   computeFinalAura(computeProfile());                         // aura from answers + photo analysis
   window.__auraPhoto = renderAuraPhoto(window.__auraSrc, window.__aura.el, 480, 360, 0.85, window.__auraSubject);
   window.__auraThumb = renderAuraPhoto(window.__auraSrc, window.__aura.el, 160, 120, 0.6, window.__auraSubject);
