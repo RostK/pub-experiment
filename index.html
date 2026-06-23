@@ -145,6 +145,8 @@
   .heroBadge{position:absolute;top:10px;left:10px;display:flex;align-items:center;gap:7px;
     background:rgba(0,0,0,.6);color:#fff;padding:6px 11px;border-radius:999px;font-weight:800;font-size:12px}
   .heroBadge .dot{width:12px;height:12px;border-radius:50%;box-shadow:0 0 8px 1px currentColor}
+  .heroOverlay .auraName{text-shadow:0 2px 10px rgba(0,0,0,.6);margin:0}
+  .pphoto{width:48px;height:48px;border-radius:12px;object-fit:cover;border:3px solid var(--ink);flex:none}
 </style>
 </head>
 <body>
@@ -550,7 +552,8 @@ function buildResult(){
 function revealResult(){
   const R = buildResult();
   window.__lastResult = R;
-  setAccent(R.el.hex);
+  computeFinalAura(R.prof);                 // blend the camera scan with the answers
+  setAccent((window.__aura && window.__aura.hex) || R.el.hex);
   const v = R.verdicts;
   const order = ["house","plant","pizza","drink","crisp","stool"];
   let cells="";
@@ -614,6 +617,9 @@ function addToTable(){
     element: R.el.name,
     score: R.prof.score,
     house: R.verdicts.house,
+    aura: window.__aura ? window.__aura.name : null,
+    tint: (window.__aura && window.__aura.hex) || R.el.hex,
+    thumb: window.__auraThumb || null,
   });
   saveTable(t);
   toast("Added to the table 🍻");
@@ -644,10 +650,10 @@ function renderTable(){
     `<div class="super">📊 <b>Table reading:</b> roughly ${avgF}% pure chaos tonight</div>`;
   pl.innerHTML = t.map((p,idx)=>`
     <div class="player">
-      <span class="pemo">${p.emoji}</span>
+      ${p.thumb ? `<img src="${p.thumb}" class="pphoto" style="border-color:${p.tint||'#1d1206'}" alt="">` : `<span class="pemo">${p.emoji}</span>`}
       <div style="flex:1">
         <div class="pname">${esc(p.name)}</div>
-        <div class="ptitle">${esc(p.title)} &middot; ${esc(p.house)}</div>
+        <div class="ptitle">${esc(p.title)}${p.aura?` &middot; 👁 ${esc(p.aura)}`:` &middot; ${esc(p.house)}`}</div>
       </div>
       <button class="ghost" style="width:auto;margin:0" data-rm="${idx}">✕</button>
     </div>`).join("");
@@ -685,7 +691,7 @@ function startGame(){
   renderQuestion();
   show("quiz");
 }
-function resetIntro(){ setAccent("#ff5a3c"); window.__aura = null; window.__auraPhoto = null; }
+function resetIntro(){ setAccent("#ff5a3c"); window.__aura = null; window.__auraPhoto = null; window.__auraThumb = null; window.__auraFeat = null; }
 
 $("#startBtn").onclick=()=>{
   playerName = $("#name").value.trim();
@@ -753,10 +759,10 @@ function grabFrame(video){
   return { data:c.getContext("2d").getImageData(0,0,w,h).data, w, h };
 }
 
-/* capture a mirrored cover-fit selfie to print the results on */
-function grabPhoto(video){
+/* capture a mirrored cover-fit selfie (used full-size on the result + as a table thumb) */
+function capturePhoto(video, w, h, q){
   if(!video.videoWidth) return null;
-  const w=480,h=360, c=document.createElement("canvas"); c.width=w; c.height=h;
+  const c=document.createElement("canvas"); c.width=w; c.height=h;
   const ctx=c.getContext("2d");
   ctx.translate(w,0); ctx.scale(-1,1);            // mirror to match the preview
   const vw=video.videoWidth, vh=video.videoHeight, cr=w/h, vr=vw/vh;
@@ -764,7 +770,7 @@ function grabPhoto(video){
   if(vr>cr){ sh=vh; sw=vh*cr; sx=(vw-sw)/2; sy=0; }
   else     { sw=vw; sh=vw/cr; sx=0;         sy=(vh-sh)/2; }
   ctx.drawImage(video, sx, sy, sw, sh, 0, 0, w, h);
-  try{ return c.toDataURL("image/jpeg", 0.85); }catch(e){ return null; }
+  try{ return c.toDataURL("image/jpeg", q); }catch(e){ return null; }
 }
 
 /* turn two camera frames into an element + variant */
@@ -789,7 +795,22 @@ function readFeatures(f1, f2){
   };
   let el="f"; for(const k in scores){ if(scores[k]>scores[el]) el=k; }
   const variant = bright >= 0.5 ? "bright" : "deep";
-  return {el, variant};
+  return {el, variant, scores, bright};
+}
+
+/* final aura = camera vibe blended with the quiz answers (answers nudge it) */
+function computeFinalAura(profile){
+  const ans = profile.score, at = (ans.f+ans.e+ans.a+ans.w) || 1;
+  const feat = window.__auraFeat;
+  let csum = 0; if(feat){ for(const k in feat.scores) csum += feat.scores[k]; } csum = csum || 1;
+  const blend = {};
+  ["f","e","a","w"].forEach(k=>{ blend[k] = (ans[k]/at)*1.0 + (feat ? (feat.scores[k]/csum) : 0)*0.8; });
+  let el="f"; for(const k in blend){ if(blend[k]>blend[el]) el=k; }
+  const bright = feat ? feat.bright : ((hashAnswers()%2) ? 0.7 : 0.4);
+  const variant = bright >= 0.5 ? "bright" : "deep";
+  const a = AURAS[el][variant], E = ELEMENTS[el];
+  window.__aura = { name:a.name, hex:a.hex, el, element:E.name, read:a.read };
+  return window.__aura;
 }
 
 function pickRandomAura(){
@@ -813,6 +834,7 @@ function scanningMarkup(){
 async function startAura(){
   setAccent("#b06bff");
   show("aura");
+  window.__auraFeat = null; window.__auraPhoto = null; window.__auraThumb = null;
   $("#auraStage").innerHTML = scanningMarkup();
   if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ return fallbackAura("No camera here — switching to psychic mode 🔮"); }
   try{
@@ -826,31 +848,43 @@ async function startAura(){
   const f1=grabFrame(video);
   await wait(500);  if(status) status.textContent="Measuring your chaotic energy…";
   const f2=grabFrame(video);
-  window.__auraPhoto = grabPhoto(video);          // keep the selfie for the results card
+  window.__auraPhoto = capturePhoto(video, 480, 360, 0.85);  // selfie for the result card
+  window.__auraThumb = capturePhoto(video, 160, 120, 0.62);  // small thumb for the table
   await wait(700);  if(status) status.textContent="Crowning your aura ✨";
   await wait(500);
   stopAura();
   if(!f1||!f2){ return fallbackAura("Couldn't get a clear read — psychic mode 🔮"); }
-  revealAura(readFeatures(f1,f2), null);
+  const feat = readFeatures(f1,f2);
+  window.__auraFeat = { scores:feat.scores, bright:feat.bright };
+  revealAura({ el:feat.el, variant:feat.variant }, null);
 }
 
 function fallbackAura(note){
   stopAura();
+  window.__auraFeat = null;   // no camera -> final aura comes from the answers alone
   revealAura(pickRandomAura(), note);
 }
 
 function revealAura(sel, note){
   const a = AURAS[sel.el][sel.variant];
   const el = ELEMENTS[sel.el];
-  window.__aura = { name:a.name, hex:a.hex, el:sel.el, element:el.name };
+  window.__aura = { name:a.name, hex:a.hex, el:sel.el, element:el.name, read:a.read };
   setAccent(a.hex);
+  const heroBg = window.__auraPhoto
+    ? `<img src="${window.__auraPhoto}" class="heroImg" alt="you">`
+    : `<div class="heroImg heroFallback" style="background:radial-gradient(circle at 40% 35%, ${a.hex}, ${a.hex}cc)">${el.emoji}</div>`;
   $("#auraStage").innerHTML = `
-    <p class="crown">Your aura reads…</p>
-    <div class="auraOrb" style="background:radial-gradient(circle at 35% 30%, #fff, ${a.hex} 55%, ${a.hex}); box-shadow:0 0 40px 6px ${a.hex}aa, 0 0 0 5px #fff"></div>
-    <div class="auraName" style="color:${a.hex}">${a.name}</div>
-    <div class="element">${el.emoji} ${el.name} energy</div>
+    <p class="auraTitle">👁 Aura Scan</p>
+    <div class="photoHero">
+      ${heroBg}
+      <div class="heroBadge"><span class="dot" style="background:${a.hex}"></span>👁 ${a.name}</div>
+      <div class="heroOverlay">
+        <div class="auraName" style="color:${a.hex}">${a.name}</div>
+        <div class="element">${el.emoji} ${el.name} energy</div>
+      </div>
+    </div>
     <div class="roast">“${a.read}”</div>
-    ${note?`<p class="auraHint">${note}</p>`:""}
+    ${note?`<p class="auraHint">${note}</p>`:`<p class="auraHint">A first read — your answers may refine it.</p>`}
     <button class="btn" id="auraToQuiz">Now take the quiz →</button>
     <div class="btnrow">
       <button class="btn secondary small" id="auraRescan">↻ Rescan</button>
