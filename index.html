@@ -157,10 +157,10 @@
     <div class="card">
       <h1>What are you,<br>really?</h1>
       <div class="tags"><span class="tag">🤖 AI Agent</span><span class="tag">👁 Vision</span><span class="tag">🍺 Pub Mode</span></div>
-      <p class="sub">First we <b>scan your aura</b> 👁, then you answer 5 cheeky questions and an agent <b>crowns you</b> — pizza topping, inner houseplant, Hogwarts house and more, printed right on your photo. Drawn fresh from a bank of <b id="bankCount">120</b> questions, so every player gets a different 5. Run it round the table and compare.</p>
+      <p class="sub">Answer 5 cheeky questions, then we <b>scan your aura</b> 👁 — read from your answers <i>and</i> your camera — and an agent <b>crowns you</b>: pizza topping, inner houseplant, Hogwarts house and more, printed on your aura-tinted photo. Drawn fresh from a bank of <b id="bankCount">120</b> questions, so every player gets a different 5. Run it round the table and compare.</p>
       <label class="fieldlabel" for="name">First, who's playing?</label>
       <input id="name" type="text" placeholder="Your name…" autocomplete="off" maxlength="22" />
-      <button class="btn" id="startBtn">👁 Begin — scan my aura</button>
+      <button class="btn" id="startBtn">Begin → 5 questions</button>
       <button class="ghost" id="toTableTop" style="display:none">👀 Compare the table (<span id="tableCountTop">0</span>)</button>
       <p class="footer">100% offline. Your photo is analysed on-device, shown only to you, and never saved or sent.</p>
     </div>
@@ -181,14 +181,6 @@
       <p class="qtext" id="qtext"></p>
       <div id="opts"></div>
       <button class="ghost" id="backBtn">← back</button>
-    </div>
-  </section>
-
-  <!-- READING (agent) -->
-  <section id="reading" class="screen">
-    <div class="card agent">
-      <div class="orb"></div>
-      <p class="agentline" id="agentline">Booting the judgement engine…</p>
     </div>
   </section>
 
@@ -416,15 +408,6 @@ const POOLS = {
   }},
 };
 
-const AGENT_LINES = [
-  "Reading your form inputs…",
-  "Cross-referencing your crisp choices with your inner houseplant…",
-  "Running your pizza order through the vibe matrix…",
-  "Consulting the Sorting Hat (it's on a break)…",
-  "Detecting main-character energy levels…",
-  "Almost done — just judging you a little…",
-];
-
 const N_QUESTIONS = 5;
 
 /* ---------------- STATE ---------------- */
@@ -520,23 +503,9 @@ function renderQuestion(){
 function choose(i){
   answers[current]=i;
   if(current < N_QUESTIONS-1){ current++; renderQuestion(); }
-  else runAgent();
+  else startAura();   // answers done -> scan aura (reads the answers + camera)
 }
 $("#backBtn").onclick=()=>{ if(current>0){ current--; renderQuestion(); } };
-
-/* ---------------- AGENT ANIMATION ---------------- */
-function runAgent(){
-  show("reading");
-  let i=0;
-  const line=$("#agentline");
-  line.textContent = AGENT_LINES[0];
-  const iv=setInterval(()=>{
-    i++;
-    if(i>=AGENT_LINES.length){ clearInterval(iv); revealResult(); return; }
-    line.style.opacity=0;
-    setTimeout(()=>{ line.textContent=AGENT_LINES[i]; line.style.opacity=1; },180);
-  }, 620);
-}
 
 /* ---------------- RESULT ---------------- */
 function buildResult(){
@@ -552,10 +521,10 @@ function buildResult(){
 function revealResult(){
   const R = buildResult();
   window.__lastResult = R;
-  const A0 = computeFinalAura(R.prof);       // blend the camera scan with the answers
-  if(window.__auraSrc && A0){                 // re-bake the photo effects with the FINAL aura
-    window.__auraPhoto = renderAuraPhoto(window.__auraSrc, A0.el, 480, 360, 0.85);
-    window.__auraThumb = renderAuraPhoto(window.__auraSrc, A0.el, 160, 120, 0.6);
+  if(!window.__aura) computeFinalAura(R.prof);   // safety: aura is normally set during the scan
+  if(window.__auraSrc && window.__aura && !window.__auraPhoto){
+    window.__auraPhoto = renderAuraPhoto(window.__auraSrc, window.__aura.el, 480, 360, 0.85);
+    window.__auraThumb = renderAuraPhoto(window.__auraSrc, window.__aura.el, 160, 120, 0.6);
   }
   setAccent((window.__aura && window.__aura.hex) || R.el.hex);
   const v = R.verdicts;
@@ -699,7 +668,7 @@ function resetIntro(){ setAccent("#ff5a3c"); window.__aura = null; window.__aura
 
 $("#startBtn").onclick=()=>{
   playerName = $("#name").value.trim();
-  startAura();
+  startGame();
 };
 $("#name").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#startBtn").click(); });
 
@@ -850,12 +819,6 @@ function computeFinalAura(profile){
   return window.__aura;
 }
 
-function pickRandomAura(){
-  const els=["f","e","a","w"]; const el=els[(Math.random()*4)|0];
-  const variant = Math.random()<0.5?"bright":"deep";
-  return {el, variant};
-}
-
 function stopAura(){
   if(auraStream){ auraStream.getTracks().forEach(t=>t.stop()); auraStream=null; }
 }
@@ -881,55 +844,51 @@ async function startAura(){
   video.srcObject=auraStream;
   try{ await video.play(); }catch(e){}
   const status=$("#auraStatus");
-  await wait(700);  if(status) status.textContent="Detecting your colour temperature…";
+  await wait(700);  if(status) status.textContent="Reading your 5 answers…";
   const f1=grabFrame(video);
-  await wait(500);  if(status) status.textContent="Measuring your chaotic energy…";
+  await wait(500);  if(status) status.textContent="Matching them to your colour temperature…";
   const f2=grabFrame(video);
   window.__auraSrc = captureSrcCanvas(video);                 // raw selfie, kept for aura effects
   await wait(700);  if(status) status.textContent="Crowning your aura ✨";
   await wait(500);
   stopAura();
   if(!f1||!f2){ return fallbackAura("Couldn't get a clear read — psychic mode 🔮"); }
-  const feat = readFeatures(f1,f2);
-  window.__auraFeat = { scores:feat.scores, bright:feat.bright };
-  window.__auraPhoto = renderAuraPhoto(window.__auraSrc, feat.el, 480, 360, 0.85);  // first-read effect
-  revealAura({ el:feat.el, variant:feat.variant }, null);
+  window.__auraFeat = readFeatures(f1,f2);                    // {scores, bright, ...}
+  computeFinalAura(computeProfile());                         // aura from answers + camera
+  window.__auraPhoto = renderAuraPhoto(window.__auraSrc, window.__aura.el, 480, 360, 0.85);
+  window.__auraThumb = renderAuraPhoto(window.__auraSrc, window.__aura.el, 160, 120, 0.6);
+  revealAura(null);
 }
 
 function fallbackAura(note){
   stopAura();
-  window.__auraFeat = null;   // no camera -> final aura comes from the answers alone
-  revealAura(pickRandomAura(), note);
+  window.__auraFeat = null;   // no camera -> aura comes from the answers alone
+  computeFinalAura(computeProfile());
+  revealAura(note);
 }
 
-function revealAura(sel, note){
-  const a = AURAS[sel.el][sel.variant];
-  const el = ELEMENTS[sel.el];
-  window.__aura = { name:a.name, hex:a.hex, el:sel.el, element:el.name, read:a.read };
-  setAccent(a.hex);
+function revealAura(note){
+  const A = window.__aura, el = ELEMENTS[A.el];
+  setAccent(A.hex);
   const heroBg = window.__auraPhoto
     ? `<img src="${window.__auraPhoto}" class="heroImg" alt="you">`
-    : `<div class="heroImg heroFallback" style="background:radial-gradient(circle at 40% 35%, ${a.hex}, ${a.hex}cc)">${el.emoji}</div>`;
+    : `<div class="heroImg heroFallback" style="background:radial-gradient(circle at 40% 35%, ${A.hex}, ${A.hex}cc)">${el.emoji}</div>`;
   $("#auraStage").innerHTML = `
     <p class="auraTitle">👁 Aura Scan</p>
     <div class="photoHero">
       ${heroBg}
-      <div class="heroBadge"><span class="dot" style="background:${a.hex}"></span>👁 ${a.name}</div>
+      <div class="heroBadge"><span class="dot" style="background:${A.hex}"></span>👁 ${A.name}</div>
       <div class="heroOverlay">
-        <div class="auraName" style="color:${a.hex}">${a.name}</div>
+        <div class="auraName" style="color:${A.hex}">${A.name}</div>
         <div class="element">${el.emoji} ${el.name} energy</div>
       </div>
     </div>
-    <div class="roast">“${a.read}”</div>
-    ${note?`<p class="auraHint">${note}</p>`:`<p class="auraHint">A first read — your answers may refine it.</p>`}
-    <button class="btn" id="auraToQuiz">Now take the quiz →</button>
-    <div class="btnrow">
-      <button class="btn secondary small" id="auraRescan">↻ Rescan</button>
-      <button class="btn secondary small" id="auraBack">← Back</button>
-    </div>`;
-  $("#auraToQuiz").onclick=()=>{ playerName=$("#name").value.trim(); startGame(); };
+    <div class="roast">“${A.read}”</div>
+    ${note?`<p class="auraHint">${note}</p>`:""}
+    <button class="btn" id="auraToResult">See my full result →</button>
+    <button class="btn secondary small" id="auraRescan">↻ Rescan my aura</button>`;
+  $("#auraToResult").onclick=revealResult;
   $("#auraRescan").onclick=startAura;
-  $("#auraBack").onclick=()=>{ setAccent("#ff5a3c"); show("intro"); };
   confetti();
 }
 
