@@ -132,6 +132,19 @@
   .aurastrip{display:flex;align-items:center;gap:10px;background:#fff;border:3px solid var(--ink);
     border-radius:14px;padding:10px 12px;margin:0 0 12px;font-weight:800;box-shadow:0 4px 0 rgba(0,0,0,.14)}
   .aurastrip .dot{width:22px;height:22px;border-radius:50%;flex:none;box-shadow:0 0 10px 1px currentColor}
+  /* results-on-photo hero */
+  .photoHero{position:relative;border:3px solid var(--ink);border-radius:18px;overflow:hidden;
+    margin:0 0 14px;box-shadow:0 6px 0 rgba(0,0,0,.18)}
+  .photoHero .heroImg{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+  .photoHero .heroFallback{display:flex;align-items:center;justify-content:center;font-size:64px;color:#fff}
+  .heroOverlay{position:absolute;left:0;right:0;bottom:0;padding:18px 16px 14px;color:#fff;text-align:center;
+    background:linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,.45) 55%, rgba(0,0,0,0))}
+  .heroOverlay .crown{color:#fff;opacity:.85}
+  .heroOverlay .title{color:#fff;font-size:clamp(26px,7vw,38px);text-shadow:0 2px 10px rgba(0,0,0,.55);margin:2px 0 2px}
+  .heroOverlay .element{color:#fff;opacity:.95;margin:0}
+  .heroBadge{position:absolute;top:10px;left:10px;display:flex;align-items:center;gap:7px;
+    background:rgba(0,0,0,.6);color:#fff;padding:6px 11px;border-radius:999px;font-weight:800;font-size:12px}
+  .heroBadge .dot{width:12px;height:12px;border-radius:50%;box-shadow:0 0 8px 1px currentColor}
 </style>
 </head>
 <body>
@@ -142,13 +155,12 @@
     <div class="card">
       <h1>What are you,<br>really?</h1>
       <div class="tags"><span class="tag">🤖 AI Agent</span><span class="tag">👁 Vision</span><span class="tag">🍺 Pub Mode</span></div>
-      <p class="sub">Answer 5 cheeky questions and a single-prompt agent <b>crowns you</b> — your spirit pizza topping, inner houseplant, Hogwarts house and more. Drawn fresh from a bank of <b id="bankCount">120</b> questions, so every player gets a different 5. Run it round the table and compare.</p>
+      <p class="sub">First we <b>scan your aura</b> 👁, then you answer 5 cheeky questions and an agent <b>crowns you</b> — pizza topping, inner houseplant, Hogwarts house and more, printed right on your photo. Drawn fresh from a bank of <b id="bankCount">120</b> questions, so every player gets a different 5. Run it round the table and compare.</p>
       <label class="fieldlabel" for="name">First, who's playing?</label>
       <input id="name" type="text" placeholder="Your name…" autocomplete="off" maxlength="22" />
-      <button class="btn" id="startBtn">Read my soul →</button>
-      <button class="btn secondary small" id="auraBtn">👁 Scan my aura first (camera)</button>
+      <button class="btn" id="startBtn">👁 Begin — scan my aura</button>
       <button class="ghost" id="toTableTop" style="display:none">👀 Compare the table (<span id="tableCountTop">0</span>)</button>
-      <p class="footer">100% offline. Nothing leaves this phone — the aura scan reads the camera on-device and the photo is never saved or sent.</p>
+      <p class="footer">100% offline. Your photo is analysed on-device, shown only to you, and never saved or sent.</p>
     </div>
   </section>
 
@@ -546,19 +558,29 @@ function revealResult(){
     cells += `<div class="v"><div class="vh">${POOLS[k].icon} ${POOLS[k].label}</div><div class="vb">${v[k]}</div></div>`;
   });
   const A = window.__aura;
-  const auraStrip = A ? `<div class="aurastrip" style="color:${A.hex}"><span class="dot" style="background:${A.hex}"></span><span style="color:var(--ink)">👁 Aura scan: <span style="color:${A.hex}">${A.name}</span></span></div>` : "";
+  const photo = window.__auraPhoto;
+  const auraBadge = A ? `<div class="heroBadge"><span class="dot" style="background:${A.hex}"></span>👁 ${A.name}</div>` : "";
+  const heroImg = photo
+    ? `<img src="${photo}" class="heroImg" alt="you">`
+    : `<div class="heroImg heroFallback" style="background:radial-gradient(circle at 40% 35%, ${R.el.hex}, ${R.el.hex}cc)">${R.el.emoji}</div>`;
   $("#resultCard").innerHTML = `
-    <p class="crown">${playerName ? esc(playerName)+", you are…" : "You are…"}</p>
-    <div class="title">${R.title.t}</div>
-    <div class="element">${R.el.emoji} ${R.el.name} element &middot; ${R.el.word}</div>
+    <div class="photoHero">
+      ${heroImg}
+      ${auraBadge}
+      <div class="heroOverlay">
+        <p class="crown">${playerName ? esc(playerName)+", you are…" : "You are…"}</p>
+        <div class="title">${R.title.t}</div>
+        <div class="element">${R.el.emoji} ${R.el.name} element${A?` &middot; ${A.name} aura`:""}</div>
+      </div>
+    </div>
     <div class="roast">“${R.title.r}”</div>
-    ${auraStrip}
     <div class="verdicts">${cells}</div>
     <button class="btn" id="addBtn">✋ Add me to the table</button>
     <div class="btnrow">
       <button class="btn secondary small" id="shareBtn">📋 Copy my result</button>
       <button class="btn secondary small" id="retakeBtn">↻ Retake</button>
     </div>
+    <p class="footer" style="margin-top:10px">📸 Screenshot this card to share it. Your photo stays on your phone.</p>
   `;
   $("#addBtn").onclick=addToTable;
   $("#shareBtn").onclick=()=>{ copyText(resultText(R)); toast("Copied! Paste it in the chat 📋"); };
@@ -663,11 +685,11 @@ function startGame(){
   renderQuestion();
   show("quiz");
 }
-function resetIntro(){ setAccent("#ff5a3c"); window.__aura = null; }
+function resetIntro(){ setAccent("#ff5a3c"); window.__aura = null; window.__auraPhoto = null; }
 
 $("#startBtn").onclick=()=>{
   playerName = $("#name").value.trim();
-  startGame();
+  startAura();
 };
 $("#name").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#startBtn").click(); });
 
@@ -731,6 +753,20 @@ function grabFrame(video){
   return { data:c.getContext("2d").getImageData(0,0,w,h).data, w, h };
 }
 
+/* capture a mirrored cover-fit selfie to print the results on */
+function grabPhoto(video){
+  if(!video.videoWidth) return null;
+  const w=480,h=360, c=document.createElement("canvas"); c.width=w; c.height=h;
+  const ctx=c.getContext("2d");
+  ctx.translate(w,0); ctx.scale(-1,1);            // mirror to match the preview
+  const vw=video.videoWidth, vh=video.videoHeight, cr=w/h, vr=vw/vh;
+  let sw,sh,sx,sy;
+  if(vr>cr){ sh=vh; sw=vh*cr; sx=(vw-sw)/2; sy=0; }
+  else     { sw=vw; sh=vw/cr; sx=0;         sy=(vh-sh)/2; }
+  ctx.drawImage(video, sx, sy, sw, sh, 0, 0, w, h);
+  try{ return c.toDataURL("image/jpeg", 0.85); }catch(e){ return null; }
+}
+
 /* turn two camera frames into an element + variant */
 function readFeatures(f1, f2){
   const d=f2.data; let r=0,g=0,b=0,n=d.length/4;
@@ -790,6 +826,7 @@ async function startAura(){
   const f1=grabFrame(video);
   await wait(500);  if(status) status.textContent="Measuring your chaotic energy…";
   const f2=grabFrame(video);
+  window.__auraPhoto = grabPhoto(video);          // keep the selfie for the results card
   await wait(700);  if(status) status.textContent="Crowning your aura ✨";
   await wait(500);
   stopAura();
@@ -824,8 +861,6 @@ function revealAura(sel, note){
   $("#auraBack").onclick=()=>{ setAccent("#ff5a3c"); show("intro"); };
   confetti();
 }
-
-$("#auraBtn").onclick=startAura;
 
 /* boot */
 $("#bankCount").textContent = BANK.length;
