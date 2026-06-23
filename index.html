@@ -64,7 +64,6 @@
   .btnrow .btn{margin-top:14px}
   .ghost{background:transparent;border:none;box-shadow:none;color:var(--ink);text-decoration:underline;font-weight:700;
     cursor:pointer;font-size:14px;padding:8px;margin-top:10px;width:100%}
-  /* progress */
   .progress{display:flex;gap:6px;margin:0 0 18px}
   .pip{height:8px;flex:1;border-radius:99px;background:rgba(0,0,0,.14)}
   .pip.done{background:var(--ink)}
@@ -77,8 +76,7 @@
     transition:transform .06s ease, box-shadow .06s ease, background .1s;
   }
   .opt:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.16)}
-  .opt .emo{font-size:26px;line-height:1}
-  /* reading / agent thinking */
+  .opt .emo{font-size:26px;line-height:1;flex:none}
   .agent{text-align:center;padding:30px 10px}
   .orb{
     width:120px;height:120px;border-radius:50%;margin:0 auto 24px;
@@ -90,7 +88,6 @@
   .orb::after{content:"";position:absolute;inset:22px;border-radius:50%;background:var(--paper)}
   @keyframes spin{to{transform:rotate(360deg)}}
   .agentline{font-weight:700;font-size:17px;min-height:50px;transition:opacity .2s}
-  /* result */
   .crown{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:2px;text-align:center;opacity:.6}
   .title{font-size:clamp(30px,8vw,42px);font-weight:900;text-align:center;line-height:1;margin:6px 0 4px;color:var(--accent)}
   .element{text-align:center;font-weight:800;font-size:15px;margin:2px 0 14px}
@@ -101,7 +98,6 @@
   .v .vh{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;opacity:.55;display:flex;gap:6px;align-items:center}
   .v .vb{font-size:15px;font-weight:700;margin-top:5px;line-height:1.25}
   .v.full{grid-column:1 / -1}
-  /* table compare */
   .player{display:flex;align-items:center;gap:12px;background:#fff;border:3px solid var(--ink);border-radius:14px;
     padding:12px;margin-bottom:10px;box-shadow:0 4px 0 rgba(0,0,0,.14)}
   .player .pemo{font-size:30px}
@@ -127,7 +123,7 @@
     <div class="card">
       <h1>What are you,<br>really?</h1>
       <div class="tags"><span class="tag">🤖 AI Agent</span><span class="tag">👁 Vision</span><span class="tag">🍺 Pub Mode</span></div>
-      <p class="sub">Answer 5 cheeky questions. A single-prompt agent reads your vibe and <b>crowns you</b> — your spirit pizza topping, your inner houseplant, your Hogwarts house and more. Then run it round the table and compare.</p>
+      <p class="sub">Answer 5 cheeky questions and a single-prompt agent <b>crowns you</b> — your spirit pizza topping, inner houseplant, Hogwarts house and more. Drawn fresh from a bank of <b id="bankCount">120</b> questions, so every player gets a different 5. Run it round the table and compare.</p>
       <label class="fieldlabel" for="name">First, who's playing?</label>
       <input id="name" type="text" placeholder="Your name…" autocomplete="off" maxlength="22" />
       <button class="btn" id="startBtn">Read my soul →</button>
@@ -185,65 +181,142 @@
 "use strict";
 
 /* ----------------------------------------------------------
-   THE QUESTIONS
-   Each option carries weights across four "spirit" elements:
-   f=Fire (bold/chaos), e=Earth (warm/grounded),
-   a=Air (sparkle/social), w=Water (deep/overthinker)
+   THE QUESTION BANK
+   Each entry: [question, FIRE_opt, EARTH_opt, AIR_opt, WATER_opt]
+   Options are authored in fixed f/e/a/w order (and shuffled on
+   screen). Fire=bold/chaos, Earth=warm/grounded,
+   Air=sparkle/social, Water=deep/overthinker.
+   The game deals a random 5 of these per player.
 ----------------------------------------------------------- */
-const QUESTIONS = [
-  {
-    q:"It's your round. What are you actually getting in?",
-    opts:[
-      {emo:"🍺", t:"Whatever's cheapest — four of them — go", f:3,e:1,a:0,w:0},
-      {emo:"🍷", t:"One nice thing I'll describe in great detail", f:0,e:1,a:0,w:3},
-      {emo:"🍹", t:"A cocktail with an umbrella and a backstory", f:1,e:0,a:3,w:0},
-      {emo:"🍵", t:"“I'm driving” (a lime soda & moral high ground)", f:0,e:3,a:0,w:1},
-    ]
-  },
-  {
-    q:"A Friday night that doesn't fill you with dread:",
-    opts:[
-      {emo:"🔥", t:"Big night out, lose my voice, no regrets", f:3,e:0,a:1,w:0},
-      {emo:"🏠", t:"Dinner I will absolutely over-cater for", f:0,e:3,a:1,w:0},
-      {emo:"✨", t:"Spontaneous chaos, end up three towns over", f:1,e:0,a:3,w:0},
-      {emo:"📺", t:"Sofa, blanket, one very specific show", f:0,e:1,a:0,w:3},
-    ]
-  },
-  {
-    q:"The group chat would say you're the one who…",
-    opts:[
-      {emo:"📋", t:"Plans everything (yes, there's a spreadsheet)", f:0,e:3,a:0,w:1},
-      {emo:"😈", t:"Replies at 3am with an unhinged meme", f:3,e:0,a:1,w:0},
-      {emo:"🫶", t:"Keeps the peace and remembers everyone's birthday", f:0,e:2,a:2,w:0},
-      {emo:"🌀", t:"Goes quiet for days, then sends one paragraph", f:0,e:0,a:1,w:3},
-    ]
-  },
-  {
-    q:"There's one slice of pizza left. You…",
-    opts:[
-      {emo:"😇", t:"Offer it to everyone — and genuinely mean it", f:0,e:3,a:1,w:0},
-      {emo:"😬", t:"Offer it… praying they all say no", f:0,e:1,a:1,w:2},
-      {emo:"🤌", t:"Take it. It's mine. This was never a question", f:3,e:0,a:1,w:0},
-      {emo:"🔪", t:"Cut it into tiny diplomatic equal pieces", f:0,e:1,a:0,w:3},
-    ]
-  },
-  {
-    q:"Last one — pick a pure vibe:",
-    opts:[
-      {emo:"🔥", t:"Chaos & confidence", f:3,e:0,a:1,w:0},
-      {emo:"🌿", t:"Calm, cosy & grounded", f:0,e:3,a:0,w:1},
-      {emo:"💫", t:"Main-character sparkle", f:1,e:0,a:3,w:0},
-      {emo:"🧠", t:"Overthinking everything, beautifully", f:0,e:0,a:1,w:3},
-    ]
-  },
+const BANK = [
+["It's your round. What are you actually getting in?","🍺 Whatever's cheapest, four of them, go","🍵 “I'm driving” — lime soda and moral high ground","🍹 A cocktail with an umbrella and a backstory","🍷 One nice thing I'll describe in great detail"],
+["A Friday night that doesn't fill you with dread:","🔥 Big night out, lose my voice","🏠 A dinner I'll absolutely over-cater for","✨ Spontaneous chaos, three towns over","📺 Sofa, blanket, one very specific show"],
+["The group chat says you're the one who…","😈 Replies at 3am with an unhinged meme","📋 Plans everything (yes, there's a spreadsheet)","🫶 Keeps the peace, remembers every birthday","🌀 Goes quiet for days, then sends one paragraph"],
+["There's one slice of pizza left. You…","🤌 Take it. It's mine. Next question","😇 Offer it round and genuinely mean it","🎭 Offer it loudly so everyone sees","🔪 Cut it into tiny diplomatic pieces"],
+["Pick a pure vibe:","🔥 Chaos and confidence","🌿 Calm, cosy and grounded","💫 Main-character sparkle","🧠 Overthinking everything, beautifully"],
+["Your ideal holiday is…","🏔 Last-minute, no plan, say yes to everything","🏡 A cottage, a fire, nowhere to be","🌴 Somewhere I'll absolutely get the photos","📖 Quiet, a book, and my own thoughts"],
+["The karaoke mic comes to you. You…","🎤 Grab it, no question, Bohemian Rhapsody","☕ Cheer way too loudly for everyone else","💃 Already had a song picked since Tuesday","🙈 Develop a sudden, urgent text to send"],
+["How do you load the dishwasher?","🌀 Chuck it in, it'll be fine","📐 There is a correct way and I know it","🤷 Whatever gets compliments fastest","🧩 A quiet, perfect, considered system"],
+["Your phone hits 3% battery. You feel…","⚡ Free. Let it die. Anarchy","🔌 Fine — I packed a charger for everyone","😱 Panic. What if I miss something","🧘 Honestly, a little relieved"],
+["At a party you're most likely…","🕺 In the middle of the dance floor","🍳 In the kitchen, looking after people","🎙 Telling a story to a growing crowd","🐈 Chatting to one person in a quiet corner"],
+["Your toxic trait is…","🔥 “One more” is always a lie","🫙 I physically cannot stop feeding people","🎬 I make everything a little about me","🌊 I rehearse arguments in the shower"],
+["Pick a breakfast:","🌶 Last night's cold pizza, standing up","🍳 A proper fry-up, made for everyone","🥑 Whatever looks best on the plate","☕ Coffee, silence, do not speak to me"],
+["How do you make decisions?","🎲 Gut, instantly, no take-backs","⚖️ Pros, cons, what's sensible","🗣 Ask the room, read the vibe","🌌 Sleep on it, feel it out, then decide"],
+["Your dream superpower:","💥 Super strength, obviously","🛡 Healing everyone around me","✨ Teleport straight to wherever's fun","🔮 Read minds (a curse, I know)"],
+["The group can't pick a restaurant. You…","🚩 Just pick one — let's GO","📞 Quietly book somewhere good","🎉 Suggest the trendy new place","🤔 Have three researched options ready"],
+["Your texting style:","‼️ ALL CAPS AND PURE ENERGY","💬 Warm, with lots of follow-up questions","😎 Memes and gifs, perfectly timed","📜 One thoughtful paragraph, hours later"],
+["A board game gets competitive. You…","♟ Play to win, take no prisoners","🤝 Make sure nobody feels left out","🎭 Provide live commentary and drama","🕵️ Quietly, suspiciously, win"],
+["Your ideal pet:","🐺 Something a little bit feral","🐕 A loyal dog who needs me","🦜 Something colourful and showy","🐈 A cat that judges me daily"],
+["You're running late. You…","🏃 Sprint, chaos, somehow make it","📅 You're never late — you planned for traffic","🤳 Arrive late but make an entrance","😔 Spiral about it the entire way there"],
+["Pick a weather:","⛈ A dramatic thunderstorm","☀️ Warm, still, golden hour","🌈 Bright and full of plans","🌫 Moody fog and a long walk"],
+["Your absolute nightmare task:","📋 Sitting still and following the rules","🤼 Letting someone else cook for me","🙊 Being ignored at a party","🗣 Small talk with total strangers"],
+["Money lands in your account. First move:","🎰 A spontaneous, slightly mad purchase","🏦 Sensible — savings, bills, snacks","🛍 Treat everyone and look generous","📊 Research the optimal thing for weeks"],
+["Your friends call you for…","🚀 A wild plan and a getaway driver","🩹 A hug, soup, and real talk","🎟 Knowing exactly what's on this weekend","🧭 Calm, clear advice at 2am"],
+["How's your bedroom?","🌪 Organised chaos — I know where things are","🛏 Cosy, tidy, candles at the ready","🖼 Curated and very photographable","📚 A bit of a sanctuary, lots of books"],
+["The wifi goes down for a day. You…","🎉 Great — let's do something stupid","🍲 Cook, tidy, potter about happily","😵 What do you mean, what do I DO","🕯 Bliss. Finally. Some peace."],
+["Pick a seat on the train:","🚪 Aisle, ready to move, ready to bolt","🧺 Wherever I can help with the bags","🪟 Window, obviously, for the content","🎧 Quiet coach, headphones, gone"],
+["Someone's crying at the table. You…","💪 Go and find the person responsible","🤗 Move straight in: tissues, full support","🍸 Lighten the mood with a perfect joke","👂 Just sit and listen, properly"],
+["Your ideal Sunday:","🚵 An adventure, slightly too ambitious","🥘 A roast, family, one long table","🥂 Bottomless brunch with the whole crew","🛁 Bath, podcast, zero humans"],
+["Your role in a heist crew?","💣 The reckless muscle","🧰 The one who packed snacks and a plan B","😏 The charming distraction","🧠 The mastermind back in the van"],
+["You get a genuine compliment. You…","😎 “I know.”","🥰 Deflect it instantly onto someone else","💁 Glow about it for a solid week","🫣 Short-circuit and don't believe it"],
+["Pick a chaos level for the weekend:","🔥 Maximum — no sleep, legends only","🌿 Gentle, restorative, slippers on","✨ Curated fun with good lighting","🌊 Slow, deep, a little bit melancholy"],
+["The aux cord is yours. You play…","🎸 Bangers, no skips, full volume","🎶 Crowd-pleasers everybody knows","🪩 Whatever is impossibly cool right now","🎻 A niche song with a whole backstory"],
+["How do you argue?","🌋 Loud, fast, over in five minutes","🕊 Avoid it entirely, keep the peace","🎤 Win the room, not the actual point","📝 Calm, devastating, three days later"],
+["Your ideal first date:","🎢 Something thrilling and slightly unhinged","🍝 Cooking together at home","🍸 A rooftop bar and a very good outfit","🚶 A long walk and a deep, deep talk"],
+["Pick a mythical creature:","🐉 A dragon","🐢 A tortoise — ancient and wise","🦄 A unicorn, obviously","🧜 A creature of the deep"],
+["You win big. The group finds out via…","📢 You, screaming, immediately","🎁 Gifts mysteriously start appearing","📸 A suddenly very expensive aesthetic","🤐 They don't — you tell one person"],
+["What ruins your day fastest?","⛓ Being told to slow down","😞 Someone I love being upset","🚫 Being left out of the plan","🌀 An unresolved, awkward conversation"],
+["Your handwriting is…","✍️ Fast, aggressive, barely legible","🧁 Neat, round and friendly","🖋 Stylish, with a bit of a flourish","🔬 Tiny, precise, entirely your own"],
+["Pick a snack to share:","🌶 Something dangerously spicy","🧀 A generous, groaning cheese board","🍓 Something pretty and instagram-able","🫒 An acquired taste you will defend"],
+["You're handed a free hour. You…","🛹 Do something a little bit risky","🧹 Tick a job off the list, feel amazing","📲 See who's about and make a plan","🎨 A quiet hobby nobody knows about"],
+["The fire alarm goes off. You're the one who…","🚒 Is already outside, organising people","🧯 Grabs the cat and the first-aid kit","🤳 Films it all for the story","🚪 Calmly, quietly leaves first"],
+["Pick a drink to end the night:","🥃 A final shot, why not","🍫 Hot chocolate, slippers on","🍾 One more glass of something fizzy","🍵 Tea and a deep post-match debrief"],
+["Your CV in three words:","⚡ Bold, fast, fearless","🤲 Reliable, warm, capable","🌟 Creative, charming, visible","🧩 Thoughtful, precise, deep"],
+["How do you pack for a trip?","🎒 Throw it in a bag an hour before","🧳 A list, folded, plus spares for others","👗 Outfits planned per occasion","📦 Minimal, considered, just enough"],
+["A stranger asks you for directions. You…","🗺 Walk them halfway there yourself","🤝 Patiently explain it twice if needed","😄 Make a whole friendly moment of it","🤓 Give the genuinely optimal route"],
+["Your inner monologue is mostly…","🥁 “Let's GO”","🍯 “Is everyone okay?”","🎬 “How does this look?”","🌌 “But what does it all mean?”"],
+["Pick a film genre that is just YOU:","💥 Action — explosions, no brakes","🎄 A cosy, feel-good comfort watch","🎩 A glamorous caper with great outfits","🎭 A slow-burn drama, big feelings"],
+["Group photo time. You're…","🤪 Pulling a deliberately stupid face","📸 Holding everyone's drinks","💁 Hitting your angle — you know it","😬 Quietly hoping it's over soon"],
+["Your desk or workspace:","🌩 A glorious mess of pure momentum","🪴 Tidy, a plant, snacks for visitors","🖼 Aesthetic and lit for video calls","🧠 Minimal, focused, headphones on"],
+["At the pub you're the designated…","🎉 Chaos starter","🚕 Responsible one who gets everyone home","📣 Hype person","🛟 Emotional support human"],
+["How do you handle a very long queue?","😤 Loudly consider just leaving","😌 Chat away to the person next to you","🤳 Make content about it","🧘 Disappear into my own head"],
+["Your signature dance move:","🤸 Reckless, full commitment, no skill","👏 Whatever makes other people join in","🕺 Smooth, rehearsed, frankly iconic","🫠 The subtle two-step by the wall"],
+["What's in your bag right now?","🔦 Something faintly chaotic","🩹 Plasters, mints, a spare for you","💄 The essentials, beautifully curated","📓 A notebook and three pens"],
+["The plan changes at the last minute. You…","🙌 Love it — even better","🛠 Quietly fix all the logistics","🎲 Spin it into something even more fun","😮‍💨 Need a minute to recalibrate"],
+["Pick a colour that is your soul:","❤️‍🔥 Burning red","🟢 Deep forest green","💜 Electric violet","🔵 Deep ocean blue"],
+["Your love language is…","🎢 Adventures together","🍲 Acts of service (and soup)","🎁 Gifts and grand gestures","💬 Long, honest, deep talks"],
+["A debate kicks off at dinner. You…","🥊 Dive in, pick a side, commit hard","🕊 Try to find the middle ground","🎤 Stir it gently for entertainment","🤫 Quietly hold the actual best point"],
+["How do you wake up?","🚀 Alarm once, up, GO","☕ Slow, kettle on, gentle","🌅 Straight onto the phone","😴 Snooze, ruminate, eventually rise"],
+["Pick a side quest:","🧗 Climb the thing you shouldn't","🛒 Help someone move house","🎤 Crash a karaoke bar","🗺 Wander a strange city alone for hours"],
+["Your group's nickname for you:","🌶 The Menace (affectionate)","🐻 The Mum/Dad of the group","⭐ The Main Event","🦉 The Wise One"],
+["The bill arrives. You…","💳 “I've got it — sort me later”","➗ Quietly work out everyone's fair share","😅 Have already drifted off to the loo","🧮 Calculate it precisely, to the penny"],
+["Your dream night in:","🎮 A tournament, snacks, trash talk","🍪 Baking something and a film","🍷 A dinner party you've styled","📺 One person, one series, no talking"],
+["Pick a way to travel:","🏍 Motorbike — fast, slightly unwise","🚐 A campervan with everyone aboard","✈️ Window seat and a big arrival","🚂 A sleeper train, watching the dark"],
+["Your reaction to genuinely good news?","🎆 Scream, hug, immediate plans","🥹 Happy-cry, then feed you","📢 Tell absolutely everybody","😊 A quiet, warm, deep glow"],
+["You're in charge of the playlist AND the snacks:","🌭 Loud songs, hot food, big energy","🥪 Comfort classics, plenty for everyone","🍸 Trendy tunes and a pretty grazing board","🎼 A mood, a vibe, a slow build"],
+["Your worst group-chat habit:","🚨 47 messages in a row","🥲 Liking everything, replying to nothing","🪞 Steering it back to me","👻 Vanishing for a full week"],
+["Pick a fictional job:","🚁 Stunt double","🏡 Village innkeeper","🎤 Talk-show host","🔭 Lighthouse keeper"],
+["How do you give advice?","💢 Brutal honesty, at speed","🤲 Gentle, supportive, with biscuits","🪄 A charming reframe — you feel great","🧭 Thoughtful questions till you find it"],
+["The lights go out at a party. You…","🔦 Take charge and make it a game","🕯 Find candles and calm everyone","🎉 Declare it the best part of the night","👁 Quietly enjoy the eerie new vibe"],
+["Your spirit time of day:","🌃 Late night, peak chaos","🌇 Early evening, golden and warm","🪩 Midnight, lights and people","🌫 5am, the very quiet hours"],
+["Pick a thing to collect:","🗡 Risky souvenirs from trips","🧶 Recipes and people's stories","📸 Beautiful objects and outfits","📚 Books you may never actually finish"],
+["Someone cuts the queue. You…","😠 Say something, immediately","😶 Sigh, let it go, keep the peace","🙄 Make a loud, witty remark","📒 Note it and judge silently forever"],
+["Your ideal Saturday morning:","🚴 Up early for a big adventure","🥞 Pancakes for the whole household","🛍 Market, coffee, being seen","🌿 A walk alone before the world wakes"],
+["What's your karaoke encore?","🎸 Something I'll vocally regret","🎶 A duet, dragging you up too","🌟 The showstopper I've been saving","🥲 A heartfelt ballad nobody requested"],
+["How do you enter a room?","🚪 Loudly — the door swings","👋 Greeting everyone by name","💫 Like I might secretly be famous","🤫 Slip in, find the edge, observe"],
+["Your emergency contact would say you're…","🌪 A liability and a legend","🛡 The safest pair of hands","🎭 Never boring, often late","🌊 Hard to read, but worth it"],
+["Pick a comfort activity:","🥊 Something physical and intense","🧁 Baking for other people","🛍 A little treat, a little parade","📖 Reading in total silence"],
+["The group needs cheering up. You…","🎇 Plan something outrageous","🍜 Cook and check in on everyone","🤡 Simply become the entertainment","🫂 Send each person a real message"],
+["Your phone wallpaper is…","🏎 Something fast or bold","👨‍👩‍👧 The people I love","🌅 A gorgeous shot I took myself","🌌 Something dreamy and abstract"],
+["The final boss of your personality:","🔥 “Send it.”","🌿 “Have you eaten?”","✨ “Watch this.”","🌊 “I've been thinking…”"],
+["Pick a fairground ride:","🎢 The biggest, scariest coaster","🎠 The carousel, with the kids","🎡 The big wheel, for the view","🪞 The weird mirror maze, alone"],
+["Your reaction to a surprise party:","🎉 Scream, then run the whole party","🥹 Cry, then thank everyone individually","📸 Pose — it's content gold","😳 Genuinely not know where to look"],
+["The household chore you secretly enjoy:","🔨 An aggressive deep-clean blitz","🍳 Cooking for everybody","🪟 Making things look nice","🧺 Quiet, methodical folding"],
+["Pick a way to settle a tie:","🪨 Rock paper scissors, sudden death","🤝 Talk it out till everyone's happy","🎤 Whoever argues funniest wins","🎲 An elaborate fair system I design"],
+["Your ideal birthday:","🎆 A massive, unhinged blowout","🏡 Close friends, home-cooked, cosy","🥂 A glamorous night with a dress code","🌄 Away somewhere quiet — just escape"],
+["What's your job on a group trip?","🧭 Chief of vibes and chaos","💼 Treasurer and itinerary","📣 Morale and the photos","🗺 The one who finds the hidden gems"],
+["A spider appears. You…","🩴 Deal with it, dramatically","🥤 A calm cup-and-card rescue","🙀 Scream, then narrate the whole saga","🧍 Observe it respectfully from afar"],
+["Pick an era to live in:","⚔️ Something wild and dangerous","🏰 A cosy village in simpler times","🎷 The roaring, glamorous twenties","🪐 The far, strange future"],
+["How do you celebrate a win?","🍾 Loud, immediate, everyone's invited","🥧 Bake something and share it round","📱 A very well-crafted post","😌 A quiet, private, deep satisfaction"],
+["Your default facial expression:","😼 Up to something","🙂 Open and warm","😏 Mischievously charming","🤨 Mid-thought, somewhere else"],
+["The waiter brings the wrong dish. You…","🗣 Send it back — no drama, just fix it","🤐 Eat it; you don't want a fuss","🎭 Make a charming joke of the whole thing","😬 Quietly accept your new fate"],
+["Pick a thing to be famous for:","🏆 A record nobody thought possible","🌍 Quietly helping thousands","✨ Being effortlessly iconic","🧠 An idea that changed how people think"],
+["Your relationship with plans:","🎯 Plans are for cowards","🗓 Plans are love — I make them","🎈 Loose plans, big energy","🧷 Detailed plans, privately, for safety"],
+["A night out is dying. You…","⚡ Resurrect it with a wild idea","🚖 Gently steer everyone home safe","🎤 One last burst of pure showmanship","🌙 Slip off without saying goodbye"],
+["Pick a kitchen appliance you'd be:","🔥 The blowtorch","🍞 The trusty toaster","☕ The fancy coffee machine","🫖 The slow, patient kettle"],
+["Your group's chat without you would be…","💤 Frankly, a bit boring","🧱 Chaos — nobody organising","🎈 Quieter, with less sparkle","🤔 Missing its deep one"],
+["How do you handle being wrong?","🔄 Loud U-turn, full conviction again","🙏 Apologise warmly and make it right","😅 Charm my way straight through it","🪞 Replay it internally for a decade"],
+["Pick a weekend market stall to run:","🌶 Hot sauces and dares","🍲 Soup and a good chat","🌸 Beautiful handmade things","📜 Rare second-hand books"],
+["Your ideal compliment is:","💪 “You're a force of nature”","🤲 “You always look after everyone”","✨ “You light up the room”","🌊 “You really see people”"],
+["The night ends. Your last message is:","🌟 “BEST night — again soon?!”","❤️ “Home safe? Let me know x”","📸 “Posting these immediately”","🌙 “Thanks for tonight. Needed it.”"],
+["Pick a tattoo you'd get:","⚡ Something bold and impulsive","🌳 A symbol of home and roots","🌹 Something beautiful and visible","🌊 A tiny, meaningful, secret one"],
+["Your approach to spicy food:","🌶 Hottest on the menu — prove it","🍚 Mild and comforting, for everyone","🫦 Whatever's trending and looks good","🧪 Curious and analytical, one chilli at a time"],
+["A talent show needs an act. You…","🎆 Volunteer something dangerous","🍰 Provide the snacks and the support","🎩 Steal the show, naturally","🎹 Quietly nail something delicate"],
+["Pick a creature to be for a day:","🦅 A falcon — fast and fierce","🐘 An elephant — gentle and strong","🦚 A peacock, no notes","🐙 An octopus — deep and clever"],
+["Your most-used emoji is basically:","🔥 The flames","🫶 The heart-hands","✨ The sparkles","🥲 The smiling-tear"],
+["How do you cope with stress?","🏋️ Burn it off, hard and fast","🧹 Tidy and care for others","🎉 Distract with plans and people","📝 Journal, overthink, slowly process"],
+["A get-rich scheme you'd fall for:","🎰 A wild, high-risk bet","🏡 “Sensible” property with a mate","💼 The shiny thing everyone's hyping","📈 An obscure plan I over-researched"],
+["The group can't agree on a film. You…","🎬 Just press play on something loud","🍿 Make everyone vote, fairly","🌟 Champion the cool indie pick","🧠 Have the perfect under-seen choice"],
+["Your inner houseplant waters itself by…","🌋 Sheer willpower","🤍 Looking after everyone else first","📷 Vibes and very good light","🌧 Feeling absolutely everything"],
+["A double-dare at the pub. You…","😈 Already did it — what's next","🛟 Be the responsible spotter","🎭 Do it with full theatrics","🤔 Negotiate the terms first"],
+["Pick a thing to win at trivia:","⚡ The fast-buzzer rounds","🤝 The team morale","🎤 The crowd, win or lose","🧠 The obscure, impossible questions"],
+["Your dream Sunday-roast role:","🔥 Carving, with flair","🥘 Cooking the whole thing, happily","🍷 Curating the wine and the table","🥧 Quietly perfecting the gravy"],
+["How do you say goodbye?","🚪 Already gone — no fuss","🤗 Long hug, “text me when you're home”","👋 A whole farewell tour of the room","🌙 A quiet wave and a warm feeling"],
+["Pick a chaotic good deed:","🦸 A bold, public rescue","🍞 Quietly feeding the neighbours","🎁 A grand surprise gesture","🕊 An anonymous act of kindness"],
+["Your alarm tone says you're:","🚨 A person who leaps into the day","🐓 Gentle, traditional, cosy","🎵 On-trend, naturally","🎐 Something soft and dreamlike"],
+["The group needs a leader. You…","👑 Are already leading — keep up","🧭 Lead by quietly sorting everything","📣 Lead by inspiring the room","🗳 Nominate the right person and advise"],
+["Pick a way to spend an unexpected day off:","🏔 Drive somewhere and find out","🛋 Nest at home with zero plans","🥐 Brunch, then mischief in town","📚 A gallery, a notebook, solitude"],
+["Your reaction to “let's do shots”:","🥃 Already ordering them","💧 “Water for me — but yes, go on”","🎉 “ONLY if we toast properly”","🤨 “Define ‘we' and ‘shots'”"],
+["The campfire needs a story. You tell…","👻 The scariest one, full commitment","🔥 A warm one everyone joins in on","🎭 A wildly embellished personal legend","🌌 A quiet, strange, beautiful tale"],
+["Last call. Your final order:","🍻 “Same again, all round!”","🫖 “Tea? Anyone? No? Just me then.”","🍸 “One more of the fancy one”","🍷 “Just water, thanks — big think incoming”"]
 ];
 
 /* ---------------- ELEMENT IDENTITIES ---------------- */
 const ELEMENTS = {
-  f:{key:"f", name:"Fire",  emoji:"🔥", word:"The Spark",   color:"var(--fire)",  hex:"#ff5a3c", blurb:"bold, chaotic-good, all gas no brakes"},
-  e:{key:"e", name:"Earth", emoji:"🌿", word:"The Hearth",  color:"var(--earth)", hex:"#3fae6b", blurb:"warm, grounded, host with the most"},
-  a:{key:"a", name:"Air",   emoji:"✨", word:"The Sparkle", color:"var(--air)",   hex:"#b06bff", blurb:"social, witty, main-character energy"},
-  w:{key:"w", name:"Water", emoji:"🌊", word:"The Deep",    color:"var(--water)", hex:"#2f8fe0", blurb:"thoughtful, feeling-fluent, beautiful overthinker"},
+  f:{key:"f", name:"Fire",  emoji:"🔥", word:"The Spark",   hex:"#ff5a3c", blurb:"bold, chaotic-good, all gas no brakes"},
+  e:{key:"e", name:"Earth", emoji:"🌿", word:"The Hearth",  hex:"#3fae6b", blurb:"warm, grounded, host with the most"},
+  a:{key:"a", name:"Air",   emoji:"✨", word:"The Sparkle", hex:"#b06bff", blurb:"social, witty, main-character energy"},
+  w:{key:"w", name:"Water", emoji:"🌊", word:"The Deep",    hex:"#2f8fe0", blurb:"thoughtful, feeling-fluent, beautiful overthinker"},
 };
 
 /* ---------------- TITLES BY ELEMENT PAIR ---------------- */
@@ -302,7 +375,6 @@ const POOLS = {
   }},
 };
 
-/* agent "thinking" lines — the single-prompt-reads-your-inputs flavour */
 const AGENT_LINES = [
   "Reading your form inputs…",
   "Cross-referencing your crisp choices with your inner houseplant…",
@@ -312,8 +384,12 @@ const AGENT_LINES = [
   "Almost done — just judging you a little…",
 ];
 
+const N_QUESTIONS = 5;
+
 /* ---------------- STATE ---------------- */
-let answers = [];   // index per question
+let deck = [];          // shuffled queue of BANK indices, persists across players
+let activeQ = [];       // the 5 dealt questions for the current player (with shuffled opts)
+let answers = [];       // chosen option index per active question
 let current = 0;
 let playerName = "";
 
@@ -328,56 +404,73 @@ function setAccent(hex){
   document.documentElement.style.setProperty("--accent", hex);
   document.querySelector('meta[name=theme-color]').setAttribute("content", hex);
 }
-function hashAnswers(arr){
-  // small deterministic spread so similar tables still differ a touch
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+
+/* deal N fresh questions from the shuffled deck; reshuffle when low */
+function dealQuestions(n){
+  if(deck.length < n){ deck = shuffle(Array.from({length:BANK.length},(_,i)=>i)); }
+  const picks = deck.splice(0,n);
+  return picks.map(idx=>{
+    const row = BANK[idx];
+    const opts = shuffle([
+      {el:"f",raw:row[1]},{el:"e",raw:row[2]},{el:"a",raw:row[3]},{el:"w",raw:row[4]}
+    ]).map(o=>{
+      const sp = o.raw.indexOf(" ");
+      return { el:o.el, emo: sp<0?o.raw:o.raw.slice(0,sp), label: sp<0?"":o.raw.slice(sp+1) };
+    });
+    return { q: row[0], opts };
+  });
+}
+
+/* deterministic hash of the chosen answers */
+function hashAnswers(){
+  let s = "";
+  answers.forEach((ai,qi)=> s += activeQ[qi].opts[ai].el );
   let h = 7;
-  arr.forEach((v,i)=> h = (h*31 + (v+1)*(i+3)) % 9973);
+  for(let i=0;i<s.length;i++) h = (h*31 + s.charCodeAt(i)*(i+3)) % 9973;
   return h;
 }
 
-/* score the five answers into an element vector + ranking */
+/* score the chosen answers into an element vector + ranking */
 function computeProfile(){
   const score = {f:0,e:0,a:0,w:0};
-  answers.forEach((ai,qi)=>{
-    const o = QUESTIONS[qi].opts[ai];
-    score.f+=o.f; score.e+=o.e; score.a+=o.a; score.w+=o.w;
-  });
-  const order = ["f","e","a","w"].sort((x,y)=>{
-    if(score[y]!==score[x]) return score[y]-score[x];
-    return Math.random()<0.5?-1:1; // ultra-rare tie
-  });
-  const dom = order[0], sec = order[1];
-  const total = score.f+score.e+score.a+score.w || 1;
-  return {score, dom, sec, total, order};
+  answers.forEach((ai,qi)=>{ score[ activeQ[qi].opts[ai].el ] += 2; });
+  const h = hashAnswers();
+  const tie = {f:0,e:1,a:2,w:3};
+  const seed = el => ((h+1)*(tie[el]+7)) % 97;   // deterministic tie-breaker
+  const order = ["f","e","a","w"].sort((x,y)=> (score[y]-score[x]) || (seed(y)-seed(x)));
+  return {score, dom:order[0], sec:order[1], order};
 }
 
 function pick(pool, prof, salt){
   const arr = pool[prof.dom];
   const secIdx = {f:0,e:1,a:2,w:3}[prof.sec];
-  const h = hashAnswers(answers);
-  const idx = (h + secIdx*5 + salt) % arr.length;
-  return arr[idx];
+  const h = hashAnswers();
+  return arr[(h + secIdx*5 + salt) % arr.length];
 }
 
 /* ---------------- QUIZ FLOW ---------------- */
 function renderProgress(){
   const p = $("#progress"); p.innerHTML="";
-  for(let i=0;i<QUESTIONS.length;i++){
+  for(let i=0;i<N_QUESTIONS;i++){
     const pip=document.createElement("div");
     pip.className="pip"+(i<current?" done":"");
     p.appendChild(pip);
   }
 }
 function renderQuestion(){
-  const Q = QUESTIONS[current];
+  const Q = activeQ[current];
   renderProgress();
-  $("#qcount").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  $("#qcount").textContent = `Question ${current+1} of ${N_QUESTIONS}`;
   $("#qtext").textContent = Q.q;
   const box = $("#opts"); box.innerHTML="";
   Q.opts.forEach((o,i)=>{
     const b=document.createElement("button");
     b.className="opt";
-    b.innerHTML=`<span class="emo">${o.emo}</span><span>${o.t}</span>`;
+    b.innerHTML=`<span class="emo">${o.emo}</span><span>${o.label}</span>`;
     b.onclick=()=>choose(i);
     box.appendChild(b);
   });
@@ -385,7 +478,7 @@ function renderQuestion(){
 }
 function choose(i){
   answers[current]=i;
-  if(current < QUESTIONS.length-1){ current++; renderQuestion(); }
+  if(current < N_QUESTIONS-1){ current++; renderQuestion(); }
   else runAgent();
 }
 $("#backBtn").onclick=()=>{ if(current>0){ current--; renderQuestion(); } };
@@ -420,13 +513,13 @@ function revealResult(){
   window.__lastResult = R;
   setAccent(R.el.hex);
   const v = R.verdicts;
-  const order = [["house","plant"],["pizza","drink"],["crisp","stool"]];
+  const order = ["house","plant","pizza","drink","crisp","stool"];
   let cells="";
-  order.flat().forEach(k=>{
+  order.forEach(k=>{
     cells += `<div class="v"><div class="vh">${POOLS[k].icon} ${POOLS[k].label}</div><div class="vb">${v[k]}</div></div>`;
   });
   $("#resultCard").innerHTML = `
-    <p class="crown">${playerName ? playerName+", you are…" : "You are…"}</p>
+    <p class="crown">${playerName ? esc(playerName)+", you are…" : "You are…"}</p>
     <div class="title">${R.title.t}</div>
     <div class="element">${R.el.emoji} ${R.el.name} element &middot; ${R.el.word}</div>
     <div class="roast">“${R.title.r}”</div>
@@ -439,7 +532,7 @@ function revealResult(){
   `;
   $("#addBtn").onclick=addToTable;
   $("#shareBtn").onclick=()=>{ copyText(resultText(R)); toast("Copied! Paste it in the chat 📋"); };
-  $("#retakeBtn").onclick=()=>{ resetQuiz(); show("intro"); };
+  $("#retakeBtn").onclick=()=>{ startGame(); };
   show("result");
   confetti();
 }
@@ -455,7 +548,7 @@ function resultText(R){
 /* ---------------- TABLE (localStorage) ---------------- */
 const STORE="war_table_v1";
 function loadTable(){ try{ return JSON.parse(localStorage.getItem(STORE))||[]; }catch(e){ return []; } }
-function saveTable(t){ localStorage.setItem(STORE, JSON.stringify(t)); }
+function saveTable(t){ try{ localStorage.setItem(STORE, JSON.stringify(t)); }catch(e){} }
 
 function addToTable(){
   const R = window.__lastResult; if(!R) return;
@@ -483,13 +576,12 @@ function renderTable(){
     pl.innerHTML=`<p class="empty">No one's been crowned yet.<br>Go on, you first.</p>`;
     return;
   }
-  // superlatives
   const champ=(elKey,labelEmoji,label)=>{
-    let best=t[0], i=0;
+    let best=t[0];
     t.forEach(p=>{ if((p.score?.[elKey]||0) > (best.score?.[elKey]||0)) best=p; });
-    return `<div class="super">${labelEmoji} <b>${label}:</b> ${best.name}</div>`;
+    return `<div class="super">${labelEmoji} <b>${label}:</b> ${esc(best.name)}</div>`;
   };
-  const avgF = Math.round(t.reduce((s,p)=>s+(p.score?.f||0),0)/t.length/15*100);
+  const avgF = Math.round(t.reduce((s,p)=>s+(p.score?.f||0),0)/t.length/10*100);
   sup.innerHTML =
     champ("f","🔥","Most chaotic")+
     champ("e","🌿","Warmest soul")+
@@ -500,8 +592,8 @@ function renderTable(){
     <div class="player">
       <span class="pemo">${p.emoji}</span>
       <div style="flex:1">
-        <div class="pname">${escapeHtml(p.name)}</div>
-        <div class="ptitle">${escapeHtml(p.title)} &middot; ${escapeHtml(p.house)}</div>
+        <div class="pname">${esc(p.name)}</div>
+        <div class="ptitle">${esc(p.title)} &middot; ${esc(p.house)}</div>
       </div>
       <button class="ghost" style="width:auto;margin:0" data-rm="${idx}">✕</button>
     </div>`).join("");
@@ -517,7 +609,7 @@ function refreshTableButtons(){
   $("#tableCountTop").textContent = n;
 }
 
-$("#newPlayerBtn").onclick=()=>{ resetQuiz(); show("intro"); $("#name").focus(); };
+$("#newPlayerBtn").onclick=()=>{ resetIntro(); show("intro"); $("#name").focus(); };
 $("#clearTableBtn").onclick=()=>{
   if(loadTable().length && confirm("Clear everyone from the table?")){ saveTable([]); renderTable(); }
 };
@@ -530,17 +622,25 @@ $("#shareTableBtn").onclick=()=>{
 };
 $("#toTableTop").onclick=()=>{ renderTable(); show("table"); };
 
-/* ---------------- MISC UI ---------------- */
-function resetQuiz(){ answers=[]; current=0; setAccent("#ff5a3c"); }
-$("#startBtn").onclick=()=>{
-  playerName = $("#name").value.trim();
-  resetQuiz();
+/* ---------------- START / RESET ---------------- */
+function startGame(){
+  activeQ = dealQuestions(N_QUESTIONS);
+  answers = [];
+  current = 0;
+  setAccent("#ff5a3c");
   renderQuestion();
   show("quiz");
+}
+function resetIntro(){ setAccent("#ff5a3c"); }
+
+$("#startBtn").onclick=()=>{
+  playerName = $("#name").value.trim();
+  startGame();
 };
 $("#name").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#startBtn").click(); });
 
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
+/* ---------------- MISC UI ---------------- */
+function esc(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
 
 let toastTimer;
 function toast(msg){
@@ -558,7 +658,6 @@ function fallbackCopy(txt){
   document.body.removeChild(ta);
 }
 
-/* emoji confetti */
 function confetti(){
   const box=$("#confetti");
   const emojis=["🍕","🪴","🪄","🥂","🔥","🌿","✨","🌊","🍺","🎉"];
@@ -578,6 +677,7 @@ function confetti(){
 }
 
 /* boot */
+$("#bankCount").textContent = BANK.length;
 refreshTableButtons();
 })();
 </script>
