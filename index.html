@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#e8552d" />
+<title>What Are You, Really?</title>
+<style>
+  :root{
+    --ink:#1d1206;
+    --paper:#fff7ec;
+    --fire:#ff5a3c;
+    --earth:#3fae6b;
+    --air:#b06bff;
+    --water:#2f8fe0;
+    --accent:var(--fire);
+    --shadow:0 14px 0 rgba(0,0,0,.18);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);
+    min-height:100vh;
+    background:
+      radial-gradient(120% 80% at 50% -10%, #ffd24a 0%, #ff9a3c 38%, #f06a3a 70%, #e8552d 100%);
+    background-attachment:fixed;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:560px;margin:0 auto;padding:18px 16px 48px;min-height:100vh;display:flex;flex-direction:column}
+  .card{
+    background:var(--paper);
+    border:3px solid var(--ink);
+    border-radius:22px;
+    box-shadow:var(--shadow);
+    padding:22px;
+  }
+  h1{
+    font-weight:900;letter-spacing:-1px;line-height:.95;margin:0;
+    font-size:clamp(34px,9vw,52px);text-transform:uppercase;
+  }
+  .tags{display:flex;gap:8px;margin:14px 0 0;flex-wrap:wrap}
+  .tag{background:var(--ink);color:#fff;font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;letter-spacing:.3px}
+  .sub{font-size:16px;line-height:1.45;margin:16px 0 0;opacity:.9}
+  .screen{display:none;animation:pop .35s ease both}
+  .screen.active{display:block}
+  @keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+  label.fieldlabel{display:block;font-weight:800;margin:22px 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:.5px}
+  input[type=text]{
+    width:100%;font-size:18px;padding:14px 16px;border:3px solid var(--ink);border-radius:14px;
+    background:#fff;font-weight:600;outline:none;
+  }
+  input[type=text]:focus{box-shadow:0 0 0 4px rgba(255,90,60,.25)}
+  .btn{
+    display:block;width:100%;cursor:pointer;font-weight:900;font-size:18px;
+    padding:16px;border:3px solid var(--ink);border-radius:16px;background:var(--accent);color:#fff;
+    text-transform:uppercase;letter-spacing:.5px;margin-top:18px;box-shadow:0 6px 0 rgba(0,0,0,.22);
+    transition:transform .06s ease, box-shadow .06s ease;
+  }
+  .btn:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.22)}
+  .btn.secondary{background:#fff;color:var(--ink)}
+  .btn.small{font-size:14px;padding:12px}
+  .btnrow{display:flex;gap:10px}
+  .btnrow .btn{margin-top:14px}
+  .ghost{background:transparent;border:none;box-shadow:none;color:var(--ink);text-decoration:underline;font-weight:700;
+    cursor:pointer;font-size:14px;padding:8px;margin-top:10px;width:100%}
+  /* progress */
+  .progress{display:flex;gap:6px;margin:0 0 18px}
+  .pip{height:8px;flex:1;border-radius:99px;background:rgba(0,0,0,.14)}
+  .pip.done{background:var(--ink)}
+  .qcount{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1px;opacity:.6;margin:0 0 6px}
+  .qtext{font-size:24px;font-weight:900;line-height:1.15;margin:0 0 18px}
+  .opt{
+    display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;
+    background:#fff;border:3px solid var(--ink);border-radius:16px;padding:14px 16px;margin-bottom:12px;
+    font-size:17px;font-weight:600;box-shadow:0 5px 0 rgba(0,0,0,.16);
+    transition:transform .06s ease, box-shadow .06s ease, background .1s;
+  }
+  .opt:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.16)}
+  .opt .emo{font-size:26px;line-height:1}
+  /* reading / agent thinking */
+  .agent{text-align:center;padding:30px 10px}
+  .orb{
+    width:120px;height:120px;border-radius:50%;margin:0 auto 24px;
+    background:conic-gradient(from 0deg,var(--fire),var(--air),var(--water),var(--earth),var(--fire));
+    animation:spin 1.6s linear infinite;
+    box-shadow:0 0 0 6px #fff, 0 0 40px rgba(255,255,255,.6);
+    position:relative;
+  }
+  .orb::after{content:"";position:absolute;inset:22px;border-radius:50%;background:var(--paper)}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .agentline{font-weight:700;font-size:17px;min-height:50px;transition:opacity .2s}
+  /* result */
+  .crown{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:2px;text-align:center;opacity:.6}
+  .title{font-size:clamp(30px,8vw,42px);font-weight:900;text-align:center;line-height:1;margin:6px 0 4px;color:var(--accent)}
+  .element{text-align:center;font-weight:800;font-size:15px;margin:2px 0 14px}
+  .roast{font-size:18px;font-style:italic;text-align:center;line-height:1.4;background:rgba(0,0,0,.05);
+    border-radius:14px;padding:14px;margin:0 0 18px}
+  .verdicts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .v{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:12px;box-shadow:0 4px 0 rgba(0,0,0,.14)}
+  .v .vh{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;opacity:.55;display:flex;gap:6px;align-items:center}
+  .v .vb{font-size:15px;font-weight:700;margin-top:5px;line-height:1.25}
+  .v.full{grid-column:1 / -1}
+  /* table compare */
+  .player{display:flex;align-items:center;gap:12px;background:#fff;border:3px solid var(--ink);border-radius:14px;
+    padding:12px;margin-bottom:10px;box-shadow:0 4px 0 rgba(0,0,0,.14)}
+  .player .pemo{font-size:30px}
+  .player .pname{font-weight:900;font-size:17px}
+  .player .ptitle{font-size:13px;opacity:.7;font-weight:600}
+  .super{background:var(--ink);color:#fff;border-radius:14px;padding:12px 14px;margin-bottom:10px}
+  .super b{color:#ffd24a}
+  .empty{text-align:center;opacity:.7;font-weight:600;padding:18px 0}
+  .footer{text-align:center;font-size:12px;opacity:.7;margin-top:18px;font-weight:600}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(80px);
+    background:var(--ink);color:#fff;padding:12px 20px;border-radius:99px;font-weight:800;font-size:14px;
+    transition:transform .3s ease;z-index:50}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  #confetti{position:fixed;inset:0;pointer-events:none;z-index:40;overflow:hidden}
+  .conf{position:absolute;top:-30px;font-size:22px;will-change:transform}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- INTRO -->
+  <section id="intro" class="screen active">
+    <div class="card">
+      <h1>What are you,<br>really?</h1>
+      <div class="tags"><span class="tag">🤖 AI Agent</span><span class="tag">👁 Vision</span><span class="tag">🍺 Pub Mode</span></div>
+      <p class="sub">Answer 5 cheeky questions. A single-prompt agent reads your vibe and <b>crowns you</b> — your spirit pizza topping, your inner houseplant, your Hogwarts house and more. Then run it round the table and compare.</p>
+      <label class="fieldlabel" for="name">First, who's playing?</label>
+      <input id="name" type="text" placeholder="Your name…" autocomplete="off" maxlength="22" />
+      <button class="btn" id="startBtn">Read my soul →</button>
+      <button class="ghost" id="toTableTop" style="display:none">👀 Compare the table (<span id="tableCountTop">0</span>)</button>
+      <p class="footer">100% offline. Nothing leaves this phone. The only thing being judged is your crisp choices.</p>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" class="screen">
+    <div class="card">
+      <div class="progress" id="progress"></div>
+      <p class="qcount" id="qcount">Question 1 of 5</p>
+      <p class="qtext" id="qtext"></p>
+      <div id="opts"></div>
+      <button class="ghost" id="backBtn">← back</button>
+    </div>
+  </section>
+
+  <!-- READING (agent) -->
+  <section id="reading" class="screen">
+    <div class="card agent">
+      <div class="orb"></div>
+      <p class="agentline" id="agentline">Booting the judgement engine…</p>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="result" class="screen">
+    <div class="card" id="resultCard"></div>
+  </section>
+
+  <!-- TABLE COMPARE -->
+  <section id="table" class="screen">
+    <div class="card">
+      <h1 style="font-size:32px">The Table</h1>
+      <p class="sub" style="margin-top:8px">Everyone who's been crowned tonight.</p>
+      <div id="supers"></div>
+      <div id="players"></div>
+      <button class="btn" id="newPlayerBtn">+ Crown the next victim</button>
+      <div class="btnrow">
+        <button class="btn secondary small" id="shareTableBtn">Share the table</button>
+        <button class="btn secondary small" id="clearTableBtn">Clear table</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div id="confetti"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ----------------------------------------------------------
+   THE QUESTIONS
+   Each option carries weights across four "spirit" elements:
+   f=Fire (bold/chaos), e=Earth (warm/grounded),
+   a=Air (sparkle/social), w=Water (deep/overthinker)
+----------------------------------------------------------- */
+const QUESTIONS = [
+  {
+    q:"It's your round. What are you actually getting in?",
+    opts:[
+      {emo:"🍺", t:"Whatever's cheapest — four of them — go", f:3,e:1,a:0,w:0},
+      {emo:"🍷", t:"One nice thing I'll describe in great detail", f:0,e:1,a:0,w:3},
+      {emo:"🍹", t:"A cocktail with an umbrella and a backstory", f:1,e:0,a:3,w:0},
+      {emo:"🍵", t:"“I'm driving” (a lime soda & moral high ground)", f:0,e:3,a:0,w:1},
+    ]
+  },
+  {
+    q:"A Friday night that doesn't fill you with dread:",
+    opts:[
+      {emo:"🔥", t:"Big night out, lose my voice, no regrets", f:3,e:0,a:1,w:0},
+      {emo:"🏠", t:"Dinner I will absolutely over-cater for", f:0,e:3,a:1,w:0},
+      {emo:"✨", t:"Spontaneous chaos, end up three towns over", f:1,e:0,a:3,w:0},
+      {emo:"📺", t:"Sofa, blanket, one very specific show", f:0,e:1,a:0,w:3},
+    ]
+  },
+  {
+    q:"The group chat would say you're the one who…",
+    opts:[
+      {emo:"📋", t:"Plans everything (yes, there's a spreadsheet)", f:0,e:3,a:0,w:1},
+      {emo:"😈", t:"Replies at 3am with an unhinged meme", f:3,e:0,a:1,w:0},
+      {emo:"🫶", t:"Keeps the peace and remembers everyone's birthday", f:0,e:2,a:2,w:0},
+      {emo:"🌀", t:"Goes quiet for days, then sends one paragraph", f:0,e:0,a:1,w:3},
+    ]
+  },
+  {
+    q:"There's one slice of pizza left. You…",
+    opts:[
+      {emo:"😇", t:"Offer it to everyone — and genuinely mean it", f:0,e:3,a:1,w:0},
+      {emo:"😬", t:"Offer it… praying they all say no", f:0,e:1,a:1,w:2},
+      {emo:"🤌", t:"Take it. It's mine. This was never a question", f:3,e:0,a:1,w:0},
+      {emo:"🔪", t:"Cut it into tiny diplomatic equal pieces", f:0,e:1,a:0,w:3},
+    ]
+  },
+  {
+    q:"Last one — pick a pure vibe:",
+    opts:[
+      {emo:"🔥", t:"Chaos & confidence", f:3,e:0,a:1,w:0},
+      {emo:"🌿", t:"Calm, cosy & grounded", f:0,e:3,a:0,w:1},
+      {emo:"💫", t:"Main-character sparkle", f:1,e:0,a:3,w:0},
+      {emo:"🧠", t:"Overthinking everything, beautifully", f:0,e:0,a:1,w:3},
+    ]
+  },
+];
+
+/* ---------------- ELEMENT IDENTITIES ---------------- */
+const ELEMENTS = {
+  f:{key:"f", name:"Fire",  emoji:"🔥", word:"The Spark",   color:"var(--fire)",  hex:"#ff5a3c", blurb:"bold, chaotic-good, all gas no brakes"},
+  e:{key:"e", name:"Earth", emoji:"🌿", word:"The Hearth",  color:"var(--earth)", hex:"#3fae6b", blurb:"warm, grounded, host with the most"},
+  a:{key:"a", name:"Air",   emoji:"✨", word:"The Sparkle", color:"var(--air)",   hex:"#b06bff", blurb:"social, witty, main-character energy"},
+  w:{key:"w", name:"Water", emoji:"🌊", word:"The Deep",    color:"var(--water)", hex:"#2f8fe0", blurb:"thoughtful, feeling-fluent, beautiful overthinker"},
+};
+
+/* ---------------- TITLES BY ELEMENT PAIR ---------------- */
+const TITLES = {
+  "fe":{t:"The Cosy Arsonist",        r:"You'll start the bonfire — then make sure everyone has a blanket."},
+  "fa":{t:"The Main Event",           r:"You don't enter rooms, you happen to them. Exhausting. Beloved."},
+  "fw":{t:"The Slow-Motion Explosion",r:"Calm for weeks, then a 2am text that reorganises the whole group chat."},
+  "ef":{t:"The Gentle Menace",        r:"Soft voice, devastating opinions on how the dishwasher should be loaded."},
+  "ea":{t:"The Human Hug",            r:"You know everyone's order and their ex's name. We always sit by you."},
+  "ew":{t:"The Safe Harbour",         r:"People tell you things. You've never once spilled. Saint behaviour."},
+  "af":{t:"The Confetti Cannon",      r:"100% vibes, 0% plan, and somehow it works out every single time."},
+  "ae":{t:"The Glittery Host",        r:"Throws the party AND does the washing up. Genuinely a rare creature."},
+  "aw":{t:"The Beautiful Overthinker",r:"Funniest one at the table; still replays a text from 2019 nightly."},
+  "wf":{t:"The Quiet Storm",          r:"Says three words all night. All three land like thunder."},
+  "we":{t:"The Old Soul",             r:"Born 40, ageing backwards, gives advice worth more than the pint you owe."},
+  "wa":{t:"The Dreamy Narrator",      r:"Lives in a film only you can see. The voiceover, honestly, is incredible."},
+};
+
+/* ---------------- VERDICT POOLS (3 variants per element) ---------------- */
+const POOLS = {
+  pizza:{ label:"Spirit pizza topping", icon:"🍕", by:{
+    f:["Spicy nduja — too much, on purpose","Jalapeño & chilli honey — sweet, then it bites","Pepperoni, double, no apology"],
+    e:["Roasted veg & goat's cheese — quietly the best slice","Four cheese — comfort, incarnate","Mushroom & truffle — humble but deep"],
+    a:["Pineapple — controversial, iconic, unbothered","Prosciutto & rocket — fancy and well aware of it","Hot honey & ricotta — the influencer slice"],
+    w:["Anchovy — a misunderstood genius","Capers & olive — an acquired, superior taste","White pizza, no sauce — thinks differently on principle"],
+  }},
+  plant:{ label:"Inner houseplant", icon:"🪴", by:{
+    f:["A chilli plant, thriving aggressively on the windowsill","Venus flytrap — friendly until provoked","Snake plant — unkillable, faintly threatening"],
+    e:["A sprawling pothos everyone's taken a cutting of","Aloe vera — heals others, asks for nothing","A herb garden you actually maintain. Show-off."],
+    a:["Monstera — big, photogenic, in every single photo","Orchid — high-maintenance, worth it, knows it","String of pearls trailing dramatically off a shelf"],
+    w:["Peace lily — droops theatrically, recovers, repeat","A bathroom fern, thriving in the mist and the feelings","Air plant — needs almost nothing, contains multitudes"],
+  }},
+  house:{ label:"Hogwarts house", icon:"🪄", by:{
+    f:["Gryffindor — obviously, you told us twice","Gryffindor, with a Slytherin streak when there's one slice left","Gryffindor — the Hat barely touched your head"],
+    e:["Hufflepuff — and frankly the best of us","Hufflepuff prefect energy, snacks already in the bag","Hufflepuff, but you'd quietly win the duel"],
+    a:["Ravenclaw who's read the book AND seen the film","Slytherin wearing a Ravenclaw scarf for the aesthetic","Ravenclaw — the witty one, not the smug one"],
+    w:["Ravenclaw — deep waters, dangerous trivia","Slytherin — soft outside, strategic inside","The Sorting Hat thought about you for a long, long time"],
+  }},
+  drink:{ label:"Drink alter-ego", icon:"🥂", by:{
+    f:["A tequila shot wearing a tiny hat","An espresso martini at midnight — bad idea, great night","Jägerbomb energy in a human suit"],
+    e:["A proper cup of tea, two sugars, no notes","A pint of the local — dependable, beloved","Mulled wine — warm, a bit much, in the best way"],
+    a:["An Aperol spritz — looks great, mostly vibes","Champagne that celebrates a Tuesday","A cocktail with an umbrella and a whole backstory"],
+    w:["Red wine and a deep chat in the corner","Single malt, neat, staring meaningfully","Herbal tea and a small emotional breakthrough"],
+  }},
+  crisp:{ label:"Crisp flavour", icon:"🥔", by:{
+    f:["Flamin' Hot — a warning, not a flavour","Salt & vinegar — sharp, eyes watering, worth it","Scampi fries — divisive and proud of it"],
+    e:["Ready Salted — secure enough to need nothing else","Cheese & onion — classic, dependable, no fuss","Roast chicken — comfort in a foil packet"],
+    a:["Prawn cocktail — pink, fun, slightly extra","Sweet chilli — crowd-pleaser and knows it","Truffle crisps — bought partly to be seen buying"],
+    w:["Pickled onion Monster Munch — chaotic hidden depths","Worcester sauce — quietly, smugly complex","Plain popcorn — overthinks even the snack"],
+  }},
+  stool:{ label:"Bar-stool archetype", icon:"🪑", by:{
+    f:["The Instigator — “one more?” is a threat and a promise","The Round-Buyer who cannot be stopped","The Karaoke Initiator (no one asked; everyone's grateful)"],
+    e:["The Mum Friend — plasters, painkillers, and your back","The Coat-Watcher — guards the table like a loyal hound","The Peacemaker who defuses the bill argument"],
+    a:["The Raconteur — every story is 20% true, 100% worth it","The Social Glue — knows the bar staff by name already","The One Who Somehow Knows Everyone"],
+    w:["The Corner Philosopher — best chats happen by you","The Quiet Observer who clocks absolutely everything","The 2am Truth-Teller — gentle, devastating, correct"],
+  }},
+};
+
+/* agent "thinking" lines — the single-prompt-reads-your-inputs flavour */
+const AGENT_LINES = [
+  "Reading your form inputs…",
+  "Cross-referencing your crisp choices with your inner houseplant…",
+  "Running your pizza order through the vibe matrix…",
+  "Consulting the Sorting Hat (it's on a break)…",
+  "Detecting main-character energy levels…",
+  "Almost done — just judging you a little…",
+];
+
+/* ---------------- STATE ---------------- */
+let answers = [];   // index per question
+let current = 0;
+let playerName = "";
+
+/* ---------------- HELPERS ---------------- */
+const $ = sel => document.querySelector(sel);
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  $("#"+id).classList.add("active");
+  window.scrollTo(0,0);
+}
+function setAccent(hex){
+  document.documentElement.style.setProperty("--accent", hex);
+  document.querySelector('meta[name=theme-color]').setAttribute("content", hex);
+}
+function hashAnswers(arr){
+  // small deterministic spread so similar tables still differ a touch
+  let h = 7;
+  arr.forEach((v,i)=> h = (h*31 + (v+1)*(i+3)) % 9973);
+  return h;
+}
+
+/* score the five answers into an element vector + ranking */
+function computeProfile(){
+  const score = {f:0,e:0,a:0,w:0};
+  answers.forEach((ai,qi)=>{
+    const o = QUESTIONS[qi].opts[ai];
+    score.f+=o.f; score.e+=o.e; score.a+=o.a; score.w+=o.w;
+  });
+  const order = ["f","e","a","w"].sort((x,y)=>{
+    if(score[y]!==score[x]) return score[y]-score[x];
+    return Math.random()<0.5?-1:1; // ultra-rare tie
+  });
+  const dom = order[0], sec = order[1];
+  const total = score.f+score.e+score.a+score.w || 1;
+  return {score, dom, sec, total, order};
+}
+
+function pick(pool, prof, salt){
+  const arr = pool[prof.dom];
+  const secIdx = {f:0,e:1,a:2,w:3}[prof.sec];
+  const h = hashAnswers(answers);
+  const idx = (h + secIdx*5 + salt) % arr.length;
+  return arr[idx];
+}
+
+/* ---------------- QUIZ FLOW ---------------- */
+function renderProgress(){
+  const p = $("#progress"); p.innerHTML="";
+  for(let i=0;i<QUESTIONS.length;i++){
+    const pip=document.createElement("div");
+    pip.className="pip"+(i<current?" done":"");
+    p.appendChild(pip);
+  }
+}
+function renderQuestion(){
+  const Q = QUESTIONS[current];
+  renderProgress();
+  $("#qcount").textContent = `Question ${current+1} of ${QUESTIONS.length}`;
+  $("#qtext").textContent = Q.q;
+  const box = $("#opts"); box.innerHTML="";
+  Q.opts.forEach((o,i)=>{
+    const b=document.createElement("button");
+    b.className="opt";
+    b.innerHTML=`<span class="emo">${o.emo}</span><span>${o.t}</span>`;
+    b.onclick=()=>choose(i);
+    box.appendChild(b);
+  });
+  $("#backBtn").style.visibility = current===0 ? "hidden" : "visible";
+}
+function choose(i){
+  answers[current]=i;
+  if(current < QUESTIONS.length-1){ current++; renderQuestion(); }
+  else runAgent();
+}
+$("#backBtn").onclick=()=>{ if(current>0){ current--; renderQuestion(); } };
+
+/* ---------------- AGENT ANIMATION ---------------- */
+function runAgent(){
+  show("reading");
+  let i=0;
+  const line=$("#agentline");
+  line.textContent = AGENT_LINES[0];
+  const iv=setInterval(()=>{
+    i++;
+    if(i>=AGENT_LINES.length){ clearInterval(iv); revealResult(); return; }
+    line.style.opacity=0;
+    setTimeout(()=>{ line.textContent=AGENT_LINES[i]; line.style.opacity=1; },180);
+  }, 620);
+}
+
+/* ---------------- RESULT ---------------- */
+function buildResult(){
+  const prof = computeProfile();
+  const el = ELEMENTS[prof.dom];
+  const title = TITLES[prof.dom+prof.sec] || {t:el.word, r:el.blurb};
+  const verdicts = {};
+  let salt=0;
+  for(const key in POOLS){ verdicts[key] = pick(POOLS[key].by, prof, salt++); }
+  return {prof, el, title, verdicts};
+}
+
+function revealResult(){
+  const R = buildResult();
+  window.__lastResult = R;
+  setAccent(R.el.hex);
+  const v = R.verdicts;
+  const order = [["house","plant"],["pizza","drink"],["crisp","stool"]];
+  let cells="";
+  order.flat().forEach(k=>{
+    cells += `<div class="v"><div class="vh">${POOLS[k].icon} ${POOLS[k].label}</div><div class="vb">${v[k]}</div></div>`;
+  });
+  $("#resultCard").innerHTML = `
+    <p class="crown">${playerName ? playerName+", you are…" : "You are…"}</p>
+    <div class="title">${R.title.t}</div>
+    <div class="element">${R.el.emoji} ${R.el.name} element &middot; ${R.el.word}</div>
+    <div class="roast">“${R.title.r}”</div>
+    <div class="verdicts">${cells}</div>
+    <button class="btn" id="addBtn">✋ Add me to the table</button>
+    <div class="btnrow">
+      <button class="btn secondary small" id="shareBtn">📋 Copy my result</button>
+      <button class="btn secondary small" id="retakeBtn">↻ Retake</button>
+    </div>
+  `;
+  $("#addBtn").onclick=addToTable;
+  $("#shareBtn").onclick=()=>{ copyText(resultText(R)); toast("Copied! Paste it in the chat 📋"); };
+  $("#retakeBtn").onclick=()=>{ resetQuiz(); show("intro"); };
+  show("result");
+  confetti();
+}
+
+function resultText(R){
+  const v=R.verdicts;
+  return `${playerName||"I"} — ${R.title.t} ${R.el.emoji}\n`+
+    `"${R.title.r}"\n`+
+    `🪄 ${v.house}\n🍕 ${v.pizza}\n🪴 ${v.plant}\n🥂 ${v.drink}\n🥔 ${v.crisp}\n🪑 ${v.stool}\n`+
+    `— What Are You, Really?`;
+}
+
+/* ---------------- TABLE (localStorage) ---------------- */
+const STORE="war_table_v1";
+function loadTable(){ try{ return JSON.parse(localStorage.getItem(STORE))||[]; }catch(e){ return []; } }
+function saveTable(t){ localStorage.setItem(STORE, JSON.stringify(t)); }
+
+function addToTable(){
+  const R = window.__lastResult; if(!R) return;
+  const t = loadTable();
+  t.push({
+    name: playerName || "Mystery guest",
+    title: R.title.t,
+    emoji: R.el.emoji,
+    element: R.el.name,
+    score: R.prof.score,
+    house: R.verdicts.house,
+  });
+  saveTable(t);
+  toast("Added to the table 🍻");
+  renderTable();
+  show("table");
+}
+
+function renderTable(){
+  const t = loadTable();
+  refreshTableButtons();
+  const sup=$("#supers"), pl=$("#players");
+  if(!t.length){
+    sup.innerHTML="";
+    pl.innerHTML=`<p class="empty">No one's been crowned yet.<br>Go on, you first.</p>`;
+    return;
+  }
+  // superlatives
+  const champ=(elKey,labelEmoji,label)=>{
+    let best=t[0], i=0;
+    t.forEach(p=>{ if((p.score?.[elKey]||0) > (best.score?.[elKey]||0)) best=p; });
+    return `<div class="super">${labelEmoji} <b>${label}:</b> ${best.name}</div>`;
+  };
+  const avgF = Math.round(t.reduce((s,p)=>s+(p.score?.f||0),0)/t.length/15*100);
+  sup.innerHTML =
+    champ("f","🔥","Most chaotic")+
+    champ("e","🌿","Warmest soul")+
+    champ("a","✨","Biggest main character")+
+    champ("w","🌊","Deepest thinker")+
+    `<div class="super">📊 <b>Table reading:</b> roughly ${avgF}% pure chaos tonight</div>`;
+  pl.innerHTML = t.map((p,idx)=>`
+    <div class="player">
+      <span class="pemo">${p.emoji}</span>
+      <div style="flex:1">
+        <div class="pname">${escapeHtml(p.name)}</div>
+        <div class="ptitle">${escapeHtml(p.title)} &middot; ${escapeHtml(p.house)}</div>
+      </div>
+      <button class="ghost" style="width:auto;margin:0" data-rm="${idx}">✕</button>
+    </div>`).join("");
+  pl.querySelectorAll("[data-rm]").forEach(b=>{
+    b.onclick=()=>{ const t2=loadTable(); t2.splice(+b.dataset.rm,1); saveTable(t2); renderTable(); };
+  });
+}
+
+function refreshTableButtons(){
+  const n = loadTable().length;
+  const top=$("#toTableTop");
+  top.style.display = n? "block":"none";
+  $("#tableCountTop").textContent = n;
+}
+
+$("#newPlayerBtn").onclick=()=>{ resetQuiz(); show("intro"); $("#name").focus(); };
+$("#clearTableBtn").onclick=()=>{
+  if(loadTable().length && confirm("Clear everyone from the table?")){ saveTable([]); renderTable(); }
+};
+$("#shareTableBtn").onclick=()=>{
+  const t=loadTable();
+  if(!t.length){ toast("Table's empty!"); return; }
+  const txt = "🍻 WHAT ARE YOU, REALLY? — the table:\n\n"+
+    t.map(p=>`${p.emoji} ${p.name}: ${p.title}`).join("\n");
+  copyText(txt); toast("Table copied 📋");
+};
+$("#toTableTop").onclick=()=>{ renderTable(); show("table"); };
+
+/* ---------------- MISC UI ---------------- */
+function resetQuiz(){ answers=[]; current=0; setAccent("#ff5a3c"); }
+$("#startBtn").onclick=()=>{
+  playerName = $("#name").value.trim();
+  resetQuiz();
+  renderQuestion();
+  show("quiz");
+};
+$("#name").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#startBtn").click(); });
+
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
+
+let toastTimer;
+function toast(msg){
+  const t=$("#toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove("show"),2200);
+}
+function copyText(txt){
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).catch(()=>fallbackCopy(txt)); }
+  else fallbackCopy(txt);
+}
+function fallbackCopy(txt){
+  const ta=document.createElement("textarea"); ta.value=txt; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); }catch(e){}
+  document.body.removeChild(ta);
+}
+
+/* emoji confetti */
+function confetti(){
+  const box=$("#confetti");
+  const emojis=["🍕","🪴","🪄","🥂","🔥","🌿","✨","🌊","🍺","🎉"];
+  for(let i=0;i<28;i++){
+    const s=document.createElement("div");
+    s.className="conf"; s.textContent=emojis[(Math.random()*emojis.length)|0];
+    s.style.left=Math.random()*100+"vw";
+    const dur=2.2+Math.random()*1.8, delay=Math.random()*0.5, drift=(Math.random()*2-1)*120;
+    s.style.transition=`transform ${dur}s ease-in ${delay}s, opacity ${dur}s linear ${delay}s`;
+    box.appendChild(s);
+    requestAnimationFrame(()=>{
+      s.style.transform=`translate(${drift}px, 110vh) rotate(${(Math.random()*720-360)|0}deg)`;
+      s.style.opacity="0";
+    });
+    setTimeout(()=>s.remove(), (dur+delay)*1000+200);
+  }
+}
+
+/* boot */
+refreshTableButtons();
+})();
+</script>
+</body>
+</html>
