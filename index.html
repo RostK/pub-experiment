@@ -523,8 +523,8 @@ function revealResult(){
   window.__lastResult = R;
   if(!window.__aura) computeFinalAura(R.prof);   // safety: aura is normally set during the scan
   if(window.__auraSrc && window.__aura && !window.__auraPhoto){
-    window.__auraPhoto = renderAuraPhoto(window.__auraSrc, window.__aura.el, 480, 360, 0.85);
-    window.__auraThumb = renderAuraPhoto(window.__auraSrc, window.__aura.el, 160, 120, 0.6);
+    window.__auraPhoto = renderAuraPhoto(window.__auraSrc, window.__aura.el, 480, 360, 0.85, window.__auraSubject);
+    window.__auraThumb = renderAuraPhoto(window.__auraSrc, window.__aura.el, 160, 120, 0.6, window.__auraSubject);
   }
   setAccent((window.__aura && window.__aura.hex) || R.el.hex);
   const v = R.verdicts;
@@ -664,7 +664,7 @@ function startGame(){
   renderQuestion();
   show("quiz");
 }
-function resetIntro(){ setAccent("#ff5a3c"); window.__aura = null; window.__auraPhoto = null; window.__auraThumb = null; window.__auraFeat = null; window.__auraSrc = null; window.__auraReadout = null; }
+function resetIntro(){ setAccent("#ff5a3c"); window.__aura = null; window.__auraPhoto = null; window.__auraThumb = null; window.__auraFeat = null; window.__auraSrc = null; window.__auraReadout = null; window.__auraSubject = null; }
 
 $("#startBtn").onclick=()=>{
   playerName = $("#name").value.trim();
@@ -746,37 +746,78 @@ function captureSrcCanvas(video){
   return c;
 }
 
-/* bake an aura colour-grade + bloom + vignette into the photo itself */
-function renderAuraPhoto(src, el, w, h, q){
-  if(!src) return null;
-  const hex = (ELEMENTS[el] || ELEMENTS.f).hex;
+/* aura colour grade for the sharp (subject) layer */
+function gradedLayer(src, el, w, h){
   const c=document.createElement("canvas"); c.width=w; c.height=h;
-  const ctx=c.getContext("2d");
-  if(!ctx) return null;
-  const grade = {
-    f:"saturate(1.25) contrast(1.12) brightness(1.02)",
-    e:"saturate(1.12) contrast(1.04) brightness(1.03)",
-    a:"saturate(1.3) contrast(1.05) brightness(1.07)",
-    w:"saturate(1.12) contrast(1.12) brightness(0.97)",
+  const ctx=c.getContext("2d"); if(!ctx) return null;
+  const hex=(ELEMENTS[el]||ELEMENTS.f).hex;
+  const grade={
+    f:"saturate(1.28) contrast(1.14) brightness(1.03)",
+    e:"saturate(1.14) contrast(1.05) brightness(1.04)",
+    a:"saturate(1.32) contrast(1.06) brightness(1.08)",
+    w:"saturate(1.14) contrast(1.14) brightness(0.98)",
   }[el] || "none";
-  try{ ctx.filter = grade; }catch(e){}
-  ctx.drawImage(src, 0, 0, w, h);
-  try{ ctx.filter = "none"; }catch(e){}
-  // colour wash in the aura hue
-  ctx.globalCompositeOperation = "soft-light"; ctx.globalAlpha = 0.55; ctx.fillStyle = hex; ctx.fillRect(0,0,w,h);
-  ctx.globalCompositeOperation = "color";      ctx.globalAlpha = 0.16; ctx.fillStyle = hex; ctx.fillRect(0,0,w,h);
-  // glow / bloom from the top
-  ctx.globalCompositeOperation = "screen";     ctx.globalAlpha = 0.5;
-  const g = ctx.createRadialGradient(w*0.5, h*0.12, 0, w*0.5, h*0.12, h*0.95);
-  g.addColorStop(0, hex); g.addColorStop(1, "rgba(0,0,0,0)");
-  ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
-  // vignette
-  ctx.globalCompositeOperation = "multiply";   ctx.globalAlpha = 1;
-  const v = ctx.createRadialGradient(w/2, h/2, h*0.34, w/2, h/2, h*0.78);
-  v.addColorStop(0, "rgba(255,255,255,1)"); v.addColorStop(1, "rgba(35,20,10,0.5)");
-  ctx.fillStyle = v; ctx.fillRect(0,0,w,h);
-  ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
-  try{ return c.toDataURL("image/jpeg", q); }catch(e){ return null; }
+  try{ ctx.filter=grade; }catch(e){}
+  ctx.drawImage(src,0,0,w,h);
+  try{ ctx.filter="none"; }catch(e){}
+  ctx.globalCompositeOperation="soft-light"; ctx.globalAlpha=0.5;  ctx.fillStyle=hex; ctx.fillRect(0,0,w,h);
+  ctx.globalCompositeOperation="color";      ctx.globalAlpha=0.14; ctx.fillStyle=hex; ctx.fillRect(0,0,w,h);
+  ctx.globalCompositeOperation="source-over"; ctx.globalAlpha=1;
+  return c;
+}
+
+/* bake the aura look + a portrait spotlight: subject stays sharp & lit,
+   background gets blurred, darkened, desaturated and aura-tinted */
+function renderAuraPhoto(src, el, w, h, q, subject){
+  if(!src) return null;
+  const hex=(ELEMENTS[el]||ELEMENTS.f).hex;
+  const out=document.createElement("canvas"); out.width=w; out.height=h;
+  const ctx=out.getContext("2d"); if(!ctx) return null;
+  const sharp=gradedLayer(src, el, w, h); if(!sharp) return null;
+  const sub=subject || {cx:0.5, cy:0.42, r:0.5};
+  const cx=sub.cx*w, cy=sub.cy*h, R=sub.r*Math.max(w,h);
+
+  // background: cheap blur (downscale -> upscale), then desaturate + darken + tint
+  const bw=Math.max(10, Math.round(w/9)), bh=Math.max(8, Math.round(h/9));
+  const small=document.createElement("canvas"); small.width=bw; small.height=bh;
+  small.getContext("2d").drawImage(sharp, 0, 0, bw, bh);
+  ctx.imageSmoothingEnabled=true;
+  ctx.drawImage(small, 0, 0, bw, bh, 0, 0, w, h);
+  ctx.globalCompositeOperation="saturation"; ctx.globalAlpha=0.55; ctx.fillStyle="#808080"; ctx.fillRect(0,0,w,h);
+  ctx.globalCompositeOperation="overlay";    ctx.globalAlpha=0.25; ctx.fillStyle=hex;     ctx.fillRect(0,0,w,h);
+  ctx.globalCompositeOperation="multiply";   ctx.globalAlpha=1;
+  const dk=ctx.createRadialGradient(cx,cy,R*0.45, cx,cy,Math.max(w,h)*0.9);
+  dk.addColorStop(0,"rgba(255,255,255,1)"); dk.addColorStop(1,"rgba(18,12,8,0.42)");
+  ctx.fillStyle=dk; ctx.fillRect(0,0,w,h);
+  ctx.globalCompositeOperation="source-over"; ctx.globalAlpha=1;
+
+  // subject: sharp layer masked by a soft radial spotlight
+  const subj=document.createElement("canvas"); subj.width=w; subj.height=h;
+  const sc=subj.getContext("2d");
+  sc.drawImage(sharp,0,0);
+  sc.globalCompositeOperation="destination-in";
+  const mask=sc.createRadialGradient(cx,cy,R*0.42, cx,cy,R*1.08);
+  mask.addColorStop(0,"rgba(0,0,0,1)"); mask.addColorStop(0.72,"rgba(0,0,0,1)"); mask.addColorStop(1,"rgba(0,0,0,0)");
+  sc.fillStyle=mask; sc.fillRect(0,0,w,h);
+  sc.globalCompositeOperation="source-over";
+  ctx.drawImage(subj,0,0);
+
+  // aura rim glow around the subject + top bloom + final vignette
+  ctx.globalCompositeOperation="screen"; ctx.globalAlpha=0.5;
+  const glow=ctx.createRadialGradient(cx,cy,R*0.72, cx,cy,R*1.2);
+  glow.addColorStop(0,"rgba(0,0,0,0)"); glow.addColorStop(0.82,hex); glow.addColorStop(1,"rgba(0,0,0,0)");
+  ctx.fillStyle=glow; ctx.fillRect(0,0,w,h);
+  ctx.globalAlpha=0.4;
+  const bloom=ctx.createRadialGradient(w*0.5,h*0.12,0, w*0.5,h*0.12,h*0.9);
+  bloom.addColorStop(0,hex); bloom.addColorStop(1,"rgba(0,0,0,0)");
+  ctx.fillStyle=bloom; ctx.fillRect(0,0,w,h);
+  ctx.globalCompositeOperation="multiply"; ctx.globalAlpha=1;
+  const vig=ctx.createRadialGradient(w/2,h/2,h*0.4, w/2,h/2,h*0.86);
+  vig.addColorStop(0,"rgba(255,255,255,1)"); vig.addColorStop(1,"rgba(22,14,9,0.55)");
+  ctx.fillStyle=vig; ctx.fillRect(0,0,w,h);
+  ctx.globalCompositeOperation="source-over"; ctx.globalAlpha=1;
+
+  try{ return out.toDataURL("image/jpeg", q); }catch(e){ return null; }
 }
 
 /* frame-to-frame movement (your "energy") from the two small frames */
@@ -798,6 +839,7 @@ function analyzePhoto(src){
   const n=w*h, lum=new Float32Array(n);
   let sumL=0, dark=0, skin=0, skinWarm=0;
   let sumRG=0, sumYB=0, sumRG2=0, sumYB2=0;
+  let sx=0, sy=0, sxx=0, syy=0;                      // skin-pixel centroid + spread
   const hueBins=new Array(12).fill(0);              // 12 x 30° hue buckets
   for(let i=0,p=0;i<d.length;i+=4,p++){
     const R=d[i], G=d[i+1], B=d[i+2];
@@ -805,7 +847,10 @@ function analyzePhoto(src){
     const rg=R-G, yb=0.5*(R+G)-B;
     sumRG+=rg; sumYB+=yb; sumRG2+=rg*rg; sumYB2+=yb*yb;
     const mx=Math.max(R,G,B), mn=Math.min(R,G,B), delta=mx-mn;
-    if(R>95&&G>40&&B>20&&delta>15&&Math.abs(R-G)>15&&R>G&&R>B){ skin++; skinWarm+=(R-B); }
+    if(R>95&&G>40&&B>20&&delta>15&&Math.abs(R-G)>15&&R>G&&R>B){
+      skin++; skinWarm+=(R-B);
+      const px=p%w, py=(p/w)|0; sx+=px; sy+=py; sxx+=px*px; syy+=py*py;
+    }
     const sat = mx<=0?0:delta/mx;
     if(sat>0.25 && mx>50){
       let hue;
@@ -832,6 +877,16 @@ function analyzePhoto(src){
     edgeSum+=Math.sqrt(gx*gx+gy*gy); edgeN++;
   }
   const edges=clamp01((edgeSum/edgeN)/180);
+  // subject (person) location/size from the skin pixels — for the portrait spotlight
+  let subject;
+  if(skin > n*0.012){
+    const mx2=sx/skin, my2=sy/skin;
+    const spread=Math.sqrt(Math.max(0,(sxx/skin-mx2*mx2)+(syy/skin-my2*my2)));
+    subject={ cx:clamp01(mx2/w), cy:clamp01(my2/h),
+              r:Math.max(0.30, Math.min(0.62, 0.30 + (spread/Math.max(w,h))*1.6)) };
+  } else {
+    subject={ cx:0.5, cy:0.42, r:0.5 };            // no clear face -> centred default
+  }
   const hueEl = (domHue<45||domHue>=315)?"f" : (domHue<170)?"e" : (domHue<260)?"w" : "a";
   const scores={f:0,e:0,a:0,w:0};
   scores[hueEl] += 1.2*(0.4+domStrength);                                  // your dominant colour
@@ -839,7 +894,7 @@ function analyzePhoto(src){
   scores.a += colourfulness*1.1 + bright*0.6 + edges*0.5;
   scores.e += (1-edges)*0.7 + (1-bright)*0.2 + clamp01(skinFrac*3)*0.3;
   scores.w += darkFrac*1.0 + (1-colourfulness)*0.5 + (1-bright)*0.3;
-  return { scores, bright, domHue, colourfulness, edges, skinFrac,
+  return { scores, bright, domHue, colourfulness, edges, skinFrac, subject,
            readout: buildReadout(domHue, edges, colourfulness, bright, skinFrac) };
 }
 
@@ -884,7 +939,7 @@ function scanningMarkup(){
 async function startAura(){
   setAccent("#b06bff");
   show("aura");
-  window.__auraFeat = null; window.__auraPhoto = null; window.__auraThumb = null; window.__auraSrc = null; window.__auraReadout = null;
+  window.__auraFeat = null; window.__auraPhoto = null; window.__auraThumb = null; window.__auraSrc = null; window.__auraReadout = null; window.__auraSubject = null;
   $("#auraStage").innerHTML = scanningMarkup();
   if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ return fallbackAura("No camera here — switching to psychic mode 🔮"); }
   try{
@@ -908,9 +963,10 @@ async function startAura(){
   photo.scores.f += motion*1.1; photo.scores.a += motion*0.7;
   window.__auraFeat = { scores:photo.scores, bright:photo.bright };
   window.__auraReadout = photo.readout;
+  window.__auraSubject = photo.subject;                       // where you are in frame
   computeFinalAura(computeProfile());                         // aura from answers + photo analysis
-  window.__auraPhoto = renderAuraPhoto(window.__auraSrc, window.__aura.el, 480, 360, 0.85);
-  window.__auraThumb = renderAuraPhoto(window.__auraSrc, window.__aura.el, 160, 120, 0.6);
+  window.__auraPhoto = renderAuraPhoto(window.__auraSrc, window.__aura.el, 480, 360, 0.85, window.__auraSubject);
+  window.__auraThumb = renderAuraPhoto(window.__auraSrc, window.__aura.el, 160, 120, 0.6, window.__auraSubject);
   revealAura(null);
 }
 
