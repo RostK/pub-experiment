@@ -3376,8 +3376,8 @@ function analyzePhoto(src){
     const isSkin = (R>95&&G>40&&B>20&&delta>15&&Math.abs(R-G)>15&&R>G&&R>B);
     if(isSkin){
       skin++; skinWarm+=(R-B);
-      const dxc=px/w-0.5, dyc=py/h-0.45;
-      const wgt=Math.exp(-(dxc*dxc/0.10 + dyc*dyc/0.12));  // centre/upper weight
+      const dxc=px/w-0.5, dyc=py/h-0.5;
+      const wgt=Math.exp(-(dxc*dxc/0.16 + dyc*dyc/0.26));  // mild centre weight (low bias)
       sw+=wgt; sx+=px*wgt; sy+=py*wgt;
     }
     // subject mask: skin = solid; otherwise the central head+torso region (incl. dark hair/cap)
@@ -3416,11 +3416,11 @@ function analyzePhoto(src){
   let subject;
   if(skin > n*0.012 && sw>0){
     const cxv=sx/sw/w, cyv=sy/sw/h;
-    subject={ cx:Math.max(0.36, Math.min(0.64, cxv)),
-              cy:Math.max(0.30, Math.min(0.58, cyv-0.02)),   // track the face (slight lift for hair)
+    subject={ cx:Math.max(0.30, Math.min(0.70, cxv)),         // track the face centre
+              cy:Math.max(0.32, Math.min(0.64, cyv)),         // horizontally + vertically
               r:Math.max(0.32, Math.min(0.44, 0.32 + skinFrac*0.4)) };
   } else {
-    subject={ cx:0.5, cy:0.38, r:0.40 };           // no clear face -> centred default
+    subject={ cx:0.5, cy:0.46, r:0.40 };           // no clear face -> centred default
   }
   const hueEl = (domHue<45||domHue>=315)?"f" : (domHue<170)?"e" : (domHue<260)?"w" : "a";
   const scores={f:0,e:0,a:0,w:0};
