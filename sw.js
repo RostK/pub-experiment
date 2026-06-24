@@ -1,5 +1,5 @@
 /* What Are You, Really? — offline service worker */
-const CACHE = "war-v2";
+const CACHE = "war-v3";
 const ASSETS = [
   "./",
   "./index.html",

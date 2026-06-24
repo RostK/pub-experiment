@@ -10,16 +10,16 @@
       <stop offset="100%" stop-color="#b0541a"/>
     </radialGradient>
     <clipPath id="eye">
-      <path d="M5 32 Q32 12 59 32 Q32 52 5 32 Z"/>
+      <path d="M2 32 Q32 8 62 32 Q32 56 2 32 Z"/>
     </clipPath>
   </defs>
   <rect width="64" height="64" rx="14" fill="url(#bg)"/>
-  <path d="M5 32 Q32 12 59 32 Q32 52 5 32 Z" fill="#fff8ec"/>
+  <path d="M2 32 Q32 8 62 32 Q32 56 2 32 Z" fill="#fff8ec"/>
   <g clip-path="url(#eye)">
-    <circle cx="32" cy="32" r="14.5" fill="url(#iris)"/>
-    <circle cx="32" cy="32" r="14.5" fill="none" stroke="#6e3212" stroke-width="2"/>
+    <circle cx="32" cy="32" r="18" fill="url(#iris)"/>
+    <circle cx="32" cy="32" r="18" fill="none" stroke="#6e3212" stroke-width="2.4"/>
   </g>
-  <circle cx="32" cy="32" r="6.4" fill="#180e05"/>
-  <circle cx="29.4" cy="29.2" r="2.3" fill="#fff" opacity="0.92"/>
-  <path d="M5 32 Q32 12 59 32 Q32 52 5 32 Z" fill="none" stroke="#1d1206" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="32" cy="32" r="7.8" fill="#180e05"/>
+  <circle cx="28.8" cy="28.8" r="2.8" fill="#fff" opacity="0.92"/>
+  <path d="M2 32 Q32 8 62 32 Q32 56 2 32 Z" fill="none" stroke="#1d1206" stroke-width="3" stroke-linejoin="round"/>
 </svg>
