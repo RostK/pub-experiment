@@ -815,13 +815,13 @@ function renderAuraPhoto(src, el, w, h, q, subject){
   const hc=hl.getContext("2d");
   if(hc){
     ellipse(hc);
-    const ring=hc.createRadialGradient(cx,cy,R*0.55, cx,cy,R*1.32);
-    ring.addColorStop(0, hex+"00"); ring.addColorStop(0.5, hex+"00");
-    ring.addColorStop(0.72, hex+"e6"); ring.addColorStop(0.85, hex+"66"); ring.addColorStop(1, hex+"00");
+    const ring=hc.createRadialGradient(cx,cy,R*0.42, cx,cy,R*1.06);
+    ring.addColorStop(0, hex+"00"); ring.addColorStop(0.4, hex+"00");
+    ring.addColorStop(0.62, hex+"e6"); ring.addColorStop(0.78, hex+"66"); ring.addColorStop(1, hex+"00");
     hc.fillStyle=ring; hc.fillRect(-w,-h,w*3,h*3);
     hc.globalCompositeOperation="destination-out";
-    const cut=hc.createRadialGradient(cx,cy,R*0.5, cx,cy,R*0.94);
-    cut.addColorStop(0,"#000"); cut.addColorStop(0.82,"#000"); cut.addColorStop(1,"rgba(0,0,0,0)");
+    const cut=hc.createRadialGradient(cx,cy,R*0.38, cx,cy,R*0.76);
+    cut.addColorStop(0,"#000"); cut.addColorStop(0.8,"#000"); cut.addColorStop(1,"rgba(0,0,0,0)");
     hc.fillStyle=cut; hc.fillRect(-w,-h,w*3,h*3);
     hc.restore();
     ctx.globalCompositeOperation="screen"; ctx.globalAlpha=0.82;
