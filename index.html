@@ -2917,43 +2917,58 @@ function wrapCentre(ctx,t,cx,y,maxW,lineH,maxLines){
   return y+lines.length*lineH;
 }
 
+function lineCount(ctx,text,font,maxW,maxLines){
+  ctx.font=font; const words=String(text).split(" "); let line="",n=0;
+  for(const wd of words){ const t=line?line+" "+wd:wd; if(ctx.measureText(t).width>maxW && line){ n++; line=wd; } else line=t; }
+  if(line) n++; return Math.max(1,Math.min(n,maxLines));
+}
+
 function buildAuraCard(R){
   return new Promise(resolve=>{
-    const W=1080, H=1600, c=document.createElement("canvas"); c.width=W; c.height=H;
-    const ctx=c.getContext("2d"); if(!ctx){ resolve(null); return; }
+    const W=1080;
     const A=window.__aura||{name:"",hex:R.el.hex}; const hex=A.hex||R.el.hex; const v=R.verdicts;
+    const pw=920, ph=690, px=(W-pw)/2, py=104;
+    // measure how tall the title/roast wrap, then size the card so nothing overlaps the QR footer
+    const mc=document.createElement("canvas").getContext("2d");
+    const titleLines=mc?lineCount(mc,R.title.t,'900 80px '+CARD_FONT,W-120,2):1;
+    const roastLines=mc?lineCount(mc,"“"+R.title.r+"”",'italic 32px '+CARD_FONT,W-150,2):2;
+    let y=py+ph+72;                 // name
+    y+=84;                          // -> title
+    y+=titleLines*84+52;            // title
+    y+=66;                          // element line
+    y+=roastLines*42+46;            // roast
+    y+=6*52;                        // verdicts
+    const H=Math.round(y+40+236);   // gap + QR footer block
+    const c=document.createElement("canvas"); c.width=W; c.height=H;
+    const ctx=c.getContext("2d"); if(!ctx){ resolve(null); return; }
     const finish=(img)=>{
-      // background
       ctx.fillStyle="#0e0a06"; ctx.fillRect(0,0,W,H);
-      let bg=ctx.createRadialGradient(W/2,330,40,W/2,330,820);
+      const bg=ctx.createRadialGradient(W/2,330,40,W/2,330,820);
       bg.addColorStop(0,hex+"4d"); bg.addColorStop(1,"#0e0a0600"); ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
       ctx.textAlign="center";
       ctx.fillStyle="rgba(255,255,255,.7)"; ctx.font='800 30px '+CARD_FONT;
       ctx.fillText("👁  WHAT ARE YOU, REALLY?", W/2, 72);
-      // photo
-      const pw=920, ph=690, px=(W-pw)/2, py=104;
       ctx.save(); rrect(ctx,px,py,pw,ph,30); ctx.clip();
       if(img) ctx.drawImage(img,px,py,pw,ph); else { ctx.fillStyle="#1a130c"; ctx.fillRect(px,py,pw,ph); }
       ctx.restore();
       ctx.lineWidth=7; ctx.strokeStyle=hex; rrect(ctx,px,py,pw,ph,30); ctx.stroke();
-      let y=py+ph+72;
+      let yy=py+ph+72;
       ctx.fillStyle="rgba(255,255,255,.72)"; ctx.font='700 34px '+CARD_FONT;
-      ctx.fillText(((playerName||"You"))+", you are…", W/2, y); y+=84;
+      ctx.fillText((playerName||"You")+", you are…", W/2, yy); yy+=84;
       ctx.fillStyle=hex; ctx.font='900 80px '+CARD_FONT;
-      y=wrapCentre(ctx,R.title.t,W/2,y,W-120,84,2); y+=52;
+      yy=wrapCentre(ctx,R.title.t,W/2,yy,W-120,84,2); yy+=52;
       ctx.fillStyle="#fff"; ctx.font='800 34px '+CARD_FONT;
-      ctx.fillText(fitLine(ctx,R.el.emoji+"  "+R.el.name+(A.name?"  ·  "+A.name+" aura":""),W-120), W/2, y); y+=66;
+      ctx.fillText(fitLine(ctx,R.el.emoji+"  "+R.el.name+(A.name?"  ·  "+A.name+" aura":""),W-120), W/2, yy); yy+=66;
       ctx.fillStyle="rgba(255,255,255,.85)"; ctx.font='italic 32px '+CARD_FONT;
-      y=wrapCentre(ctx,"“"+R.title.r+"”",W/2,y,W-150,42,2); y+=46;
-      // verdicts
+      yy=wrapCentre(ctx,"“"+R.title.r+"”",W/2,yy,W-150,42,2); yy+=46;
       ctx.textAlign="left"; const lx=96, rx=W-96;
       const rows=[["🪄",v.house],["🍕",v.pizza],["🪴",v.plant],["🥂",v.drink],["🥔",v.crisp],["🪑",v.stool]];
       ctx.font='600 31px '+CARD_FONT;
       rows.forEach(([ic,txt])=>{
-        ctx.fillStyle="#fff"; ctx.fillText(ic,lx,y);
+        ctx.fillStyle="#fff"; ctx.fillText(ic,lx,yy);
         ctx.fillStyle="rgba(255,255,255,.92)";
-        ctx.fillText(fitLine(ctx,txt,rx-lx-58), lx+58, y);
-        y+=52;
+        ctx.fillText(fitLine(ctx,txt,rx-lx-58), lx+58, yy);
+        yy+=52;
       });
       drawCardFooter(ctx,W,H,hex);
       resolve(c.toDataURL("image/jpeg",0.92));
