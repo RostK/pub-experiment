@@ -3118,7 +3118,7 @@ function refreshTableButtons(){
   $("#tableCountTop").textContent = n;
 }
 
-$("#newPlayerBtn").onclick=()=>{ resetIntro(); show("intro"); $("#name").focus(); };
+$("#newPlayerBtn").onclick=()=>{ resetIntro(); playerName=""; $("#name").value=""; show("intro"); $("#name").focus(); };
 $("#clearTableBtn").onclick=()=>{
   if(loadTable().length && confirm("Clear everyone from the table?")){ saveTable([]); renderTable(); }
 };
