@@ -551,13 +551,15 @@ function revealResult(){
     </div>
     <div class="roast">“${R.title.r}”</div>
     <div class="verdicts">${cells}</div>
-    <button class="btn" id="addBtn">✋ Add me to the table</button>
+    <button class="btn" id="cardBtn">📥 Save / share my aura card</button>
+    <button class="btn secondary small" id="addBtn">✋ Add me to the table</button>
     <div class="btnrow">
-      <button class="btn secondary small" id="shareBtn">📋 Copy my result</button>
+      <button class="btn secondary small" id="shareBtn">📋 Copy text</button>
       <button class="btn secondary small" id="retakeBtn">↻ Retake</button>
     </div>
-    <p class="footer" style="margin-top:10px">📸 Screenshot this card to share it. Your photo stays on your phone.</p>
+    <p class="footer" style="margin-top:10px">📸 Or screenshot this card. Your photo stays on your phone.</p>
   `;
+  $("#cardBtn").onclick=saveAuraCard;
   $("#addBtn").onclick=addToTable;
   $("#shareBtn").onclick=()=>{ copyText(resultText(R)); toast("Copied! Paste it in the chat 📋"); };
   $("#retakeBtn").onclick=()=>{ startGame(); };
@@ -573,6 +575,90 @@ function resultText(R){
     (A?`👁 Aura: ${A.name}\n`:"")+
     `🪄 ${v.house}\n🍕 ${v.pizza}\n🪴 ${v.plant}\n🥂 ${v.drink}\n🥔 ${v.crisp}\n🪑 ${v.stool}\n`+
     `— What Are You, Really?`;
+}
+
+/* ---------------- SHAREABLE AURA CARD ---------------- */
+const CARD_FONT = 'system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif';
+function rrect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+function fitLine(ctx,t,maxW){ if(ctx.measureText(t).width<=maxW) return t;
+  let s=t; while(s.length>1 && ctx.measureText(s+"…").width>maxW) s=s.slice(0,-1); return s+"…"; }
+function wrapCentre(ctx,t,cx,y,maxW,lineH,maxLines){
+  const words=String(t).split(" "); const lines=[]; let line="";
+  for(const wd of words){ const test=line?line+" "+wd:wd;
+    if(ctx.measureText(test).width>maxW && line){ lines.push(line); line=wd; } else line=test; }
+  if(line) lines.push(line);
+  if(lines.length>maxLines){ lines.length=maxLines; lines[maxLines-1]=fitLine(ctx,lines[maxLines-1]+"…",maxW); }
+  lines.forEach((ln,i)=>ctx.fillText(ln,cx,y+i*lineH));
+  return y+lines.length*lineH;
+}
+
+function buildAuraCard(R){
+  return new Promise(resolve=>{
+    const W=1080, H=1600, c=document.createElement("canvas"); c.width=W; c.height=H;
+    const ctx=c.getContext("2d"); if(!ctx){ resolve(null); return; }
+    const A=window.__aura||{name:"",hex:R.el.hex}; const hex=A.hex||R.el.hex; const v=R.verdicts;
+    const finish=(img)=>{
+      // background
+      ctx.fillStyle="#0e0a06"; ctx.fillRect(0,0,W,H);
+      let bg=ctx.createRadialGradient(W/2,330,40,W/2,330,820);
+      bg.addColorStop(0,hex+"4d"); bg.addColorStop(1,"#0e0a0600"); ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+      ctx.textAlign="center";
+      ctx.fillStyle="rgba(255,255,255,.7)"; ctx.font='800 30px '+CARD_FONT;
+      ctx.fillText("👁  WHAT ARE YOU, REALLY?", W/2, 72);
+      // photo
+      const pw=920, ph=690, px=(W-pw)/2, py=104;
+      ctx.save(); rrect(ctx,px,py,pw,ph,30); ctx.clip();
+      if(img) ctx.drawImage(img,px,py,pw,ph); else { ctx.fillStyle="#1a130c"; ctx.fillRect(px,py,pw,ph); }
+      ctx.restore();
+      ctx.lineWidth=7; ctx.strokeStyle=hex; rrect(ctx,px,py,pw,ph,30); ctx.stroke();
+      let y=py+ph+72;
+      ctx.fillStyle="rgba(255,255,255,.72)"; ctx.font='700 34px '+CARD_FONT;
+      ctx.fillText(((playerName||"You"))+", you are…", W/2, y); y+=84;
+      ctx.fillStyle=hex; ctx.font='900 80px '+CARD_FONT;
+      y=wrapCentre(ctx,R.title.t,W/2,y,W-120,84,2); y+=52;
+      ctx.fillStyle="#fff"; ctx.font='800 34px '+CARD_FONT;
+      ctx.fillText(fitLine(ctx,R.el.emoji+"  "+R.el.name+(A.name?"  ·  "+A.name+" aura":""),W-120), W/2, y); y+=66;
+      ctx.fillStyle="rgba(255,255,255,.85)"; ctx.font='italic 32px '+CARD_FONT;
+      y=wrapCentre(ctx,"“"+R.title.r+"”",W/2,y,W-150,42,2); y+=46;
+      // verdicts
+      ctx.textAlign="left"; const lx=96, rx=W-96;
+      const rows=[["🪄",v.house],["🍕",v.pizza],["🪴",v.plant],["🥂",v.drink],["🥔",v.crisp],["🪑",v.stool]];
+      ctx.font='600 31px '+CARD_FONT;
+      rows.forEach(([ic,txt])=>{
+        ctx.fillStyle="#fff"; ctx.fillText(ic,lx,y);
+        ctx.fillStyle="rgba(255,255,255,.92)";
+        ctx.fillText(fitLine(ctx,txt,rx-lx-58), lx+58, y);
+        y+=52;
+      });
+      // footer
+      ctx.textAlign="center"; ctx.fillStyle=hex; ctx.font='800 30px '+CARD_FONT;
+      ctx.fillText("rostk.github.io/pub-experiment", W/2, H-52);
+      resolve(c.toDataURL("image/jpeg",0.92));
+    };
+    if(window.__auraPhoto){ const im=new Image(); im.onload=()=>finish(im); im.onerror=()=>finish(null); im.src=window.__auraPhoto; }
+    else finish(null);
+  });
+}
+
+async function saveAuraCard(){
+  const R=window.__lastResult; if(!R) return;
+  toast("Building your card…");
+  let url; try{ url=await buildAuraCard(R); }catch(e){ url=null; }
+  if(!url){ toast("Couldn't build the card"); return; }
+  const name=((playerName||"aura").replace(/[^\w-]+/g,"_"))+"-aura-card.jpg";
+  // try the native share sheet (Instagram/WhatsApp/etc) on mobile
+  try{
+    const blob=await (await fetch(url)).blob();
+    const file=new File([blob],name,{type:"image/jpeg"});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file], title:"What Are You, Really?", text:`${playerName||"I"} — ${R.title.t} ${R.el.emoji}`});
+      return;
+    }
+  }catch(e){ if(e && e.name==="AbortError") return; /* else fall through to download */ }
+  const a=document.createElement("a"); a.href=url; a.download=name;
+  document.body.appendChild(a); a.click(); a.remove();
+  toast("Saved to your photos 📥");
 }
 
 /* ---------------- TABLE (localStorage) ---------------- */
