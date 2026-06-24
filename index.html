@@ -100,7 +100,7 @@
   .v.full{grid-column:1 / -1}
   .player{display:flex;align-items:center;gap:12px;background:#fff;border:3px solid var(--ink);border-radius:14px;
     padding:12px;margin-bottom:10px;box-shadow:0 4px 0 rgba(0,0,0,.14)}
-  .player .pemo{font-size:30px}
+  .player .pemo{font-size:46px;width:78px;text-align:center}
   .player .pname{font-weight:900;font-size:17px}
   .player .ptitle{font-size:13px;opacity:.7;font-weight:600}
   .super{background:var(--ink);color:#fff;border-radius:14px;padding:12px 14px;margin-bottom:10px}
@@ -146,7 +146,9 @@
     background:rgba(0,0,0,.6);color:#fff;padding:6px 11px;border-radius:999px;font-weight:800;font-size:12px}
   .heroBadge .dot{width:12px;height:12px;border-radius:50%;box-shadow:0 0 8px 1px currentColor}
   .heroOverlay .auraName{text-shadow:0 2px 10px rgba(0,0,0,.6);margin:0}
-  .pphoto{width:48px;height:48px;border-radius:12px;object-fit:cover;border:3px solid var(--ink);flex:none}
+  .pphoto{width:80px;height:80px;border-radius:16px;object-fit:cover;border:3px solid var(--ink);flex:none}
+  .player .pname{font-size:19px}
+  .player .ptitle{font-size:14px}
 </style>
 </head>
 <body>
@@ -197,8 +199,9 @@
       <div id="supers"></div>
       <div id="players"></div>
       <button class="btn" id="newPlayerBtn">+ Crown the next victim</button>
+      <button class="btn secondary small" id="saveTableBtn">📥 Save / share the table card</button>
       <div class="btnrow">
-        <button class="btn secondary small" id="shareTableBtn">Share the table</button>
+        <button class="btn secondary small" id="shareTableBtn">📋 Share text</button>
         <button class="btn secondary small" id="clearTableBtn">Clear table</button>
       </div>
     </div>
@@ -661,6 +664,75 @@ async function saveAuraCard(){
   toast("Saved to your photos 📥");
 }
 
+function loadImg(src){ return new Promise(res=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=()=>res(null); im.src=src; }); }
+
+function buildTableCard(){
+  return new Promise(resolve=>{
+    const t=loadTable(); if(!t.length){ resolve(null); return; }
+    const W=1080, top=232, rowH=172;
+    const champ=k=>{ let b=t[0]; t.forEach(p=>{ if((p.score?.[k]||0)>(b.score?.[k]||0)) b=p; }); return b.name; };
+    const supers=[["🔥","Most chaotic",champ("f")],["🌿","Warmest soul",champ("e")],
+                  ["✨","Main character",champ("a")],["🌊","Deepest thinker",champ("w")]];
+    const supersTop = top + t.length*rowH + 36;
+    const H = supersTop + 64 + supers.length*52 + 96;
+    Promise.all(t.map(p=> p.thumb ? loadImg(p.thumb) : Promise.resolve(null))).then(imgs=>{
+      const c=document.createElement("canvas"); c.width=W; c.height=H;
+      const ctx=c.getContext("2d"); if(!ctx){ resolve(null); return; }
+      ctx.fillStyle="#0e0a06"; ctx.fillRect(0,0,W,H);
+      const bg=ctx.createRadialGradient(W/2,200,40,W/2,200,900);
+      bg.addColorStop(0,"#ffd24a33"); bg.addColorStop(1,"#0e0a0600"); ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+      ctx.textAlign="center";
+      ctx.fillStyle="#fff"; ctx.font='900 92px '+CARD_FONT; ctx.fillText("🍻  THE TABLE", W/2, 120);
+      ctx.fillStyle="rgba(255,255,255,.7)"; ctx.font='800 32px '+CARD_FONT;
+      ctx.fillText("WHAT ARE YOU, REALLY?", W/2, 174);
+      ctx.textAlign="left";
+      t.forEach((p,i)=>{
+        const ry=top+i*rowH, s=128, sx=70, sy=ry+(rowH-s)/2-12, tint=p.tint||"#ffd24a";
+        ctx.save(); rrect(ctx,sx,sy,s,s,22); ctx.clip();
+        if(imgs[i]) ctx.drawImage(imgs[i],sx,sy,s,s);
+        else { ctx.fillStyle="#1a130c"; ctx.fillRect(sx,sy,s,s); ctx.fillStyle="#fff"; ctx.font='70px '+CARD_FONT; ctx.textAlign="center"; ctx.fillText(p.emoji||"👤",sx+s/2,sy+s/2+24); ctx.textAlign="left"; }
+        ctx.restore();
+        ctx.lineWidth=5; ctx.strokeStyle=tint; rrect(ctx,sx,sy,s,s,22); ctx.stroke();
+        const tx=sx+s+34;
+        ctx.fillStyle="#fff"; ctx.font='800 44px '+CARD_FONT; ctx.fillText(fitLine(ctx,p.name||"—",W-tx-60), tx, ry+62);
+        ctx.fillStyle=tint;   ctx.font='800 32px '+CARD_FONT; ctx.fillText(fitLine(ctx,p.title||"",W-tx-60), tx, ry+106);
+        ctx.fillStyle="rgba(255,255,255,.7)"; ctx.font='600 27px '+CARD_FONT;
+        ctx.fillText(fitLine(ctx,(p.aura?"👁 "+p.aura+"  ·  ":"")+(p.house||""),W-tx-60), tx, ry+144);
+      });
+      ctx.textAlign="center"; ctx.fillStyle="#ffd24a"; ctx.font='900 36px '+CARD_FONT;
+      ctx.fillText("✦  TABLE SUPERLATIVES  ✦", W/2, supersTop+10);
+      ctx.textAlign="left";
+      supers.forEach(([ic,label,nm],i)=>{
+        const yy=supersTop+58+i*52;
+        ctx.fillStyle="rgba(255,255,255,.92)"; ctx.font='700 30px '+CARD_FONT;
+        ctx.fillText(fitLine(ctx,`${ic}  ${label}:  ${nm}`,W-160), 80, yy);
+      });
+      ctx.textAlign="center"; ctx.fillStyle="#ffd24a"; ctx.font='800 30px '+CARD_FONT;
+      ctx.fillText("rostk.github.io/pub-experiment", W/2, H-46);
+      resolve(c.toDataURL("image/jpeg",0.92));
+    });
+  });
+}
+
+async function saveTableCard(){
+  if(!loadTable().length){ toast("Table's empty!"); return; }
+  toast("Building the table card…");
+  let url; try{ url=await buildTableCard(); }catch(e){ url=null; }
+  if(!url){ toast("Couldn't build the card"); return; }
+  const name="the-table-aura.jpg";
+  try{
+    const blob=await (await fetch(url)).blob();
+    const file=new File([blob],name,{type:"image/jpeg"});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file], title:"What Are You, Really? — the table"});
+      return;
+    }
+  }catch(e){ if(e && e.name==="AbortError") return; }
+  const a=document.createElement("a"); a.href=url; a.download=name;
+  document.body.appendChild(a); a.click(); a.remove();
+  toast("Saved to your photos 📥");
+}
+
 /* ---------------- TABLE (localStorage) ---------------- */
 const STORE="war_table_v1";
 function loadTable(){ try{ return JSON.parse(localStorage.getItem(STORE))||[]; }catch(e){ return []; } }
@@ -739,6 +811,7 @@ $("#shareTableBtn").onclick=()=>{
     t.map(p=>`${p.emoji} ${p.name}: ${p.title}`).join("\n");
   copyText(txt); toast("Table copied 📋");
 };
+$("#saveTableBtn").onclick=saveTableCard;
 $("#toTableTop").onclick=()=>{ renderTable(); show("table"); };
 
 /* ---------------- START / RESET ---------------- */
