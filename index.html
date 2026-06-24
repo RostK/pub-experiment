@@ -752,10 +752,10 @@ function gradedLayer(src, el, w, h){
   const ctx=c.getContext("2d"); if(!ctx) return null;
   const hex=(ELEMENTS[el]||ELEMENTS.f).hex;
   const grade={
-    f:"saturate(1.28) contrast(1.14) brightness(1.03)",
-    e:"saturate(1.14) contrast(1.05) brightness(1.04)",
-    a:"saturate(1.32) contrast(1.06) brightness(1.08)",
-    w:"saturate(1.14) contrast(1.14) brightness(0.98)",
+    f:"saturate(1.16) contrast(1.08) brightness(1.0)",
+    e:"saturate(1.12) contrast(1.05) brightness(1.03)",
+    a:"saturate(1.24) contrast(1.05) brightness(1.06)",
+    w:"saturate(1.12) contrast(1.12) brightness(0.99)",
   }[el] || "none";
   try{ ctx.filter=grade; }catch(e){}
   ctx.drawImage(src,0,0,w,h);
@@ -766,83 +766,84 @@ function gradedLayer(src, el, w, h){
   return c;
 }
 
-/* bake the aura look + a portrait spotlight: subject stays sharp & lit,
-   background gets blurred, darkened, desaturated and aura-tinted */
+/* build the silhouette mask canvas (white RGB, alpha = subject) at analysis res */
+function maskCanvas(){
+  const M=window.__auraMask; if(!M || !M.data) return null;
+  const c=document.createElement("canvas"); c.width=M.w; c.height=M.h;
+  const ctx=c.getContext("2d"); if(!ctx) return null;
+  const id=ctx.createImageData(M.w, M.h);
+  for(let p=0;p<M.w*M.h;p++){ id.data[p*4]=255; id.data[p*4+1]=255; id.data[p*4+2]=255; id.data[p*4+3]=M.data[p]; }
+  ctx.putImageData(id,0,0);
+  return c;
+}
+
+/* bake the aura look: matte YOU out by your silhouette (sharp + lit), push the
+   whole background back (blur + desaturate + darken + tint), glow your outline */
 function renderAuraPhoto(src, el, w, h, q, subject){
   if(!src) return null;
   const hex=(ELEMENTS[el]||ELEMENTS.f).hex;
   const out=document.createElement("canvas"); out.width=w; out.height=h;
   const ctx=out.getContext("2d"); if(!ctx) return null;
   const sharp=gradedLayer(src, el, w, h); if(!sharp) return null;
-  const sub=subject || {cx:0.5, cy:0.42, r:0.42};
+  const sub=subject || {cx:0.5, cy:0.42, r:0.46};
   const cx=sub.cx*w, cy=sub.cy*h, R=sub.r*Math.min(w,h);
+  const base=maskCanvas();   // your silhouette (null if no scan data)
+  const mw=base?window.__auraMask.w:0, mh=base?window.__auraMask.h:0;
 
-  // background: cheap blur (downscale -> upscale), then desaturate + darken + tint
+  // background: blur, then strongly desaturate + darken + aura-tint (the whole frame)
   const bw=Math.max(12, Math.round(w/7)), bh=Math.max(9, Math.round(h/7));
   const small=document.createElement("canvas"); small.width=bw; small.height=bh;
   small.getContext("2d").drawImage(sharp, 0, 0, bw, bh);
   ctx.imageSmoothingEnabled=true;
   ctx.drawImage(small, 0, 0, bw, bh, 0, 0, w, h);
-  ctx.globalCompositeOperation="saturation"; ctx.globalAlpha=0.55; ctx.fillStyle="#808080"; ctx.fillRect(0,0,w,h);
-  ctx.globalCompositeOperation="overlay";    ctx.globalAlpha=0.25; ctx.fillStyle=hex;     ctx.fillRect(0,0,w,h);
-  ctx.globalCompositeOperation="multiply";   ctx.globalAlpha=1;
-  const dk=ctx.createRadialGradient(cx,cy,R*0.5, cx,cy,Math.max(w,h)*0.95);
-  dk.addColorStop(0,"rgba(255,255,255,1)");
-  dk.addColorStop(0.5,"rgba(80,60,46,0.9)");
-  dk.addColorStop(1,"rgba(3,2,1,0.9)");
-  ctx.fillStyle=dk; ctx.fillRect(0,0,w,h);
+  ctx.globalCompositeOperation="saturation"; ctx.globalAlpha=0.82; ctx.fillStyle="#808080"; ctx.fillRect(0,0,w,h);
+  ctx.globalCompositeOperation="multiply";   ctx.globalAlpha=0.5;  ctx.fillStyle="#241a14"; ctx.fillRect(0,0,w,h);
+  ctx.globalCompositeOperation="overlay";    ctx.globalAlpha=0.22; ctx.fillStyle=hex;       ctx.fillRect(0,0,w,h);
   ctx.globalCompositeOperation="source-over"; ctx.globalAlpha=1;
 
-  // subject: sharp layer masked by a soft radial spotlight
+  // subject: keep only YOU sharp & bright — matte by the silhouette (circle fallback)
   const subj=document.createElement("canvas"); subj.width=w; subj.height=h;
   const sc=subj.getContext("2d");
   sc.drawImage(sharp,0,0);
   sc.globalCompositeOperation="destination-in";
-  const mask=sc.createRadialGradient(cx,cy,R*0.42, cx,cy,R*1.08);
-  mask.addColorStop(0,"rgba(0,0,0,1)"); mask.addColorStop(0.72,"rgba(0,0,0,1)"); mask.addColorStop(1,"rgba(0,0,0,0)");
-  sc.fillStyle=mask; sc.fillRect(0,0,w,h);
+  if(base){
+    sc.imageSmoothingEnabled=true;
+    sc.drawImage(base, 0, 0, mw, mh, 0, 0, w, h);          // feathered matte of you
+  } else {
+    const mk=sc.createRadialGradient(cx,cy,R*0.42, cx,cy,R*1.08);
+    mk.addColorStop(0,"rgba(0,0,0,1)"); mk.addColorStop(0.72,"rgba(0,0,0,1)"); mk.addColorStop(1,"rgba(0,0,0,0)");
+    sc.fillStyle=mk; sc.fillRect(0,0,w,h);
+  }
   sc.globalCompositeOperation="source-over";
   ctx.drawImage(subj,0,0);
 
-  // aura glow that follows YOUR silhouette (from the subject mask), not a plain ring
-  const M=window.__auraMask;
-  if(M && M.data){
-    const mw=M.w, mh=M.h;
-    const base=document.createElement("canvas"); base.width=mw; base.height=mh;
-    const bctx=base.getContext("2d");
-    if(bctx){
-      const id=bctx.createImageData(mw,mh);
-      for(let p=0;p<mw*mh;p++){ id.data[p*4]=255; id.data[p*4+1]=255; id.data[p*4+2]=255; id.data[p*4+3]=M.data[p]; }
-      bctx.putImageData(id,0,0);
-      const glow=document.createElement("canvas"); glow.width=w; glow.height=h;
-      const gx=glow.getContext("2d");
-      if(gx){
-        gx.imageSmoothingEnabled=true;
-        // expand the silhouette (blur via a small intermediate) -> soft glow shaped like you
-        const sw2=Math.max(7,Math.round(mw/3.2)), sh2=Math.max(6,Math.round(mh/3.2));
-        const tmp=document.createElement("canvas"); tmp.width=sw2; tmp.height=sh2;
-        tmp.getContext("2d").drawImage(base,0,0,sw2,sh2);
-        gx.drawImage(tmp,0,0,sw2,sh2,0,0,w,h);
-        gx.globalCompositeOperation="source-in";          // colour the glow with the aura hue
-        gx.fillStyle=hex; gx.fillRect(0,0,w,h);
-        gx.globalCompositeOperation="destination-out";    // cut your body -> outline glow only
-        gx.drawImage(base,0,0,mw,mh,0,0,w,h);
-        gx.globalCompositeOperation="source-over";
-        ctx.globalCompositeOperation="screen"; ctx.globalAlpha=0.9;
-        ctx.drawImage(glow,0,0);
-        ctx.globalAlpha=1;
-      }
+  // aura glow that follows your silhouette
+  if(base){
+    const glow=document.createElement("canvas"); glow.width=w; glow.height=h;
+    const gx=glow.getContext("2d");
+    if(gx){
+      gx.imageSmoothingEnabled=true;
+      const sw2=Math.max(7,Math.round(mw/3.2)), sh2=Math.max(6,Math.round(mh/3.2));
+      const tmp=document.createElement("canvas"); tmp.width=sw2; tmp.height=sh2;
+      tmp.getContext("2d").drawImage(base,0,0,sw2,sh2);
+      gx.drawImage(tmp,0,0,sw2,sh2,0,0,w,h);                // expanded soft silhouette
+      gx.globalCompositeOperation="source-in"; gx.fillStyle=hex; gx.fillRect(0,0,w,h);
+      gx.globalCompositeOperation="destination-out"; gx.drawImage(base,0,0,mw,mh,0,0,w,h);  // cut your body
+      gx.globalCompositeOperation="source-over";
+      ctx.globalCompositeOperation="screen"; ctx.globalAlpha=0.92;
+      ctx.drawImage(glow,0,0);
+      ctx.globalAlpha=1;
     }
   }
-  // subtle top bloom (kept low so it doesn't re-warm the face)
-  ctx.globalCompositeOperation="screen"; ctx.globalAlpha=0.18;
+
+  // subtle top bloom + final vignette
+  ctx.globalCompositeOperation="screen"; ctx.globalAlpha=0.16;
   const bloom=ctx.createRadialGradient(w*0.5,h*0.06,0, w*0.5,h*0.06,h*0.7);
   bloom.addColorStop(0,hex); bloom.addColorStop(1,"rgba(0,0,0,0)");
   ctx.fillStyle=bloom; ctx.fillRect(0,0,w,h);
-  // final, deeper vignette
   ctx.globalCompositeOperation="multiply"; ctx.globalAlpha=1;
-  const vig=ctx.createRadialGradient(w/2,h/2,h*0.36, w/2,h/2,h*0.9);
-  vig.addColorStop(0,"rgba(255,255,255,1)"); vig.addColorStop(1,"rgba(8,5,3,0.72)");
+  const vig=ctx.createRadialGradient(w/2,h/2,h*0.34, w/2,h/2,h*0.92);
+  vig.addColorStop(0,"rgba(255,255,255,1)"); vig.addColorStop(1,"rgba(7,5,3,0.74)");
   ctx.fillStyle=vig; ctx.fillRect(0,0,w,h);
   ctx.globalCompositeOperation="source-over"; ctx.globalAlpha=1;
 
@@ -885,9 +886,9 @@ function analyzePhoto(src){
       const wgt=Math.exp(-(dxc*dxc/0.10 + dyc*dyc/0.12));  // centre/upper weight
       sw+=wgt; sx+=px*wgt; sy+=py*wgt;
     }
-    // subject mask: skin = solid; otherwise the central head region (incl. dark hair/cap)
-    const cxd=px/w-0.5, cyd=py/h-0.40;
-    const centre=Math.exp(-((cxd*cxd)/0.13 + (cyd*cyd)/0.17));
+    // subject mask: skin = solid; otherwise the central head+torso region (incl. dark hair/cap)
+    const cxd=px/w-0.5, cyd=py/h-0.44;
+    const centre=Math.exp(-((cxd*cxd)/0.14 + (cyd*cyd)/0.22));
     let m = isSkin ? 1 : centre*(L>34?0.92:0.55);
     if(centre<0.05) m=0;
     mask[p]=Math.round((m<0?0:m>1?1:m)*255);
