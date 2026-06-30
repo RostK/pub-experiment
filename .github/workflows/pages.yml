@@ -25,6 +25,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build Ukrainian page
+        # Regenerate uk/index.html from index.html (the single source of truth)
+        # so the published /uk/ is always in sync, even if the committed copy is stale.
+        run: node scripts/build-uk.mjs
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
