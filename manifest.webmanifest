@@ -1,8 +1,8 @@
 {
-  "name": "What Are You, Really?",
-  "short_name": "What Are You",
-  "description": "A pub party quiz: answer 5 cheeky questions, get an on-device aura scan, and an agent crowns you. Compare round the table.",
-  "lang": "en",
+  "name": "Ну і хто ж ти?",
+  "short_name": "Хто ж ти?",
+  "description": "Квіз для компанії: 5 хитрих питань, сканування аури на пристрої — і агент виносить вердикт. Порівнюйте за столом.",
+  "lang": "uk",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
