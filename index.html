@@ -9,7 +9,7 @@
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png" />
 <link rel="icon" href="favicon-16.png" sizes="16x16" type="image/png" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-<link rel="manifest" href="manifest.webmanifest" />
+<link rel="manifest" href="manifest.webmanifest" id="manifestLink" />
 <meta name="description" content="A pub party quiz: answer 5 cheeky questions, get an on-device aura scan, and an agent crowns you — spirit pizza topping, inner houseplant, Hogwarts house and more. Run it round the table and compare." />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="What Are You, Really?" />
@@ -23,7 +23,7 @@
 <meta name="twitter:image" content="https://rostk.github.io/pub-experiment/icon-512.png" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-title" content="What Are You" />
+<meta name="apple-mobile-web-app-title" content="What Are You" id="appleTitle" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <style>
   :root{
@@ -2616,6 +2616,12 @@ function applyLang(next){
   document.title = t("meta.title");
   const md = document.querySelector('meta[name="description"]');
   if(md) md.setAttribute("content", t("meta.desc"));
+  // swap the PWA manifest + iOS title per language so an install reflects the
+  // active language (English on the main page, Ukrainian when lang=uk)
+  const ml = document.getElementById("manifestLink");
+  if(ml) ml.setAttribute("href", lang==="uk" ? "manifest-uk.webmanifest" : "manifest.webmanifest");
+  const at = document.getElementById("appleTitle");
+  if(at) at.setAttribute("content", lang==="uk" ? "Хто ж ти?" : "What Are You");
   applyI18nDom();                                       // fill static text first
   const bc = document.getElementById("bankCount"); if(bc) bc.textContent = BANK.length;
   document.querySelectorAll("#langSwitch [data-lang]").forEach(b=>{

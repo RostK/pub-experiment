@@ -1,9 +1,10 @@
 /* What Are You, Really? — offline service worker */
-const CACHE = "war-v5";
+const CACHE = "war-v6";
 const ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
+  "./manifest-uk.webmanifest",
   "./favicon.svg",
   "./favicon-32.png",
   "./apple-touch-icon.png",
