@@ -2,12 +2,23 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Ну і хто ж ти?</title>
 <meta name="description" content="Квіз для компанії: дай відповідь на 5 хитрих питань, отримай сканування аури просто на пристрої — і агент виносить вердикт: піца твого духу, внутрішня рослина, факультет Гоґвортсу й інше. Пускайте по колу за столом і порівнюйте." />
 <link rel="canonical" href="https://rostk.github.io/pub-experiment/?lang=uk" />
 
-<!-- Open Graph / Telegram / Facebook (статичні теги — краулери не виконують JS, тож прев'ю задається тут) -->
+<!-- Українська PWA: власний manifest (встановлюється як «Ну і хто ж ти?», запуск у UA) -->
+<link rel="manifest" href="manifest.webmanifest" />
+<meta name="theme-color" content="#e8552d" />
+<link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Хто ж ти?" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+<!-- Open Graph / Telegram / Facebook (статичні теги — краулери не виконують JS) -->
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="uk_UA" />
 <meta property="og:site_name" content="Ну і хто ж ти?" />
@@ -15,26 +26,39 @@
 <meta property="og:title" content="Ну і хто ж ти?" />
 <meta property="og:description" content="Квіз для компанії: 5 хитрих питань, сканування аури на пристрої — і агент виносить вердикт. Пускайте по колу за столом і порівнюйте." />
 <meta property="og:image" content="https://rostk.github.io/pub-experiment/icon-512.png" />
-
-<!-- Twitter/X -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Ну і хто ж ти?" />
 <meta name="twitter:description" content="Квіз для компанії: 5 хитрих питань — і агент виносить вердикт." />
 <meta name="twitter:image" content="https://rostk.github.io/pub-experiment/icon-512.png" />
-<meta name="theme-color" content="#b06bff" />
 
-<!-- Людину одразу перекидаємо в гру українською; краулер лишається на цій сторінці й читає теги вище -->
-<meta http-equiv="refresh" content="0; url=../?lang=uk" />
-<script>location.replace("../?lang=uk");</script>
 <style>
   html,body{height:100%;margin:0}
   body{display:flex;align-items:center;justify-content:center;
     font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:#1d1206;color:#fff;text-align:center;padding:24px}
-  a{color:#b06bff;font-weight:800}
+    background:radial-gradient(circle at 50% 30%, #2a1a0c, #0e0a06);color:#fff;
+    text-align:center;padding:24px;-webkit-tap-highlight-color:transparent}
+  .card{max-width:340px}
+  .logo{width:104px;height:104px;border-radius:24px;box-shadow:0 8px 30px rgba(0,0,0,.45)}
+  h1{font-size:34px;margin:18px 0 6px;font-weight:900}
+  p{opacity:.8;font-size:15px;line-height:1.45;margin:0 0 22px}
+  .btn{display:inline-block;background:#e8552d;color:#fff;text-decoration:none;
+    font-weight:900;font-size:18px;padding:14px 30px;border-radius:999px;
+    box-shadow:0 6px 20px rgba(232,85,45,.5)}
+  .hint{margin-top:16px;font-size:13px;opacity:.55}
 </style>
 </head>
 <body>
-  <p>Завантажуємо гру…<br>Якщо нічого не сталося — <a href="../?lang=uk">відкрий тут</a>.</p>
+  <main class="card">
+    <img class="logo" src="../icon-192.png" alt="" width="104" height="104" />
+    <h1>Ну і хто ж ти?</h1>
+    <p>Квіз для компанії: 5 хитрих питань — і агент виносить вердикт: піца твого духу, внутрішня рослина, факультет Гоґвортсу й інше.</p>
+    <a class="btn" href="../?lang=uk">Грати →</a>
+    <div class="hint">📲 Можна встановити як застосунок — меню браузера → «Додати на головний екран».</div>
+  </main>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("../sw.js").catch(function(){});
+    }
+  </script>
 </body>
 </html>
