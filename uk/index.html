@@ -21,9 +21,9 @@
 <meta name="twitter:image" content="https://rostk.github.io/pub-experiment/icon-512.png" />
 <meta name="theme-color" content="#b06bff" />
 
-<!-- Людину одразу перекидаємо в гру українською; краулер лишається тут і читає теги вище.
-     Українська PWA задається динамічним manifest у самій грі (за lang=uk). -->
-<meta http-equiv="refresh" content="0; url=../?lang=uk" />
+<!-- ВАЖЛИВО: лише JS-редірект (без meta-refresh!). Людину одразу перекидає в гру,
+     а краулери (Telegram/FB) JS не виконують — тож лишаються тут і читають
+     українські OG-теги вище. Українська PWA задається динамічним manifest у грі. -->
 <script>location.replace("../?lang=uk");</script>
 <style>
   html,body{height:100%;margin:0}
