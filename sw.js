@@ -1,8 +1,10 @@
 /* What Are You, Really? — offline service worker */
-const CACHE = "war-v6";
+const CACHE = "war-v7";
 const ASSETS = [
   "./",
   "./index.html",
+  "./uk/",
+  "./uk/index.html",
   "./manifest.webmanifest",
   "./manifest-uk.webmanifest",
   "./favicon.svg",
@@ -29,12 +31,14 @@ self.addEventListener("fetch", (e) => {
   if (req.method !== "GET") return;
   // network-first for the page (so updates land), cache-first for everything else
   if (req.mode === "navigate") {
+    // network-first, cache each page under its own URL so / and /uk/ stay distinct;
+    // offline, fall back to the same page, then to the English entry as a last resort
     e.respondWith(
       fetch(req).then((res) => {
         const copy = res.clone();
-        caches.open(CACHE).then((c) => c.put("./index.html", copy));
+        caches.open(CACHE).then((c) => c.put(req, copy));
         return res;
-      }).catch(() => caches.match("./index.html"))
+      }).catch(() => caches.match(req).then((hit) => hit || caches.match("./index.html")))
     );
     return;
   }

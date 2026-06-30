@@ -2,38 +2,4075 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Ну і хто ж ти?</title>
-<meta name="description" content="Квіз для компанії: дай відповідь на 5 хитрих питань, отримай сканування аури просто на пристрої — і агент виносить вердикт: піца твого духу, внутрішня рослина, факультет Гоґвортсу й інше. Пускайте по колу за столом і порівнюйте." />
-<link rel="canonical" href="https://rostk.github.io/pub-experiment/uk/" />
-
-<!-- Open Graph / Telegram / Facebook (статичні теги — краулери не виконують JS) -->
+<base href="../" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#e8552d" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="icon" href="favicon-16.png" sizes="16x16" type="image/png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
 <meta property="og:type" content="website" />
+<meta property="og:image" content="https://rostk.github.io/pub-experiment/icon-512.png" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://rostk.github.io/pub-experiment/icon-512.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<!-- I18N-HEAD:START — GENERATED for /uk/ by scripts/build-uk.mjs; do not edit here, edit index.html -->
+<title>Ну і хто ж ти?</title>
+<link rel="manifest" href="manifest-uk.webmanifest" id="manifestLink" />
+<link rel="canonical" href="https://rostk.github.io/pub-experiment/uk/" />
+<meta name="description" content="Квіз для компанії: дай відповідь на 5 хитрих питань, отримай сканування аури просто на пристрої — і агент виносить вердикт: піца твого духу, внутрішня рослина, факультет Гоґвортсу й інше. Пускайте по колу за столом і порівнюйте." />
 <meta property="og:locale" content="uk_UA" />
 <meta property="og:site_name" content="Ну і хто ж ти?" />
 <meta property="og:url" content="https://rostk.github.io/pub-experiment/uk/" />
 <meta property="og:title" content="Ну і хто ж ти?" />
 <meta property="og:description" content="Квіз для компанії: 5 хитрих питань, сканування аури на пристрої — і агент виносить вердикт. Пускайте по колу за столом і порівнюйте." />
-<meta property="og:image" content="https://rostk.github.io/pub-experiment/icon-512.png" />
-<meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Ну і хто ж ти?" />
 <meta name="twitter:description" content="Квіз для компанії: 5 хитрих питань — і агент виносить вердикт." />
-<meta name="twitter:image" content="https://rostk.github.io/pub-experiment/icon-512.png" />
-<meta name="theme-color" content="#b06bff" />
-
-<!-- ВАЖЛИВО: лише JS-редірект (без meta-refresh!). Людину одразу перекидає в гру,
-     а краулери (Telegram/FB) JS не виконують — тож лишаються тут і читають
-     українські OG-теги вище. Українська PWA задається динамічним manifest у грі. -->
-<script>location.replace("../?lang=uk");</script>
+<meta name="apple-mobile-web-app-title" content="Хто ж ти?" id="appleTitle" />
+<!-- I18N-HEAD:END -->
+<script>window.__DEFAULT_LANG = "uk"; /* /uk/index.html flips this to "uk" */</script>
 <style>
-  html,body{height:100%;margin:0}
-  body{display:flex;align-items:center;justify-content:center;
-    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:#1d1206;color:#fff;text-align:center;padding:24px}
-  a{color:#b06bff;font-weight:800}
+  :root{
+    --ink:#1d1206;
+    --paper:#fff7ec;
+    --fire:#ff5a3c;
+    --earth:#3fae6b;
+    --air:#b06bff;
+    --water:#2f8fe0;
+    --accent:var(--fire);
+    --shadow:0 14px 0 rgba(0,0,0,.18);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);
+    min-height:100vh;
+    background:
+      radial-gradient(120% 80% at 50% -10%, #ffd24a 0%, #ff9a3c 38%, #f06a3a 70%, #e8552d 100%);
+    background-attachment:fixed;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:560px;margin:0 auto;padding:18px 16px 48px;min-height:100vh;display:flex;flex-direction:column}
+  .card{
+    background:var(--paper);
+    border:3px solid var(--ink);
+    border-radius:22px;
+    box-shadow:var(--shadow);
+    padding:22px;
+  }
+  h1{
+    font-weight:900;letter-spacing:-1px;line-height:.95;margin:0;
+    font-size:clamp(34px,9vw,52px);text-transform:uppercase;
+  }
+  .tags{display:flex;gap:8px;margin:14px 0 0;flex-wrap:wrap}
+  .tag{background:var(--ink);color:#fff;font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;letter-spacing:.3px}
+  .sub{font-size:16px;line-height:1.45;margin:16px 0 0;opacity:.9}
+  .screen{display:none;animation:pop .35s ease both}
+  .screen.active{display:block}
+  @keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+  label.fieldlabel{display:block;font-weight:800;margin:22px 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:.5px}
+  input[type=text]{
+    width:100%;font-size:18px;padding:14px 16px;border:3px solid var(--ink);border-radius:14px;
+    background:#fff;font-weight:600;outline:none;
+  }
+  input[type=text]:focus{box-shadow:0 0 0 4px rgba(255,90,60,.25)}
+  .btn{
+    display:block;width:100%;cursor:pointer;font-weight:900;font-size:18px;
+    padding:16px;border:3px solid var(--ink);border-radius:16px;background:var(--accent);color:#fff;
+    text-transform:uppercase;letter-spacing:.5px;margin-top:18px;box-shadow:0 6px 0 rgba(0,0,0,.22);
+    transition:transform .06s ease, box-shadow .06s ease;
+  }
+  .btn:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.22)}
+  .btn.secondary{background:#fff;color:var(--ink)}
+  .btn.small{font-size:14px;padding:12px}
+  .btnrow{display:flex;gap:10px}
+  .btnrow .btn{margin-top:14px}
+  .ghost{background:transparent;border:none;box-shadow:none;color:var(--ink);text-decoration:underline;font-weight:700;
+    cursor:pointer;font-size:14px;padding:8px;margin-top:10px;width:100%}
+  .progress{display:flex;gap:6px;margin:0 0 18px}
+  .pip{height:8px;flex:1;border-radius:99px;background:rgba(0,0,0,.14)}
+  .pip.done{background:var(--ink)}
+  .qcount{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1px;opacity:.6;margin:0 0 6px}
+  .qtext{font-size:24px;font-weight:900;line-height:1.15;margin:0 0 18px}
+  .opt{
+    display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;
+    background:#fff;border:3px solid var(--ink);border-radius:16px;padding:14px 16px;margin-bottom:12px;
+    font-size:17px;font-weight:600;box-shadow:0 5px 0 rgba(0,0,0,.16);
+    transition:transform .06s ease, box-shadow .06s ease, background .1s;
+  }
+  .opt:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.16)}
+  .opt .emo{font-size:26px;line-height:1;flex:none}
+  .agent{text-align:center;padding:30px 10px}
+  .orb{
+    width:120px;height:120px;border-radius:50%;margin:0 auto 24px;
+    background:conic-gradient(from 0deg,var(--fire),var(--air),var(--water),var(--earth),var(--fire));
+    animation:spin 1.6s linear infinite;
+    box-shadow:0 0 0 6px #fff, 0 0 40px rgba(255,255,255,.6);
+    position:relative;
+  }
+  .orb::after{content:"";position:absolute;inset:22px;border-radius:50%;background:var(--paper)}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .agentline{font-weight:700;font-size:17px;min-height:50px;transition:opacity .2s}
+  .crown{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:2px;text-align:center;opacity:.6}
+  .title{font-size:clamp(30px,8vw,42px);font-weight:900;text-align:center;line-height:1;margin:6px 0 4px;color:var(--accent)}
+  .element{text-align:center;font-weight:800;font-size:15px;margin:2px 0 14px}
+  .roast{font-size:18px;font-style:italic;text-align:center;line-height:1.4;background:rgba(0,0,0,.05);
+    border-radius:14px;padding:14px;margin:0 0 18px}
+  .verdicts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .v{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:12px;box-shadow:0 4px 0 rgba(0,0,0,.14)}
+  .v .vh{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;opacity:.55;display:flex;gap:6px;align-items:center}
+  .v .vb{font-size:15px;font-weight:700;margin-top:5px;line-height:1.25}
+  .v.full{grid-column:1 / -1}
+  .player{display:flex;align-items:center;gap:12px;background:#fff;border:3px solid var(--ink);border-radius:14px;
+    padding:12px;margin-bottom:10px;box-shadow:0 4px 0 rgba(0,0,0,.14)}
+  .player .pemo{font-size:46px;width:78px;text-align:center}
+  .player .pname{font-weight:900;font-size:17px}
+  .player .ptitle{font-size:13px;opacity:.7;font-weight:600}
+  .super{background:var(--ink);color:#fff;border-radius:14px;padding:12px 14px;margin-bottom:10px}
+  .super b{color:#ffd24a}
+  .empty{text-align:center;opacity:.7;font-weight:600;padding:18px 0}
+  .footer{text-align:center;font-size:12px;opacity:.7;margin-top:18px;font-weight:600}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(80px);
+    background:var(--ink);color:#fff;padding:12px 20px;border-radius:99px;font-weight:800;font-size:14px;
+    transition:transform .3s ease;z-index:50}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  #confetti{position:fixed;inset:0;pointer-events:none;z-index:40;overflow:hidden}
+  .conf{position:absolute;top:-30px;font-size:22px;will-change:transform}
+  /* aura scan */
+  .auraTitle{font-size:26px;font-weight:900;text-align:center;margin:2px 0 4px}
+  .auraHint{text-align:center;font-size:14px;font-weight:600;opacity:.75;margin:0 0 16px}
+  .scanwrap{position:relative;width:100%;max-width:320px;margin:0 auto 8px;border-radius:18px;overflow:hidden;
+    border:3px solid var(--ink);background:#0a0a0a;aspect-ratio:4/3}
+  .scanwrap video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block}
+  .scanline{position:absolute;left:0;right:0;height:4px;top:4%;background:rgba(255,255,255,.9);
+    box-shadow:0 0 18px 5px var(--accent);animation:scan 1.3s ease-in-out infinite}
+  .scangrid{position:absolute;inset:0;background:
+    repeating-linear-gradient(0deg,transparent 0 22px,rgba(255,255,255,.06) 22px 23px),
+    repeating-linear-gradient(90deg,transparent 0 22px,rgba(255,255,255,.06) 22px 23px);pointer-events:none}
+  @keyframes scan{0%{top:4%}50%{top:92%}100%{top:4%}}
+  .auraOrb{width:128px;height:128px;border-radius:50%;margin:8px auto 16px;
+    animation:auraPulse 2.2s ease-in-out infinite}
+  @keyframes auraPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+  .auraName{font-size:clamp(28px,8vw,40px);font-weight:900;text-align:center;line-height:1;margin:0 0 4px}
+  .aurastrip{display:flex;align-items:center;gap:10px;background:#fff;border:3px solid var(--ink);
+    border-radius:14px;padding:10px 12px;margin:0 0 12px;font-weight:800;box-shadow:0 4px 0 rgba(0,0,0,.14)}
+  .aurastrip .dot{width:22px;height:22px;border-radius:50%;flex:none;box-shadow:0 0 10px 1px currentColor}
+  /* results-on-photo hero */
+  .photoHero{position:relative;border:3px solid var(--ink);border-radius:18px;overflow:hidden;
+    margin:0 0 14px;box-shadow:0 6px 0 rgba(0,0,0,.18)}
+  .photoHero .heroImg{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+  .photoHero .heroFallback{display:flex;align-items:center;justify-content:center;font-size:64px;color:#fff}
+  .heroOverlay{position:absolute;left:0;right:0;bottom:0;padding:18px 16px 14px;color:#fff;text-align:center;
+    background:linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,.45) 55%, rgba(0,0,0,0))}
+  .heroOverlay .crown{color:#fff;opacity:.85}
+  .heroOverlay .title{color:#fff;font-size:clamp(26px,7vw,38px);text-shadow:0 2px 10px rgba(0,0,0,.55);margin:2px 0 2px}
+  .heroOverlay .element{color:#fff;opacity:.95;margin:0}
+  .heroBadge{position:absolute;top:10px;left:10px;display:flex;align-items:center;gap:7px;
+    background:rgba(0,0,0,.6);color:#fff;padding:6px 11px;border-radius:999px;font-weight:800;font-size:12px}
+  .heroBadge .dot{width:12px;height:12px;border-radius:50%;box-shadow:0 0 8px 1px currentColor}
+  .heroOverlay .auraName{text-shadow:0 2px 10px rgba(0,0,0,.6);margin:0}
+  .pphoto{width:80px;height:80px;border-radius:16px;object-fit:cover;border:3px solid var(--ink);flex:none}
+  .player .pname{font-size:19px}
+  .player .ptitle{font-size:14px}
+  .langswitch{position:fixed;top:10px;right:10px;z-index:50;display:flex;
+    border:2px solid var(--ink);border-radius:999px;overflow:hidden;
+    background:rgba(255,255,255,.82);backdrop-filter:blur(6px);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .langswitch button{appearance:none;border:0;background:transparent;cursor:pointer;
+    font:inherit;font-weight:900;font-size:13px;letter-spacing:.04em;color:var(--ink);
+    padding:6px 12px;line-height:1;opacity:.55;transition:opacity .15s,background .15s}
+  .langswitch button.active{opacity:1;background:var(--accent);color:#fff}
 </style>
 </head>
 <body>
-  <p>Завантажуємо гру…<br>Якщо нічого не сталося — <a href="../?lang=uk">відкрий тут</a>.</p>
+<div id="langSwitch" class="langswitch" aria-label="Language">
+  <button type="button" data-lang="en">EN</button><button type="button" data-lang="uk">UA</button>
+</div>
+<div class="wrap">
+
+  <!-- INTRO -->
+  <section id="intro" class="screen active">
+    <div class="card">
+      <h1 data-i18n-html="intro.h1">What are you,<br>really?</h1>
+      <div class="tags"><span class="tag" data-i18n="tag.agent">🤖 AI Agent</span><span class="tag" data-i18n="tag.vision">👁 Vision</span><span class="tag" data-i18n="tag.pub">🍺 Pub Mode</span></div>
+      <p class="sub" data-i18n-html="intro.sub">Answer 5 cheeky questions, then we <b>scan your aura</b> 👁 — read from your answers <i>and</i> your camera — and an agent <b>crowns you</b>: pizza topping, inner houseplant, Hogwarts house and more, printed on your aura-tinted photo. Drawn fresh from a bank of <b id="bankCount">120</b> questions, so every player gets a different 5. Run it round the table and compare.</p>
+      <label class="fieldlabel" for="name" data-i18n="intro.namelabel">First, who's playing?</label>
+      <input id="name" type="text" placeholder="Your name…" data-i18n-ph="intro.nameph" autocomplete="off" maxlength="22" />
+      <button class="btn" id="startBtn" data-i18n="intro.start">Begin → 5 questions</button>
+      <button class="ghost" id="toTableTop" data-i18n-html="intro.totable" style="display:none">👀 Compare the table (<span id="tableCountTop">0</span>)</button>
+      <div id="qrbox" style="text-align:center;margin-top:18px;display:none">
+        <img id="qrimg" alt="Scan to play" data-i18n-alt="intro.qralt" width="132" height="132" style="border:3px solid var(--ink);border-radius:14px;background:#fff;padding:6px;image-rendering:pixelated" />
+        <div style="font-size:13px;font-weight:800;opacity:.75;margin-top:6px" data-i18n="intro.qrhint">📲 Scan to play on your own phone — pass it round the table</div>
+      </div>
+      <p class="footer" data-i18n="intro.footer">100% offline. Your photo is analysed on-device, shown only to you, and never saved or sent.</p>
+    </div>
+  </section>
+
+  <!-- AURA SCAN -->
+  <section id="aura" class="screen">
+    <div class="card" id="auraCard">
+      <div id="auraStage"></div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" class="screen">
+    <div class="card">
+      <div class="progress" id="progress"></div>
+      <p class="qcount" id="qcount">Question 1 of 5</p>
+      <p class="qtext" id="qtext"></p>
+      <div id="opts"></div>
+      <button class="ghost" id="backBtn" data-i18n="quiz.back">← back</button>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="result" class="screen">
+    <div class="card" id="resultCard"></div>
+  </section>
+
+  <!-- TABLE COMPARE -->
+  <section id="table" class="screen">
+    <div class="card">
+      <h1 style="font-size:32px" data-i18n="table.title">The Table</h1>
+      <p class="sub" style="margin-top:8px" data-i18n="table.sub">Everyone who's been crowned tonight.</p>
+      <div id="supers"></div>
+      <div id="players"></div>
+      <button class="btn" id="newPlayerBtn" data-i18n="table.newplayer">+ Crown the next victim</button>
+      <button class="btn secondary small" id="saveTableBtn" data-i18n="table.savecard">📥 Save / share the table card</button>
+      <div class="btnrow">
+        <button class="btn secondary small" id="shareTableBtn" data-i18n="table.sharetext">📋 Share text</button>
+        <button class="btn secondary small" id="clearTableBtn" data-i18n="table.clear">Clear table</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div id="confetti"></div>
+<div class="toast" id="toast"></div>
+
+<!-- QR Code Generator (c) 2009 Kazuhiko Arase, MIT licensed -->
+<script>
+//---------------------------------------------------------------------
+//
+// QR Code Generator for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//  http://www.opensource.org/licenses/mit-license.php
+//
+// The word 'QR Code' is registered trademark of
+// DENSO WAVE INCORPORATED
+//  http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+
+var qrcode = function() {
+
+  //---------------------------------------------------------------------
+  // qrcode
+  //---------------------------------------------------------------------
+
+  /**
+   * qrcode
+   * @param typeNumber 1 to 40
+   * @param errorCorrectionLevel 'L','M','Q','H'
+   */
+  var qrcode = function(typeNumber, errorCorrectionLevel) {
+
+    var PAD0 = 0xEC;
+    var PAD1 = 0x11;
+
+    var _typeNumber = typeNumber;
+    var _errorCorrectionLevel = QRErrorCorrectionLevel[errorCorrectionLevel];
+    var _modules = null;
+    var _moduleCount = 0;
+    var _dataCache = null;
+    var _dataList = [];
+
+    var _this = {};
+
+    var makeImpl = function(test, maskPattern) {
+
+      _moduleCount = _typeNumber * 4 + 17;
+      _modules = function(moduleCount) {
+        var modules = new Array(moduleCount);
+        for (var row = 0; row < moduleCount; row += 1) {
+          modules[row] = new Array(moduleCount);
+          for (var col = 0; col < moduleCount; col += 1) {
+            modules[row][col] = null;
+          }
+        }
+        return modules;
+      }(_moduleCount);
+
+      setupPositionProbePattern(0, 0);
+      setupPositionProbePattern(_moduleCount - 7, 0);
+      setupPositionProbePattern(0, _moduleCount - 7);
+      setupPositionAdjustPattern();
+      setupTimingPattern();
+      setupTypeInfo(test, maskPattern);
+
+      if (_typeNumber >= 7) {
+        setupTypeNumber(test);
+      }
+
+      if (_dataCache == null) {
+        _dataCache = createData(_typeNumber, _errorCorrectionLevel, _dataList);
+      }
+
+      mapData(_dataCache, maskPattern);
+    };
+
+    var setupPositionProbePattern = function(row, col) {
+
+      for (var r = -1; r <= 7; r += 1) {
+
+        if (row + r <= -1 || _moduleCount <= row + r) continue;
+
+        for (var c = -1; c <= 7; c += 1) {
+
+          if (col + c <= -1 || _moduleCount <= col + c) continue;
+
+          if ( (0 <= r && r <= 6 && (c == 0 || c == 6) )
+              || (0 <= c && c <= 6 && (r == 0 || r == 6) )
+              || (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+            _modules[row + r][col + c] = true;
+          } else {
+            _modules[row + r][col + c] = false;
+          }
+        }
+      }
+    };
+
+    var getBestMaskPattern = function() {
+
+      var minLostPoint = 0;
+      var pattern = 0;
+
+      for (var i = 0; i < 8; i += 1) {
+
+        makeImpl(true, i);
+
+        var lostPoint = QRUtil.getLostPoint(_this);
+
+        if (i == 0 || minLostPoint > lostPoint) {
+          minLostPoint = lostPoint;
+          pattern = i;
+        }
+      }
+
+      return pattern;
+    };
+
+    var setupTimingPattern = function() {
+
+      for (var r = 8; r < _moduleCount - 8; r += 1) {
+        if (_modules[r][6] != null) {
+          continue;
+        }
+        _modules[r][6] = (r % 2 == 0);
+      }
+
+      for (var c = 8; c < _moduleCount - 8; c += 1) {
+        if (_modules[6][c] != null) {
+          continue;
+        }
+        _modules[6][c] = (c % 2 == 0);
+      }
+    };
+
+    var setupPositionAdjustPattern = function() {
+
+      var pos = QRUtil.getPatternPosition(_typeNumber);
+
+      for (var i = 0; i < pos.length; i += 1) {
+
+        for (var j = 0; j < pos.length; j += 1) {
+
+          var row = pos[i];
+          var col = pos[j];
+
+          if (_modules[row][col] != null) {
+            continue;
+          }
+
+          for (var r = -2; r <= 2; r += 1) {
+
+            for (var c = -2; c <= 2; c += 1) {
+
+              if (r == -2 || r == 2 || c == -2 || c == 2
+                  || (r == 0 && c == 0) ) {
+                _modules[row + r][col + c] = true;
+              } else {
+                _modules[row + r][col + c] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    var setupTypeNumber = function(test) {
+
+      var bits = QRUtil.getBCHTypeNumber(_typeNumber);
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[Math.floor(i / 3)][i % 3 + _moduleCount - 8 - 3] = mod;
+      }
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[i % 3 + _moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
+      }
+    };
+
+    var setupTypeInfo = function(test, maskPattern) {
+
+      var data = (_errorCorrectionLevel << 3) | maskPattern;
+      var bits = QRUtil.getBCHTypeInfo(data);
+
+      // vertical
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 6) {
+          _modules[i][8] = mod;
+        } else if (i < 8) {
+          _modules[i + 1][8] = mod;
+        } else {
+          _modules[_moduleCount - 15 + i][8] = mod;
+        }
+      }
+
+      // horizontal
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 8) {
+          _modules[8][_moduleCount - i - 1] = mod;
+        } else if (i < 9) {
+          _modules[8][15 - i - 1 + 1] = mod;
+        } else {
+          _modules[8][15 - i - 1] = mod;
+        }
+      }
+
+      // fixed module
+      _modules[_moduleCount - 8][8] = (!test);
+    };
+
+    var mapData = function(data, maskPattern) {
+
+      var inc = -1;
+      var row = _moduleCount - 1;
+      var bitIndex = 7;
+      var byteIndex = 0;
+      var maskFunc = QRUtil.getMaskFunction(maskPattern);
+
+      for (var col = _moduleCount - 1; col > 0; col -= 2) {
+
+        if (col == 6) col -= 1;
+
+        while (true) {
+
+          for (var c = 0; c < 2; c += 1) {
+
+            if (_modules[row][col - c] == null) {
+
+              var dark = false;
+
+              if (byteIndex < data.length) {
+                dark = ( ( (data[byteIndex] >>> bitIndex) & 1) == 1);
+              }
+
+              var mask = maskFunc(row, col - c);
+
+              if (mask) {
+                dark = !dark;
+              }
+
+              _modules[row][col - c] = dark;
+              bitIndex -= 1;
+
+              if (bitIndex == -1) {
+                byteIndex += 1;
+                bitIndex = 7;
+              }
+            }
+          }
+
+          row += inc;
+
+          if (row < 0 || _moduleCount <= row) {
+            row -= inc;
+            inc = -inc;
+            break;
+          }
+        }
+      }
+    };
+
+    var createBytes = function(buffer, rsBlocks) {
+
+      var offset = 0;
+
+      var maxDcCount = 0;
+      var maxEcCount = 0;
+
+      var dcdata = new Array(rsBlocks.length);
+      var ecdata = new Array(rsBlocks.length);
+
+      for (var r = 0; r < rsBlocks.length; r += 1) {
+
+        var dcCount = rsBlocks[r].dataCount;
+        var ecCount = rsBlocks[r].totalCount - dcCount;
+
+        maxDcCount = Math.max(maxDcCount, dcCount);
+        maxEcCount = Math.max(maxEcCount, ecCount);
+
+        dcdata[r] = new Array(dcCount);
+
+        for (var i = 0; i < dcdata[r].length; i += 1) {
+          dcdata[r][i] = 0xff & buffer.getBuffer()[i + offset];
+        }
+        offset += dcCount;
+
+        var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+        var rawPoly = qrPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+        var modPoly = rawPoly.mod(rsPoly);
+        ecdata[r] = new Array(rsPoly.getLength() - 1);
+        for (var i = 0; i < ecdata[r].length; i += 1) {
+          var modIndex = i + modPoly.getLength() - ecdata[r].length;
+          ecdata[r][i] = (modIndex >= 0)? modPoly.getAt(modIndex) : 0;
+        }
+      }
+
+      var totalCodeCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalCodeCount += rsBlocks[i].totalCount;
+      }
+
+      var data = new Array(totalCodeCount);
+      var index = 0;
+
+      for (var i = 0; i < maxDcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < dcdata[r].length) {
+            data[index] = dcdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      for (var i = 0; i < maxEcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < ecdata[r].length) {
+            data[index] = ecdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      return data;
+    };
+
+    var createData = function(typeNumber, errorCorrectionLevel, dataList) {
+
+      var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectionLevel);
+
+      var buffer = qrBitBuffer();
+
+      for (var i = 0; i < dataList.length; i += 1) {
+        var data = dataList[i];
+        buffer.put(data.getMode(), 4);
+        buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+        data.write(buffer);
+      }
+
+      // calc num max data.
+      var totalDataCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalDataCount += rsBlocks[i].dataCount;
+      }
+
+      if (buffer.getLengthInBits() > totalDataCount * 8) {
+        throw 'code length overflow. ('
+          + buffer.getLengthInBits()
+          + '>'
+          + totalDataCount * 8
+          + ')';
+      }
+
+      // end code
+      if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+        buffer.put(0, 4);
+      }
+
+      // padding
+      while (buffer.getLengthInBits() % 8 != 0) {
+        buffer.putBit(false);
+      }
+
+      // padding
+      while (true) {
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD0, 8);
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD1, 8);
+      }
+
+      return createBytes(buffer, rsBlocks);
+    };
+
+    _this.addData = function(data, mode) {
+
+      mode = mode || 'Byte';
+
+      var newData = null;
+
+      switch(mode) {
+      case 'Numeric' :
+        newData = qrNumber(data);
+        break;
+      case 'Alphanumeric' :
+        newData = qrAlphaNum(data);
+        break;
+      case 'Byte' :
+        newData = qr8BitByte(data);
+        break;
+      case 'Kanji' :
+        newData = qrKanji(data);
+        break;
+      default :
+        throw 'mode:' + mode;
+      }
+
+      _dataList.push(newData);
+      _dataCache = null;
+    };
+
+    _this.isDark = function(row, col) {
+      if (row < 0 || _moduleCount <= row || col < 0 || _moduleCount <= col) {
+        throw row + ',' + col;
+      }
+      return _modules[row][col];
+    };
+
+    _this.getModuleCount = function() {
+      return _moduleCount;
+    };
+
+    _this.make = function() {
+      if (_typeNumber < 1) {
+        var typeNumber = 1;
+
+        for (; typeNumber < 40; typeNumber++) {
+          var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, _errorCorrectionLevel);
+          var buffer = qrBitBuffer();
+
+          for (var i = 0; i < _dataList.length; i++) {
+            var data = _dataList[i];
+            buffer.put(data.getMode(), 4);
+            buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+            data.write(buffer);
+          }
+
+          var totalDataCount = 0;
+          for (var i = 0; i < rsBlocks.length; i++) {
+            totalDataCount += rsBlocks[i].dataCount;
+          }
+
+          if (buffer.getLengthInBits() <= totalDataCount * 8) {
+            break;
+          }
+        }
+
+        _typeNumber = typeNumber;
+      }
+
+      makeImpl(false, getBestMaskPattern() );
+    };
+
+    _this.createTableTag = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var qrHtml = '';
+
+      qrHtml += '<table style="';
+      qrHtml += ' border-width: 0px; border-style: none;';
+      qrHtml += ' border-collapse: collapse;';
+      qrHtml += ' padding: 0px; margin: ' + margin + 'px;';
+      qrHtml += '">';
+      qrHtml += '<tbody>';
+
+      for (var r = 0; r < _this.getModuleCount(); r += 1) {
+
+        qrHtml += '<tr>';
+
+        for (var c = 0; c < _this.getModuleCount(); c += 1) {
+          qrHtml += '<td style="';
+          qrHtml += ' border-width: 0px; border-style: none;';
+          qrHtml += ' border-collapse: collapse;';
+          qrHtml += ' padding: 0px; margin: 0px;';
+          qrHtml += ' width: ' + cellSize + 'px;';
+          qrHtml += ' height: ' + cellSize + 'px;';
+          qrHtml += ' background-color: ';
+          qrHtml += _this.isDark(r, c)? '#000000' : '#ffffff';
+          qrHtml += ';';
+          qrHtml += '"/>';
+        }
+
+        qrHtml += '</tr>';
+      }
+
+      qrHtml += '</tbody>';
+      qrHtml += '</table>';
+
+      return qrHtml;
+    };
+
+    _this.createSvgTag = function(cellSize, margin, alt, title) {
+
+      var opts = {};
+      if (typeof arguments[0] == 'object') {
+        // Called by options.
+        opts = arguments[0];
+        // overwrite cellSize and margin.
+        cellSize = opts.cellSize;
+        margin = opts.margin;
+        alt = opts.alt;
+        title = opts.title;
+      }
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      // Compose alt property surrogate
+      alt = (typeof alt === 'string') ? {text: alt} : alt || {};
+      alt.text = alt.text || null;
+      alt.id = (alt.text) ? alt.id || 'qrcode-description' : null;
+
+      // Compose title property surrogate
+      title = (typeof title === 'string') ? {text: title} : title || {};
+      title.text = title.text || null;
+      title.id = (title.text) ? title.id || 'qrcode-title' : null;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var c, mc, r, mr, qrSvg='', rect;
+
+      rect = 'l' + cellSize + ',0 0,' + cellSize +
+        ' -' + cellSize + ',0 0,-' + cellSize + 'z ';
+
+      qrSvg += '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"';
+      qrSvg += !opts.scalable ? ' width="' + size + 'px" height="' + size + 'px"' : '';
+      qrSvg += ' viewBox="0 0 ' + size + ' ' + size + '" ';
+      qrSvg += ' preserveAspectRatio="xMinYMin meet"';
+      qrSvg += (title.text || alt.text) ? ' role="img" aria-labelledby="' +
+          escapeXml([title.id, alt.id].join(' ').trim() ) + '"' : '';
+      qrSvg += '>';
+      qrSvg += (title.text) ? '<title id="' + escapeXml(title.id) + '">' +
+          escapeXml(title.text) + '</title>' : '';
+      qrSvg += (alt.text) ? '<description id="' + escapeXml(alt.id) + '">' +
+          escapeXml(alt.text) + '</description>' : '';
+      qrSvg += '<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>';
+      qrSvg += '<path d="';
+
+      for (r = 0; r < _this.getModuleCount(); r += 1) {
+        mr = r * cellSize + margin;
+        for (c = 0; c < _this.getModuleCount(); c += 1) {
+          if (_this.isDark(r, c) ) {
+            mc = c*cellSize+margin;
+            qrSvg += 'M' + mc + ',' + mr + rect;
+          }
+        }
+      }
+
+      qrSvg += '" stroke="transparent" fill="black"/>';
+      qrSvg += '</svg>';
+
+      return qrSvg;
+    };
+
+    _this.createDataURL = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      return createDataURL(size, size, function(x, y) {
+        if (min <= x && x < max && min <= y && y < max) {
+          var c = Math.floor( (x - min) / cellSize);
+          var r = Math.floor( (y - min) / cellSize);
+          return _this.isDark(r, c)? 0 : 1;
+        } else {
+          return 1;
+        }
+      } );
+    };
+
+    _this.createImgTag = function(cellSize, margin, alt) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+
+      var img = '';
+      img += '<img';
+      img += '\u0020src="';
+      img += _this.createDataURL(cellSize, margin);
+      img += '"';
+      img += '\u0020width="';
+      img += size;
+      img += '"';
+      img += '\u0020height="';
+      img += size;
+      img += '"';
+      if (alt) {
+        img += '\u0020alt="';
+        img += escapeXml(alt);
+        img += '"';
+      }
+      img += '/>';
+
+      return img;
+    };
+
+    var escapeXml = function(s) {
+      var escaped = '';
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charAt(i);
+        switch(c) {
+        case '<': escaped += '&lt;'; break;
+        case '>': escaped += '&gt;'; break;
+        case '&': escaped += '&amp;'; break;
+        case '"': escaped += '&quot;'; break;
+        default : escaped += c; break;
+        }
+      }
+      return escaped;
+    };
+
+    var _createHalfASCII = function(margin) {
+      var cellSize = 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r1, r2, p;
+
+      var blocks = {
+        '██': '█',
+        '█ ': '▀',
+        ' █': '▄',
+        '  ': ' '
+      };
+
+      var blocksLastLineNoMargin = {
+        '██': '▀',
+        '█ ': '▀',
+        ' █': ' ',
+        '  ': ' '
+      };
+
+      var ascii = '';
+      for (y = 0; y < size; y += 2) {
+        r1 = Math.floor((y - min) / cellSize);
+        r2 = Math.floor((y + 1 - min) / cellSize);
+        for (x = 0; x < size; x += 1) {
+          p = '█';
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r1, Math.floor((x - min) / cellSize))) {
+            p = ' ';
+          }
+
+          if (min <= x && x < max && min <= y+1 && y+1 < max && _this.isDark(r2, Math.floor((x - min) / cellSize))) {
+            p += ' ';
+          }
+          else {
+            p += '█';
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          ascii += (margin < 1 && y+1 >= max) ? blocksLastLineNoMargin[p] : blocks[p];
+        }
+
+        ascii += '\n';
+      }
+
+      if (size % 2 && margin > 0) {
+        return ascii.substring(0, ascii.length - size - 1) + Array(size+1).join('▀');
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.createASCII = function(cellSize, margin) {
+      cellSize = cellSize || 1;
+
+      if (cellSize < 2) {
+        return _createHalfASCII(margin);
+      }
+
+      cellSize -= 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r, p;
+
+      var white = Array(cellSize+1).join('██');
+      var black = Array(cellSize+1).join('  ');
+
+      var ascii = '';
+      var line = '';
+      for (y = 0; y < size; y += 1) {
+        r = Math.floor( (y - min) / cellSize);
+        line = '';
+        for (x = 0; x < size; x += 1) {
+          p = 1;
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r, Math.floor((x - min) / cellSize))) {
+            p = 0;
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          line += p ? white : black;
+        }
+
+        for (r = 0; r < cellSize; r += 1) {
+          ascii += line + '\n';
+        }
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.renderTo2dContext = function(context, cellSize) {
+      cellSize = cellSize || 2;
+      var length = _this.getModuleCount();
+      for (var row = 0; row < length; row++) {
+        for (var col = 0; col < length; col++) {
+          context.fillStyle = _this.isDark(row, col) ? 'black' : 'white';
+          context.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrcode.stringToBytes
+  //---------------------------------------------------------------------
+
+  qrcode.stringToBytesFuncs = {
+    'default' : function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        bytes.push(c & 0xff);
+      }
+      return bytes;
+    }
+  };
+
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs['default'];
+
+  //---------------------------------------------------------------------
+  // qrcode.createStringToBytes
+  //---------------------------------------------------------------------
+
+  /**
+   * @param unicodeData base64 string of byte array.
+   * [16bit Unicode],[16bit Bytes], ...
+   * @param numChars
+   */
+  qrcode.createStringToBytes = function(unicodeData, numChars) {
+
+    // create conversion map.
+
+    var unicodeMap = function() {
+
+      var bin = base64DecodeInputStream(unicodeData);
+      var read = function() {
+        var b = bin.read();
+        if (b == -1) throw 'eof';
+        return b;
+      };
+
+      var count = 0;
+      var unicodeMap = {};
+      while (true) {
+        var b0 = bin.read();
+        if (b0 == -1) break;
+        var b1 = read();
+        var b2 = read();
+        var b3 = read();
+        var k = String.fromCharCode( (b0 << 8) | b1);
+        var v = (b2 << 8) | b3;
+        unicodeMap[k] = v;
+        count += 1;
+      }
+      if (count != numChars) {
+        throw count + ' != ' + numChars;
+      }
+
+      return unicodeMap;
+    }();
+
+    var unknownChar = '?'.charCodeAt(0);
+
+    return function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        if (c < 128) {
+          bytes.push(c);
+        } else {
+          var b = unicodeMap[s.charAt(i)];
+          if (typeof b == 'number') {
+            if ( (b & 0xff) == b) {
+              // 1byte
+              bytes.push(b);
+            } else {
+              // 2bytes
+              bytes.push(b >>> 8);
+              bytes.push(b & 0xff);
+            }
+          } else {
+            bytes.push(unknownChar);
+          }
+        }
+      }
+      return bytes;
+    };
+  };
+
+  //---------------------------------------------------------------------
+  // QRMode
+  //---------------------------------------------------------------------
+
+  var QRMode = {
+    MODE_NUMBER :    1 << 0,
+    MODE_ALPHA_NUM : 1 << 1,
+    MODE_8BIT_BYTE : 1 << 2,
+    MODE_KANJI :     1 << 3
+  };
+
+  //---------------------------------------------------------------------
+  // QRErrorCorrectionLevel
+  //---------------------------------------------------------------------
+
+  var QRErrorCorrectionLevel = {
+    L : 1,
+    M : 0,
+    Q : 3,
+    H : 2
+  };
+
+  //---------------------------------------------------------------------
+  // QRMaskPattern
+  //---------------------------------------------------------------------
+
+  var QRMaskPattern = {
+    PATTERN000 : 0,
+    PATTERN001 : 1,
+    PATTERN010 : 2,
+    PATTERN011 : 3,
+    PATTERN100 : 4,
+    PATTERN101 : 5,
+    PATTERN110 : 6,
+    PATTERN111 : 7
+  };
+
+  //---------------------------------------------------------------------
+  // QRUtil
+  //---------------------------------------------------------------------
+
+  var QRUtil = function() {
+
+    var PATTERN_POSITION_TABLE = [
+      [],
+      [6, 18],
+      [6, 22],
+      [6, 26],
+      [6, 30],
+      [6, 34],
+      [6, 22, 38],
+      [6, 24, 42],
+      [6, 26, 46],
+      [6, 28, 50],
+      [6, 30, 54],
+      [6, 32, 58],
+      [6, 34, 62],
+      [6, 26, 46, 66],
+      [6, 26, 48, 70],
+      [6, 26, 50, 74],
+      [6, 30, 54, 78],
+      [6, 30, 56, 82],
+      [6, 30, 58, 86],
+      [6, 34, 62, 90],
+      [6, 28, 50, 72, 94],
+      [6, 26, 50, 74, 98],
+      [6, 30, 54, 78, 102],
+      [6, 28, 54, 80, 106],
+      [6, 32, 58, 84, 110],
+      [6, 30, 58, 86, 114],
+      [6, 34, 62, 90, 118],
+      [6, 26, 50, 74, 98, 122],
+      [6, 30, 54, 78, 102, 126],
+      [6, 26, 52, 78, 104, 130],
+      [6, 30, 56, 82, 108, 134],
+      [6, 34, 60, 86, 112, 138],
+      [6, 30, 58, 86, 114, 142],
+      [6, 34, 62, 90, 118, 146],
+      [6, 30, 54, 78, 102, 126, 150],
+      [6, 24, 50, 76, 102, 128, 154],
+      [6, 28, 54, 80, 106, 132, 158],
+      [6, 32, 58, 84, 110, 136, 162],
+      [6, 26, 54, 82, 110, 138, 166],
+      [6, 30, 58, 86, 114, 142, 170]
+    ];
+    var G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
+    var G18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
+    var G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1);
+
+    var _this = {};
+
+    var getBCHDigit = function(data) {
+      var digit = 0;
+      while (data != 0) {
+        digit += 1;
+        data >>>= 1;
+      }
+      return digit;
+    };
+
+    _this.getBCHTypeInfo = function(data) {
+      var d = data << 10;
+      while (getBCHDigit(d) - getBCHDigit(G15) >= 0) {
+        d ^= (G15 << (getBCHDigit(d) - getBCHDigit(G15) ) );
+      }
+      return ( (data << 10) | d) ^ G15_MASK;
+    };
+
+    _this.getBCHTypeNumber = function(data) {
+      var d = data << 12;
+      while (getBCHDigit(d) - getBCHDigit(G18) >= 0) {
+        d ^= (G18 << (getBCHDigit(d) - getBCHDigit(G18) ) );
+      }
+      return (data << 12) | d;
+    };
+
+    _this.getPatternPosition = function(typeNumber) {
+      return PATTERN_POSITION_TABLE[typeNumber - 1];
+    };
+
+    _this.getMaskFunction = function(maskPattern) {
+
+      switch (maskPattern) {
+
+      case QRMaskPattern.PATTERN000 :
+        return function(i, j) { return (i + j) % 2 == 0; };
+      case QRMaskPattern.PATTERN001 :
+        return function(i, j) { return i % 2 == 0; };
+      case QRMaskPattern.PATTERN010 :
+        return function(i, j) { return j % 3 == 0; };
+      case QRMaskPattern.PATTERN011 :
+        return function(i, j) { return (i + j) % 3 == 0; };
+      case QRMaskPattern.PATTERN100 :
+        return function(i, j) { return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 == 0; };
+      case QRMaskPattern.PATTERN101 :
+        return function(i, j) { return (i * j) % 2 + (i * j) % 3 == 0; };
+      case QRMaskPattern.PATTERN110 :
+        return function(i, j) { return ( (i * j) % 2 + (i * j) % 3) % 2 == 0; };
+      case QRMaskPattern.PATTERN111 :
+        return function(i, j) { return ( (i * j) % 3 + (i + j) % 2) % 2 == 0; };
+
+      default :
+        throw 'bad maskPattern:' + maskPattern;
+      }
+    };
+
+    _this.getErrorCorrectPolynomial = function(errorCorrectLength) {
+      var a = qrPolynomial([1], 0);
+      for (var i = 0; i < errorCorrectLength; i += 1) {
+        a = a.multiply(qrPolynomial([1, QRMath.gexp(i)], 0) );
+      }
+      return a;
+    };
+
+    _this.getLengthInBits = function(mode, type) {
+
+      if (1 <= type && type < 10) {
+
+        // 1 - 9
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 10;
+        case QRMode.MODE_ALPHA_NUM : return 9;
+        case QRMode.MODE_8BIT_BYTE : return 8;
+        case QRMode.MODE_KANJI     : return 8;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 27) {
+
+        // 10 - 26
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 12;
+        case QRMode.MODE_ALPHA_NUM : return 11;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 10;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 41) {
+
+        // 27 - 40
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 14;
+        case QRMode.MODE_ALPHA_NUM : return 13;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 12;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else {
+        throw 'type:' + type;
+      }
+    };
+
+    _this.getLostPoint = function(qrcode) {
+
+      var moduleCount = qrcode.getModuleCount();
+
+      var lostPoint = 0;
+
+      // LEVEL1
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount; col += 1) {
+
+          var sameCount = 0;
+          var dark = qrcode.isDark(row, col);
+
+          for (var r = -1; r <= 1; r += 1) {
+
+            if (row + r < 0 || moduleCount <= row + r) {
+              continue;
+            }
+
+            for (var c = -1; c <= 1; c += 1) {
+
+              if (col + c < 0 || moduleCount <= col + c) {
+                continue;
+              }
+
+              if (r == 0 && c == 0) {
+                continue;
+              }
+
+              if (dark == qrcode.isDark(row + r, col + c) ) {
+                sameCount += 1;
+              }
+            }
+          }
+
+          if (sameCount > 5) {
+            lostPoint += (3 + sameCount - 5);
+          }
+        }
+      };
+
+      // LEVEL2
+
+      for (var row = 0; row < moduleCount - 1; row += 1) {
+        for (var col = 0; col < moduleCount - 1; col += 1) {
+          var count = 0;
+          if (qrcode.isDark(row, col) ) count += 1;
+          if (qrcode.isDark(row + 1, col) ) count += 1;
+          if (qrcode.isDark(row, col + 1) ) count += 1;
+          if (qrcode.isDark(row + 1, col + 1) ) count += 1;
+          if (count == 0 || count == 4) {
+            lostPoint += 3;
+          }
+        }
+      }
+
+      // LEVEL3
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount - 6; col += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row, col + 1)
+              &&  qrcode.isDark(row, col + 2)
+              &&  qrcode.isDark(row, col + 3)
+              &&  qrcode.isDark(row, col + 4)
+              && !qrcode.isDark(row, col + 5)
+              &&  qrcode.isDark(row, col + 6) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount - 6; row += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row + 1, col)
+              &&  qrcode.isDark(row + 2, col)
+              &&  qrcode.isDark(row + 3, col)
+              &&  qrcode.isDark(row + 4, col)
+              && !qrcode.isDark(row + 5, col)
+              &&  qrcode.isDark(row + 6, col) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      // LEVEL4
+
+      var darkCount = 0;
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount; row += 1) {
+          if (qrcode.isDark(row, col) ) {
+            darkCount += 1;
+          }
+        }
+      }
+
+      var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+      lostPoint += ratio * 10;
+
+      return lostPoint;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // QRMath
+  //---------------------------------------------------------------------
+
+  var QRMath = function() {
+
+    var EXP_TABLE = new Array(256);
+    var LOG_TABLE = new Array(256);
+
+    // initialize tables
+    for (var i = 0; i < 8; i += 1) {
+      EXP_TABLE[i] = 1 << i;
+    }
+    for (var i = 8; i < 256; i += 1) {
+      EXP_TABLE[i] = EXP_TABLE[i - 4]
+        ^ EXP_TABLE[i - 5]
+        ^ EXP_TABLE[i - 6]
+        ^ EXP_TABLE[i - 8];
+    }
+    for (var i = 0; i < 255; i += 1) {
+      LOG_TABLE[EXP_TABLE[i] ] = i;
+    }
+
+    var _this = {};
+
+    _this.glog = function(n) {
+
+      if (n < 1) {
+        throw 'glog(' + n + ')';
+      }
+
+      return LOG_TABLE[n];
+    };
+
+    _this.gexp = function(n) {
+
+      while (n < 0) {
+        n += 255;
+      }
+
+      while (n >= 256) {
+        n -= 255;
+      }
+
+      return EXP_TABLE[n];
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrPolynomial
+  //---------------------------------------------------------------------
+
+  function qrPolynomial(num, shift) {
+
+    if (typeof num.length == 'undefined') {
+      throw num.length + '/' + shift;
+    }
+
+    var _num = function() {
+      var offset = 0;
+      while (offset < num.length && num[offset] == 0) {
+        offset += 1;
+      }
+      var _num = new Array(num.length - offset + shift);
+      for (var i = 0; i < num.length - offset; i += 1) {
+        _num[i] = num[i + offset];
+      }
+      return _num;
+    }();
+
+    var _this = {};
+
+    _this.getAt = function(index) {
+      return _num[index];
+    };
+
+    _this.getLength = function() {
+      return _num.length;
+    };
+
+    _this.multiply = function(e) {
+
+      var num = new Array(_this.getLength() + e.getLength() - 1);
+
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        for (var j = 0; j < e.getLength(); j += 1) {
+          num[i + j] ^= QRMath.gexp(QRMath.glog(_this.getAt(i) ) + QRMath.glog(e.getAt(j) ) );
+        }
+      }
+
+      return qrPolynomial(num, 0);
+    };
+
+    _this.mod = function(e) {
+
+      if (_this.getLength() - e.getLength() < 0) {
+        return _this;
+      }
+
+      var ratio = QRMath.glog(_this.getAt(0) ) - QRMath.glog(e.getAt(0) );
+
+      var num = new Array(_this.getLength() );
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        num[i] = _this.getAt(i);
+      }
+
+      for (var i = 0; i < e.getLength(); i += 1) {
+        num[i] ^= QRMath.gexp(QRMath.glog(e.getAt(i) ) + ratio);
+      }
+
+      // recursive call
+      return qrPolynomial(num, 0).mod(e);
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // QRRSBlock
+  //---------------------------------------------------------------------
+
+  var QRRSBlock = function() {
+
+    var RS_BLOCK_TABLE = [
+
+      // L
+      // M
+      // Q
+      // H
+
+      // 1
+      [1, 26, 19],
+      [1, 26, 16],
+      [1, 26, 13],
+      [1, 26, 9],
+
+      // 2
+      [1, 44, 34],
+      [1, 44, 28],
+      [1, 44, 22],
+      [1, 44, 16],
+
+      // 3
+      [1, 70, 55],
+      [1, 70, 44],
+      [2, 35, 17],
+      [2, 35, 13],
+
+      // 4
+      [1, 100, 80],
+      [2, 50, 32],
+      [2, 50, 24],
+      [4, 25, 9],
+
+      // 5
+      [1, 134, 108],
+      [2, 67, 43],
+      [2, 33, 15, 2, 34, 16],
+      [2, 33, 11, 2, 34, 12],
+
+      // 6
+      [2, 86, 68],
+      [4, 43, 27],
+      [4, 43, 19],
+      [4, 43, 15],
+
+      // 7
+      [2, 98, 78],
+      [4, 49, 31],
+      [2, 32, 14, 4, 33, 15],
+      [4, 39, 13, 1, 40, 14],
+
+      // 8
+      [2, 121, 97],
+      [2, 60, 38, 2, 61, 39],
+      [4, 40, 18, 2, 41, 19],
+      [4, 40, 14, 2, 41, 15],
+
+      // 9
+      [2, 146, 116],
+      [3, 58, 36, 2, 59, 37],
+      [4, 36, 16, 4, 37, 17],
+      [4, 36, 12, 4, 37, 13],
+
+      // 10
+      [2, 86, 68, 2, 87, 69],
+      [4, 69, 43, 1, 70, 44],
+      [6, 43, 19, 2, 44, 20],
+      [6, 43, 15, 2, 44, 16],
+
+      // 11
+      [4, 101, 81],
+      [1, 80, 50, 4, 81, 51],
+      [4, 50, 22, 4, 51, 23],
+      [3, 36, 12, 8, 37, 13],
+
+      // 12
+      [2, 116, 92, 2, 117, 93],
+      [6, 58, 36, 2, 59, 37],
+      [4, 46, 20, 6, 47, 21],
+      [7, 42, 14, 4, 43, 15],
+
+      // 13
+      [4, 133, 107],
+      [8, 59, 37, 1, 60, 38],
+      [8, 44, 20, 4, 45, 21],
+      [12, 33, 11, 4, 34, 12],
+
+      // 14
+      [3, 145, 115, 1, 146, 116],
+      [4, 64, 40, 5, 65, 41],
+      [11, 36, 16, 5, 37, 17],
+      [11, 36, 12, 5, 37, 13],
+
+      // 15
+      [5, 109, 87, 1, 110, 88],
+      [5, 65, 41, 5, 66, 42],
+      [5, 54, 24, 7, 55, 25],
+      [11, 36, 12, 7, 37, 13],
+
+      // 16
+      [5, 122, 98, 1, 123, 99],
+      [7, 73, 45, 3, 74, 46],
+      [15, 43, 19, 2, 44, 20],
+      [3, 45, 15, 13, 46, 16],
+
+      // 17
+      [1, 135, 107, 5, 136, 108],
+      [10, 74, 46, 1, 75, 47],
+      [1, 50, 22, 15, 51, 23],
+      [2, 42, 14, 17, 43, 15],
+
+      // 18
+      [5, 150, 120, 1, 151, 121],
+      [9, 69, 43, 4, 70, 44],
+      [17, 50, 22, 1, 51, 23],
+      [2, 42, 14, 19, 43, 15],
+
+      // 19
+      [3, 141, 113, 4, 142, 114],
+      [3, 70, 44, 11, 71, 45],
+      [17, 47, 21, 4, 48, 22],
+      [9, 39, 13, 16, 40, 14],
+
+      // 20
+      [3, 135, 107, 5, 136, 108],
+      [3, 67, 41, 13, 68, 42],
+      [15, 54, 24, 5, 55, 25],
+      [15, 43, 15, 10, 44, 16],
+
+      // 21
+      [4, 144, 116, 4, 145, 117],
+      [17, 68, 42],
+      [17, 50, 22, 6, 51, 23],
+      [19, 46, 16, 6, 47, 17],
+
+      // 22
+      [2, 139, 111, 7, 140, 112],
+      [17, 74, 46],
+      [7, 54, 24, 16, 55, 25],
+      [34, 37, 13],
+
+      // 23
+      [4, 151, 121, 5, 152, 122],
+      [4, 75, 47, 14, 76, 48],
+      [11, 54, 24, 14, 55, 25],
+      [16, 45, 15, 14, 46, 16],
+
+      // 24
+      [6, 147, 117, 4, 148, 118],
+      [6, 73, 45, 14, 74, 46],
+      [11, 54, 24, 16, 55, 25],
+      [30, 46, 16, 2, 47, 17],
+
+      // 25
+      [8, 132, 106, 4, 133, 107],
+      [8, 75, 47, 13, 76, 48],
+      [7, 54, 24, 22, 55, 25],
+      [22, 45, 15, 13, 46, 16],
+
+      // 26
+      [10, 142, 114, 2, 143, 115],
+      [19, 74, 46, 4, 75, 47],
+      [28, 50, 22, 6, 51, 23],
+      [33, 46, 16, 4, 47, 17],
+
+      // 27
+      [8, 152, 122, 4, 153, 123],
+      [22, 73, 45, 3, 74, 46],
+      [8, 53, 23, 26, 54, 24],
+      [12, 45, 15, 28, 46, 16],
+
+      // 28
+      [3, 147, 117, 10, 148, 118],
+      [3, 73, 45, 23, 74, 46],
+      [4, 54, 24, 31, 55, 25],
+      [11, 45, 15, 31, 46, 16],
+
+      // 29
+      [7, 146, 116, 7, 147, 117],
+      [21, 73, 45, 7, 74, 46],
+      [1, 53, 23, 37, 54, 24],
+      [19, 45, 15, 26, 46, 16],
+
+      // 30
+      [5, 145, 115, 10, 146, 116],
+      [19, 75, 47, 10, 76, 48],
+      [15, 54, 24, 25, 55, 25],
+      [23, 45, 15, 25, 46, 16],
+
+      // 31
+      [13, 145, 115, 3, 146, 116],
+      [2, 74, 46, 29, 75, 47],
+      [42, 54, 24, 1, 55, 25],
+      [23, 45, 15, 28, 46, 16],
+
+      // 32
+      [17, 145, 115],
+      [10, 74, 46, 23, 75, 47],
+      [10, 54, 24, 35, 55, 25],
+      [19, 45, 15, 35, 46, 16],
+
+      // 33
+      [17, 145, 115, 1, 146, 116],
+      [14, 74, 46, 21, 75, 47],
+      [29, 54, 24, 19, 55, 25],
+      [11, 45, 15, 46, 46, 16],
+
+      // 34
+      [13, 145, 115, 6, 146, 116],
+      [14, 74, 46, 23, 75, 47],
+      [44, 54, 24, 7, 55, 25],
+      [59, 46, 16, 1, 47, 17],
+
+      // 35
+      [12, 151, 121, 7, 152, 122],
+      [12, 75, 47, 26, 76, 48],
+      [39, 54, 24, 14, 55, 25],
+      [22, 45, 15, 41, 46, 16],
+
+      // 36
+      [6, 151, 121, 14, 152, 122],
+      [6, 75, 47, 34, 76, 48],
+      [46, 54, 24, 10, 55, 25],
+      [2, 45, 15, 64, 46, 16],
+
+      // 37
+      [17, 152, 122, 4, 153, 123],
+      [29, 74, 46, 14, 75, 47],
+      [49, 54, 24, 10, 55, 25],
+      [24, 45, 15, 46, 46, 16],
+
+      // 38
+      [4, 152, 122, 18, 153, 123],
+      [13, 74, 46, 32, 75, 47],
+      [48, 54, 24, 14, 55, 25],
+      [42, 45, 15, 32, 46, 16],
+
+      // 39
+      [20, 147, 117, 4, 148, 118],
+      [40, 75, 47, 7, 76, 48],
+      [43, 54, 24, 22, 55, 25],
+      [10, 45, 15, 67, 46, 16],
+
+      // 40
+      [19, 148, 118, 6, 149, 119],
+      [18, 75, 47, 31, 76, 48],
+      [34, 54, 24, 34, 55, 25],
+      [20, 45, 15, 61, 46, 16]
+    ];
+
+    var qrRSBlock = function(totalCount, dataCount) {
+      var _this = {};
+      _this.totalCount = totalCount;
+      _this.dataCount = dataCount;
+      return _this;
+    };
+
+    var _this = {};
+
+    var getRsBlockTable = function(typeNumber, errorCorrectionLevel) {
+
+      switch(errorCorrectionLevel) {
+      case QRErrorCorrectionLevel.L :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+      case QRErrorCorrectionLevel.M :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+      case QRErrorCorrectionLevel.Q :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+      case QRErrorCorrectionLevel.H :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+      default :
+        return undefined;
+      }
+    };
+
+    _this.getRSBlocks = function(typeNumber, errorCorrectionLevel) {
+
+      var rsBlock = getRsBlockTable(typeNumber, errorCorrectionLevel);
+
+      if (typeof rsBlock == 'undefined') {
+        throw 'bad rs block @ typeNumber:' + typeNumber +
+            '/errorCorrectionLevel:' + errorCorrectionLevel;
+      }
+
+      var length = rsBlock.length / 3;
+
+      var list = [];
+
+      for (var i = 0; i < length; i += 1) {
+
+        var count = rsBlock[i * 3 + 0];
+        var totalCount = rsBlock[i * 3 + 1];
+        var dataCount = rsBlock[i * 3 + 2];
+
+        for (var j = 0; j < count; j += 1) {
+          list.push(qrRSBlock(totalCount, dataCount) );
+        }
+      }
+
+      return list;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrBitBuffer
+  //---------------------------------------------------------------------
+
+  var qrBitBuffer = function() {
+
+    var _buffer = [];
+    var _length = 0;
+
+    var _this = {};
+
+    _this.getBuffer = function() {
+      return _buffer;
+    };
+
+    _this.getAt = function(index) {
+      var bufIndex = Math.floor(index / 8);
+      return ( (_buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+    };
+
+    _this.put = function(num, length) {
+      for (var i = 0; i < length; i += 1) {
+        _this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+      }
+    };
+
+    _this.getLengthInBits = function() {
+      return _length;
+    };
+
+    _this.putBit = function(bit) {
+
+      var bufIndex = Math.floor(_length / 8);
+      if (_buffer.length <= bufIndex) {
+        _buffer.push(0);
+      }
+
+      if (bit) {
+        _buffer[bufIndex] |= (0x80 >>> (_length % 8) );
+      }
+
+      _length += 1;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrNumber
+  //---------------------------------------------------------------------
+
+  var qrNumber = function(data) {
+
+    var _mode = QRMode.MODE_NUMBER;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _data;
+
+      var i = 0;
+
+      while (i + 2 < data.length) {
+        buffer.put(strToNum(data.substring(i, i + 3) ), 10);
+        i += 3;
+      }
+
+      if (i < data.length) {
+        if (data.length - i == 1) {
+          buffer.put(strToNum(data.substring(i, i + 1) ), 4);
+        } else if (data.length - i == 2) {
+          buffer.put(strToNum(data.substring(i, i + 2) ), 7);
+        }
+      }
+    };
+
+    var strToNum = function(s) {
+      var num = 0;
+      for (var i = 0; i < s.length; i += 1) {
+        num = num * 10 + chatToNum(s.charAt(i) );
+      }
+      return num;
+    };
+
+    var chatToNum = function(c) {
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      }
+      throw 'illegal char :' + c;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrAlphaNum
+  //---------------------------------------------------------------------
+
+  var qrAlphaNum = function(data) {
+
+    var _mode = QRMode.MODE_ALPHA_NUM;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var s = _data;
+
+      var i = 0;
+
+      while (i + 1 < s.length) {
+        buffer.put(
+          getCode(s.charAt(i) ) * 45 +
+          getCode(s.charAt(i + 1) ), 11);
+        i += 2;
+      }
+
+      if (i < s.length) {
+        buffer.put(getCode(s.charAt(i) ), 6);
+      }
+    };
+
+    var getCode = function(c) {
+
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      } else if ('A' <= c && c <= 'Z') {
+        return c.charCodeAt(0) - 'A'.charCodeAt(0) + 10;
+      } else {
+        switch (c) {
+        case ' ' : return 36;
+        case '$' : return 37;
+        case '%' : return 38;
+        case '*' : return 39;
+        case '+' : return 40;
+        case '-' : return 41;
+        case '.' : return 42;
+        case '/' : return 43;
+        case ':' : return 44;
+        default :
+          throw 'illegal char :' + c;
+        }
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qr8BitByte
+  //---------------------------------------------------------------------
+
+  var qr8BitByte = function(data) {
+
+    var _mode = QRMode.MODE_8BIT_BYTE;
+    var _data = data;
+    var _bytes = qrcode.stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _bytes.length;
+    };
+
+    _this.write = function(buffer) {
+      for (var i = 0; i < _bytes.length; i += 1) {
+        buffer.put(_bytes[i], 8);
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrKanji
+  //---------------------------------------------------------------------
+
+  var qrKanji = function(data) {
+
+    var _mode = QRMode.MODE_KANJI;
+    var _data = data;
+
+    var stringToBytes = qrcode.stringToBytesFuncs['SJIS'];
+    if (!stringToBytes) {
+      throw 'sjis not supported.';
+    }
+    !function(c, code) {
+      // self test for sjis support.
+      var test = stringToBytes(c);
+      if (test.length != 2 || ( (test[0] << 8) | test[1]) != code) {
+        throw 'sjis not supported.';
+      }
+    }('\u53cb', 0x9746);
+
+    var _bytes = stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return ~~(_bytes.length / 2);
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _bytes;
+
+      var i = 0;
+
+      while (i + 1 < data.length) {
+
+        var c = ( (0xff & data[i]) << 8) | (0xff & data[i + 1]);
+
+        if (0x8140 <= c && c <= 0x9FFC) {
+          c -= 0x8140;
+        } else if (0xE040 <= c && c <= 0xEBBF) {
+          c -= 0xC140;
+        } else {
+          throw 'illegal char at ' + (i + 1) + '/' + c;
+        }
+
+        c = ( (c >>> 8) & 0xff) * 0xC0 + (c & 0xff);
+
+        buffer.put(c, 13);
+
+        i += 2;
+      }
+
+      if (i < data.length) {
+        throw 'illegal char at ' + (i + 1);
+      }
+    };
+
+    return _this;
+  };
+
+  //=====================================================================
+  // GIF Support etc.
+  //
+
+  //---------------------------------------------------------------------
+  // byteArrayOutputStream
+  //---------------------------------------------------------------------
+
+  var byteArrayOutputStream = function() {
+
+    var _bytes = [];
+
+    var _this = {};
+
+    _this.writeByte = function(b) {
+      _bytes.push(b & 0xff);
+    };
+
+    _this.writeShort = function(i) {
+      _this.writeByte(i);
+      _this.writeByte(i >>> 8);
+    };
+
+    _this.writeBytes = function(b, off, len) {
+      off = off || 0;
+      len = len || b.length;
+      for (var i = 0; i < len; i += 1) {
+        _this.writeByte(b[i + off]);
+      }
+    };
+
+    _this.writeString = function(s) {
+      for (var i = 0; i < s.length; i += 1) {
+        _this.writeByte(s.charCodeAt(i) );
+      }
+    };
+
+    _this.toByteArray = function() {
+      return _bytes;
+    };
+
+    _this.toString = function() {
+      var s = '';
+      s += '[';
+      for (var i = 0; i < _bytes.length; i += 1) {
+        if (i > 0) {
+          s += ',';
+        }
+        s += _bytes[i];
+      }
+      s += ']';
+      return s;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64EncodeOutputStream
+  //---------------------------------------------------------------------
+
+  var base64EncodeOutputStream = function() {
+
+    var _buffer = 0;
+    var _buflen = 0;
+    var _length = 0;
+    var _base64 = '';
+
+    var _this = {};
+
+    var writeEncoded = function(b) {
+      _base64 += String.fromCharCode(encode(b & 0x3f) );
+    };
+
+    var encode = function(n) {
+      if (n < 0) {
+        // error.
+      } else if (n < 26) {
+        return 0x41 + n;
+      } else if (n < 52) {
+        return 0x61 + (n - 26);
+      } else if (n < 62) {
+        return 0x30 + (n - 52);
+      } else if (n == 62) {
+        return 0x2b;
+      } else if (n == 63) {
+        return 0x2f;
+      }
+      throw 'n:' + n;
+    };
+
+    _this.writeByte = function(n) {
+
+      _buffer = (_buffer << 8) | (n & 0xff);
+      _buflen += 8;
+      _length += 1;
+
+      while (_buflen >= 6) {
+        writeEncoded(_buffer >>> (_buflen - 6) );
+        _buflen -= 6;
+      }
+    };
+
+    _this.flush = function() {
+
+      if (_buflen > 0) {
+        writeEncoded(_buffer << (6 - _buflen) );
+        _buffer = 0;
+        _buflen = 0;
+      }
+
+      if (_length % 3 != 0) {
+        // padding
+        var padlen = 3 - _length % 3;
+        for (var i = 0; i < padlen; i += 1) {
+          _base64 += '=';
+        }
+      }
+    };
+
+    _this.toString = function() {
+      return _base64;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64DecodeInputStream
+  //---------------------------------------------------------------------
+
+  var base64DecodeInputStream = function(str) {
+
+    var _str = str;
+    var _pos = 0;
+    var _buffer = 0;
+    var _buflen = 0;
+
+    var _this = {};
+
+    _this.read = function() {
+
+      while (_buflen < 8) {
+
+        if (_pos >= _str.length) {
+          if (_buflen == 0) {
+            return -1;
+          }
+          throw 'unexpected end of file./' + _buflen;
+        }
+
+        var c = _str.charAt(_pos);
+        _pos += 1;
+
+        if (c == '=') {
+          _buflen = 0;
+          return -1;
+        } else if (c.match(/^\s$/) ) {
+          // ignore if whitespace.
+          continue;
+        }
+
+        _buffer = (_buffer << 6) | decode(c.charCodeAt(0) );
+        _buflen += 6;
+      }
+
+      var n = (_buffer >>> (_buflen - 8) ) & 0xff;
+      _buflen -= 8;
+      return n;
+    };
+
+    var decode = function(c) {
+      if (0x41 <= c && c <= 0x5a) {
+        return c - 0x41;
+      } else if (0x61 <= c && c <= 0x7a) {
+        return c - 0x61 + 26;
+      } else if (0x30 <= c && c <= 0x39) {
+        return c - 0x30 + 52;
+      } else if (c == 0x2b) {
+        return 62;
+      } else if (c == 0x2f) {
+        return 63;
+      } else {
+        throw 'c:' + c;
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // gifImage (B/W)
+  //---------------------------------------------------------------------
+
+  var gifImage = function(width, height) {
+
+    var _width = width;
+    var _height = height;
+    var _data = new Array(width * height);
+
+    var _this = {};
+
+    _this.setPixel = function(x, y, pixel) {
+      _data[y * _width + x] = pixel;
+    };
+
+    _this.write = function(out) {
+
+      //---------------------------------
+      // GIF Signature
+
+      out.writeString('GIF87a');
+
+      //---------------------------------
+      // Screen Descriptor
+
+      out.writeShort(_width);
+      out.writeShort(_height);
+
+      out.writeByte(0x80); // 2bit
+      out.writeByte(0);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Global Color Map
+
+      // black
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+
+      // white
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+
+      //---------------------------------
+      // Image Descriptor
+
+      out.writeString(',');
+      out.writeShort(0);
+      out.writeShort(0);
+      out.writeShort(_width);
+      out.writeShort(_height);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Local Color Map
+
+      //---------------------------------
+      // Raster Data
+
+      var lzwMinCodeSize = 2;
+      var raster = getLZWRaster(lzwMinCodeSize);
+
+      out.writeByte(lzwMinCodeSize);
+
+      var offset = 0;
+
+      while (raster.length - offset > 255) {
+        out.writeByte(255);
+        out.writeBytes(raster, offset, 255);
+        offset += 255;
+      }
+
+      out.writeByte(raster.length - offset);
+      out.writeBytes(raster, offset, raster.length - offset);
+      out.writeByte(0x00);
+
+      //---------------------------------
+      // GIF Terminator
+      out.writeString(';');
+    };
+
+    var bitOutputStream = function(out) {
+
+      var _out = out;
+      var _bitLength = 0;
+      var _bitBuffer = 0;
+
+      var _this = {};
+
+      _this.write = function(data, length) {
+
+        if ( (data >>> length) != 0) {
+          throw 'length over';
+        }
+
+        while (_bitLength + length >= 8) {
+          _out.writeByte(0xff & ( (data << _bitLength) | _bitBuffer) );
+          length -= (8 - _bitLength);
+          data >>>= (8 - _bitLength);
+          _bitBuffer = 0;
+          _bitLength = 0;
+        }
+
+        _bitBuffer = (data << _bitLength) | _bitBuffer;
+        _bitLength = _bitLength + length;
+      };
+
+      _this.flush = function() {
+        if (_bitLength > 0) {
+          _out.writeByte(_bitBuffer);
+        }
+      };
+
+      return _this;
+    };
+
+    var getLZWRaster = function(lzwMinCodeSize) {
+
+      var clearCode = 1 << lzwMinCodeSize;
+      var endCode = (1 << lzwMinCodeSize) + 1;
+      var bitLength = lzwMinCodeSize + 1;
+
+      // Setup LZWTable
+      var table = lzwTable();
+
+      for (var i = 0; i < clearCode; i += 1) {
+        table.add(String.fromCharCode(i) );
+      }
+      table.add(String.fromCharCode(clearCode) );
+      table.add(String.fromCharCode(endCode) );
+
+      var byteOut = byteArrayOutputStream();
+      var bitOut = bitOutputStream(byteOut);
+
+      // clear code
+      bitOut.write(clearCode, bitLength);
+
+      var dataIndex = 0;
+
+      var s = String.fromCharCode(_data[dataIndex]);
+      dataIndex += 1;
+
+      while (dataIndex < _data.length) {
+
+        var c = String.fromCharCode(_data[dataIndex]);
+        dataIndex += 1;
+
+        if (table.contains(s + c) ) {
+
+          s = s + c;
+
+        } else {
+
+          bitOut.write(table.indexOf(s), bitLength);
+
+          if (table.size() < 0xfff) {
+
+            if (table.size() == (1 << bitLength) ) {
+              bitLength += 1;
+            }
+
+            table.add(s + c);
+          }
+
+          s = c;
+        }
+      }
+
+      bitOut.write(table.indexOf(s), bitLength);
+
+      // end code
+      bitOut.write(endCode, bitLength);
+
+      bitOut.flush();
+
+      return byteOut.toByteArray();
+    };
+
+    var lzwTable = function() {
+
+      var _map = {};
+      var _size = 0;
+
+      var _this = {};
+
+      _this.add = function(key) {
+        if (_this.contains(key) ) {
+          throw 'dup key:' + key;
+        }
+        _map[key] = _size;
+        _size += 1;
+      };
+
+      _this.size = function() {
+        return _size;
+      };
+
+      _this.indexOf = function(key) {
+        return _map[key];
+      };
+
+      _this.contains = function(key) {
+        return typeof _map[key] != 'undefined';
+      };
+
+      return _this;
+    };
+
+    return _this;
+  };
+
+  var createDataURL = function(width, height, getPixel) {
+    var gif = gifImage(width, height);
+    for (var y = 0; y < height; y += 1) {
+      for (var x = 0; x < width; x += 1) {
+        gif.setPixel(x, y, getPixel(x, y) );
+      }
+    }
+
+    var b = byteArrayOutputStream();
+    gif.write(b);
+
+    var base64 = base64EncodeOutputStream();
+    var bytes = b.toByteArray();
+    for (var i = 0; i < bytes.length; i += 1) {
+      base64.writeByte(bytes[i]);
+    }
+    base64.flush();
+
+    return 'data:image/gif;base64,' + base64;
+  };
+
+  //---------------------------------------------------------------------
+  // returns qrcode function.
+
+  return qrcode;
+}();
+
+// multibyte support
+!function() {
+
+  qrcode.stringToBytesFuncs['UTF-8'] = function(s) {
+    // http://stackoverflow.com/questions/18729405/how-to-convert-utf8-string-to-byte-array
+    function toUTF8Array(str) {
+      var utf8 = [];
+      for (var i=0; i < str.length; i++) {
+        var charcode = str.charCodeAt(i);
+        if (charcode < 0x80) utf8.push(charcode);
+        else if (charcode < 0x800) {
+          utf8.push(0xc0 | (charcode >> 6),
+              0x80 | (charcode & 0x3f));
+        }
+        else if (charcode < 0xd800 || charcode >= 0xe000) {
+          utf8.push(0xe0 | (charcode >> 12),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+        // surrogate pair
+        else {
+          i++;
+          // UTF-16 encodes 0x10000-0x10FFFF by
+          // subtracting 0x10000 and splitting the
+          // 20 bits of 0x0-0xFFFFF into two halves
+          charcode = 0x10000 + (((charcode & 0x3ff)<<10)
+            | (str.charCodeAt(i) & 0x3ff));
+          utf8.push(0xf0 | (charcode >>18),
+              0x80 | ((charcode>>12) & 0x3f),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+      }
+      return utf8;
+    }
+    return toUTF8Array(s);
+  };
+
+}();
+
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+      define([], factory);
+  } else if (typeof exports === 'object') {
+      module.exports = factory();
+  }
+}(function () {
+    return qrcode;
+}));
+
+</script>
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   i18n — language state + helpers.
+   The five data bindings below point at the ACTIVE language's
+   content (assigned in applyLang), so every existing reference
+   (BANK[i], POOLS[k].label, ELEMENTS[el], …) keeps working with
+   zero call-site changes. Element keys f/e/a/w and the scoring
+   logic stay language-independent. I18N itself is built lower
+   down, after all the EN/UK data blocks are declared.
+   ============================================================ */
+let lang = "en";
+let BANK, ELEMENTS, TITLES, POOLS, AURAS, UI;
+
+/* look up a UI string by key, with {token} interpolation;
+   falls back to EN, then to the key itself, so nothing blanks out */
+function t(key, vars){
+  let s = (UI && UI[key] != null) ? UI[key]
+        : (I18N.en.ui[key] != null ? I18N.en.ui[key] : key);
+  if(vars){ for(const k in vars){ s = s.split("{"+k+"}").join(vars[k]); } }
+  return s;
+}
+
+/* Ukrainian plural picker (one / few / many) */
+function ukPlural(n, one, few, many){
+  const m10 = n%10, m100 = n%100;
+  if(m10===1 && m100!==11) return one;
+  if(m10>=2 && m10<=4 && !(m100>=12 && m100<=14)) return few;
+  return many;
+}
+
+/* language to share/QR with (so a scanned link opens in the right language) */
+function shareURL(){ return SITE_URL + (lang==="uk" ? "uk/" : ""); }
+
+/* resolution order: ?lang= → localStorage → navigator → default en */
+function resolveLang(){
+  // Each page is a real static entry point: "/" is English, "/uk/" is Ukrainian.
+  // The page declares its own default via window.__DEFAULT_LANG (set in <head>,
+  // flipped to "uk" by the build script for /uk/index.html). A ?lang= param is
+  // still honoured as a backward-compatible override for old shared links.
+  try{
+    const q = new URLSearchParams(location.search).get("lang");
+    if(q==="uk" || q==="en") return q;
+  }catch(e){}
+  return (window.__DEFAULT_LANG==="uk") ? "uk" : "en";
+}
+
+/* fill static HTML marked with data-i18n* attributes */
+function applyI18nDom(){
+  document.querySelectorAll("[data-i18n]").forEach(el=>{ el.textContent = t(el.getAttribute("data-i18n")); });
+  document.querySelectorAll("[data-i18n-html]").forEach(el=>{ el.innerHTML = t(el.getAttribute("data-i18n-html")); });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el=>{ el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph"))); });
+  document.querySelectorAll("[data-i18n-alt]").forEach(el=>{ el.setAttribute("alt", t(el.getAttribute("data-i18n-alt"))); });
+}
+
+/* switch active language: rebind data, refresh chrome, lang-aware QR */
+function applyLang(next){
+  lang = (next==="uk") ? "uk" : "en";
+  const L = I18N[lang];
+  BANK = L.BANK; ELEMENTS = L.ELEMENTS; TITLES = L.TITLES; POOLS = L.POOLS; AURAS = L.AURAS; UI = L.ui;
+  document.documentElement.setAttribute("lang", lang);
+  try{ localStorage.setItem("war_lang", lang); }catch(e){}
+  // Keep <title>/description in sync with the active language. The manifest,
+  // canonical and social tags are baked statically into each page's <head>
+  // (English in /, Ukrainian in /uk/), so they don't need a runtime swap.
+  document.title = t("meta.title");
+  const md = document.querySelector('meta[name="description"]');
+  if(md) md.setAttribute("content", t("meta.desc"));
+  applyI18nDom();                                       // fill static text first
+  const bc = document.getElementById("bankCount"); if(bc) bc.textContent = BANK.length;
+  document.querySelectorAll("#langSwitch [data-lang]").forEach(b=>{
+    b.classList.toggle("active", b.getAttribute("data-lang")===lang);
+  });
+  refreshTableButtons();                                // then re-set the count badges
+  buildQR();                                            // QR encodes the active language
+}
+
+/* user-facing toggle: navigate to the sibling page so the URL is always the real,
+   shareable, crawlable one ("/" for English, "/uk/" for Ukrainian). A <base href>
+   in /uk/index.html makes these relative targets resolve from the root either way. */
+function setLang(next){
+  location.href = (next==="uk") ? "uk/" : "./";
+}
+
+/* ----------------------------------------------------------
+   THE QUESTION BANK
+   Each entry: [question, FIRE_opt, EARTH_opt, AIR_opt, WATER_opt]
+   Options are authored in fixed f/e/a/w order (and shuffled on
+   screen). Fire=bold/chaos, Earth=warm/grounded,
+   Air=sparkle/social, Water=deep/overthinker.
+   The game deals a random 5 of these per player.
+----------------------------------------------------------- */
+const BANK_EN = [
+["It's your round. What are you actually getting in?","🍺 Whatever's cheapest, four of them, go","🍵 “I'm driving” — lime soda and moral high ground","🍹 A cocktail with an umbrella and a backstory","🍷 One nice thing I'll describe in great detail"],
+["A Friday night that doesn't fill you with dread:","🔥 Big night out, lose my voice","🏠 A dinner I'll absolutely over-cater for","✨ Spontaneous chaos, three towns over","📺 Sofa, blanket, one very specific show"],
+["The group chat says you're the one who…","😈 Replies at 3am with an unhinged meme","📋 Plans everything (yes, there's a spreadsheet)","🫶 Keeps the peace, remembers every birthday","🌀 Goes quiet for days, then sends one paragraph"],
+["There's one slice of pizza left. You…","🤌 Take it. It's mine. Next question","😇 Offer it round and genuinely mean it","🎭 Offer it loudly so everyone sees","🔪 Cut it into tiny diplomatic pieces"],
+["Your energy the second you walk into a party:","🔥 “WHO'S READY” — door nearly off its hinges","🌿 straight to the kitchen to find the host","✨ a lap of the room, hugging everyone","🌊 quietly scanning for the one person I actually know"],
+["Your ideal holiday is…","🏔 Last-minute, no plan, say yes to everything","🏡 A cottage, a fire, nowhere to be","🌴 Somewhere I'll absolutely get the photos","📖 Quiet, a book, and my own thoughts"],
+["The karaoke mic comes to you. You…","🎤 Grab it, no question, Bohemian Rhapsody","☕ Cheer way too loudly for everyone else","💃 Already had a song picked since Tuesday","🙈 Develop a sudden, urgent text to send"],
+["How do you load the dishwasher?","🌀 Chuck it in, it'll be fine","📐 There is a correct way and I know it","🤷 Whatever gets compliments fastest","🧩 A quiet, perfect, considered system"],
+["Your phone hits 3% battery. You feel…","⚡ Free. Let it die. Anarchy","🔌 Fine — I packed a charger for everyone","😱 Panic. What if I miss something","🧘 Honestly, a little relieved"],
+["At a party you're most likely…","🕺 In the middle of the dance floor","🍳 In the kitchen, looking after people","🎙 Telling a story to a growing crowd","🐈 Chatting to one person in a quiet corner"],
+["Your toxic trait is…","🔥 “One more” is always a lie","🫙 I physically cannot stop feeding people","🎬 I make everything a little about me","🌊 I rehearse arguments in the shower"],
+["Pick a breakfast:","🌶 Last night's cold pizza, standing up","🍳 A proper fry-up, made for everyone","🥑 Whatever looks best on the plate","☕ Coffee, silence, do not speak to me"],
+["How do you make decisions?","🎲 Gut, instantly, no take-backs","⚖️ Pros, cons, what's sensible","🗣 Ask the room, read the vibe","🌌 Sleep on it, feel it out, then decide"],
+["Your dream superpower:","💥 Super strength, obviously","🛡 Healing everyone around me","✨ Teleport straight to wherever's fun","🔮 Read minds (a curse, I know)"],
+["The group can't pick a restaurant. You…","🚩 Just pick one — let's GO","📞 Quietly book somewhere good","🎉 Suggest the trendy new place","🤔 Have three researched options ready"],
+["Your texting style:","‼️ ALL CAPS AND PURE ENERGY","💬 Warm, with lots of follow-up questions","😎 Memes and gifs, perfectly timed","📜 One thoughtful paragraph, hours later"],
+["A board game gets competitive. You…","♟ Play to win, take no prisoners","🤝 Make sure nobody feels left out","🎭 Provide live commentary and drama","🕵️ Quietly, suspiciously, win"],
+["Your ideal pet:","🐺 Something a little bit feral","🐕 A loyal dog who needs me","🦜 Something colourful and showy","🐈 A cat that judges me daily"],
+["You're running late. You…","🏃 Sprint, chaos, somehow make it","📅 You're never late — you planned for traffic","🤳 Arrive late but make an entrance","😔 Spiral about it the entire way there"],
+["It starts bucketing it down on the walk home. You:","🔥 run through it whooping like a maniac","🌿 share my coat and herd everyone to shelter","✨ stop for the dramatic rain photo, obviously","🌊 secretly love it and go quiet and thoughtful"],
+["Your absolute nightmare task:","📋 Sitting still and following the rules","🤼 Letting someone else cook for me","🙊 Being ignored at a party","🗣 Small talk with total strangers"],
+["Money lands in your account. First move:","🎰 A spontaneous, slightly mad purchase","🏦 Sensible — savings, bills, snacks","🛍 Treat everyone and look generous","📊 Research the optimal thing for weeks"],
+["Your friends call you for…","🚀 A wild plan and a getaway driver","🩹 A hug, soup, and real talk","🎟 Knowing exactly what's on this weekend","🧭 Calm, clear advice at 2am"],
+["How's your bedroom?","🌪 Organised chaos — I know where things are","🛏 Cosy, tidy, candles at the ready","🖼 Curated and very photographable","📚 A bit of a sanctuary, lots of books"],
+["The wifi goes down for a day. You…","🎉 Great — let's do something stupid","🍲 Cook, tidy, potter about happily","😵 What do you mean, what do I DO","🕯 Bliss. Finally. Some peace."],
+["You get on a rammed train. You're the one who:","🚪 stands by the door, ready to bolt at my stop","🧺 ends up helping a stranger with their bags","🪟 bags the window seat for the view (and the content)","🎧 puts headphones in and disappears completely"],
+["Someone's crying at the table. You…","💪 Go and find the person responsible","🤗 Move straight in: tissues, full support","🍸 Lighten the mood with a perfect joke","👂 Just sit and listen, properly"],
+["Your ideal Sunday:","🚵 An adventure, slightly too ambitious","🥘 A roast, family, one long table","🥂 Bottomless brunch with the whole crew","🛁 Bath, podcast, zero humans"],
+["Your role in a heist crew?","💣 The reckless muscle","🧰 The one who packed snacks and a plan B","😏 The charming distraction","🧠 The mastermind back in the van"],
+["You get a genuine compliment. You…","😎 “I know.”","🥰 Deflect it instantly onto someone else","💁 Glow about it for a solid week","🫣 Short-circuit and don't believe it"],
+["“Got plans this weekend?” Your honest reply:","🔥 “no plans = maximum plans, keep your phone on”","🌿 “hosting — I've already over-bought the snacks”","✨ “something cute, good lighting, details pending”","🌊 “gloriously nothing, and I won't be reachable”"],
+["The aux cord is yours. You play…","🎸 Bangers, no skips, full volume","🎶 Crowd-pleasers everybody knows","🪩 Whatever is impossibly cool right now","🎻 A niche song with a whole backstory"],
+["How do you argue?","🌋 Loud, fast, over in five minutes","🕊 Avoid it entirely, keep the peace","🎤 Win the room, not the actual point","📝 Calm, devastating, three days later"],
+["Your ideal first date:","🎢 Something thrilling and slightly unhinged","🍝 Cooking together at home","🍸 A rooftop bar and a very good outfit","🚶 A long walk and a deep, deep talk"],
+["A wasp gets into the room. You're the one who:","🔥 declares war and grabs the nearest weapon","🌿 calmly opens a window and guides it out","✨ shrieks, then live-narrates the entire saga","🌊 has quietly left the room already"],
+["You win big. The group finds out via…","📢 You, screaming, immediately","🎁 Gifts mysteriously start appearing","📸 A suddenly very expensive aesthetic","🤐 They don't — you tell one person"],
+["What ruins your day fastest?","⛓ Being told to slow down","😞 Someone I love being upset","🚫 Being left out of the plan","🌀 An unresolved, awkward conversation"],
+["You leave a note for a flatmate. It says:","✍️ “OUT. BACK WHENEVER.” — barely legible","🧁 a warm note with everything they'll need","🖋 something cute with a little doodle","🔬 a careful, faintly over-thought paragraph"],
+["Pick a snack to share:","🌶 Something dangerously spicy","🧀 A generous, groaning cheese board","🍓 Something pretty and instagram-able","🫒 An acquired taste you will defend"],
+["You're handed a free hour. You…","🛹 Do something a little bit risky","🧹 Tick a job off the list, feel amazing","📲 See who's about and make a plan","🎨 A quiet hobby nobody knows about"],
+["The fire alarm goes off. You're the one who…","🚒 Is already outside, organising people","🧯 Grabs the cat and the first-aid kit","🤳 Films it all for the story","🚪 Calmly, quietly leaves first"],
+["Pick a drink to end the night:","🥃 A final shot, why not","🍫 Hot chocolate, slippers on","🍾 One more glass of something fizzy","🍵 Tea and a deep post-match debrief"],
+["A new person joins the group. Within the hour you've:","⚡ talked them into something they'll regret","🤲 fed them and learned their entire life story","🌟 somehow become their favourite person here","🧩 quietly clocked them and reserved judgement"],
+["How do you pack for a trip?","🎒 Throw it in a bag an hour before","🧳 A list, folded, plus spares for others","👗 Outfits planned per occasion","📦 Minimal, considered, just enough"],
+["A stranger asks you for directions. You…","🗺 Walk them halfway there yourself","🤝 Patiently explain it twice if needed","😄 Make a whole friendly moment of it","🤓 Give the genuinely optimal route"],
+["Your inner monologue is mostly…","🥁 “Let's GO”","🍯 “Is everyone okay?”","🎬 “How does this look?”","🌌 “But what does it all mean?”"],
+["If tonight were a movie, the trailer would promise:","💥 explosions and questionable decisions, no brakes","🎄 a warm ensemble where everyone gets home safe","🎩 a glamorous caper with an unreasonable wardrobe","🎭 a slow-burn drama building to one big feelings scene"],
+["Group photo time. You're…","🤪 Pulling a deliberately stupid face","📸 Holding everyone's drinks","💁 Hitting your angle — you know it","😬 Quietly hoping it's over soon"],
+["Your desk or workspace:","🌩 A glorious mess of pure momentum","🪴 Tidy, a plant, snacks for visitors","🖼 Aesthetic and lit for video calls","🧠 Minimal, focused, headphones on"],
+["At the pub you're the designated…","🎉 Chaos starter","🚕 Responsible one who gets everyone home","📣 Hype person","🛟 Emotional support human"],
+["How do you handle a very long queue?","😤 Loudly consider just leaving","😌 Chat away to the person next to you","🤳 Make content about it","🧘 Disappear into my own head"],
+["Your signature dance move:","🤸 Reckless, full commitment, no skill","👏 Whatever makes other people join in","🕺 Smooth, rehearsed, frankly iconic","🫠 The subtle two-step by the wall"],
+["What's in your bag right now?","🔦 Something faintly chaotic","🩹 Plasters, mints, a spare for you","💄 The essentials, beautifully curated","📓 A notebook and three pens"],
+["The plan changes at the last minute. You…","🙌 Love it — even better","🛠 Quietly fix all the logistics","🎲 Spin it into something even more fun","😮‍💨 Need a minute to recalibrate"],
+["Someone yells “group photo!”. You:","🔥 leap into the front pulling a stupid face","🌿 herd the stragglers in so no one's left out","✨ already know my angle and my lighting","🌊 drift to the edge and half-hide at the back"],
+["Your love language is…","🎢 Adventures together","🍲 Acts of service (and soup)","🎁 Gifts and grand gestures","💬 Long, honest, deep talks"],
+["A debate kicks off at dinner. You…","🥊 Dive in, pick a side, commit hard","🕊 Try to find the middle ground","🎤 Stir it gently for entertainment","🤫 Quietly hold the actual best point"],
+["How do you wake up?","🚀 Alarm once, up, GO","☕ Slow, kettle on, gentle","🌅 Straight onto the phone","😴 Snooze, ruminate, eventually rise"],
+["Pick a side quest:","🧗 Climb the thing you shouldn't","🛒 Help someone move house","🎤 Crash a karaoke bar","🗺 Wander a strange city alone for hours"],
+["Your group's nickname for you:","🌶 The Menace (affectionate)","🐻 The Mum/Dad of the group","⭐ The Main Event","🦉 The Wise One"],
+["The bill arrives. You…","💳 “I've got it — sort me later”","➗ Quietly work out everyone's fair share","😅 Have already drifted off to the loo","🧮 Calculate it precisely, to the penny"],
+["Your dream night in:","🎮 A tournament, snacks, trash talk","🍪 Baking something and a film","🍷 A dinner party you've styled","📺 One person, one series, no talking"],
+["Booking a trip with mates, you're the one who:","🏍 wants to wing it and “see what happens”","🚐 sorts the campervan so everyone's aboard","✈️ plans the arrival so it's a proper Moment","🚂 just wants the long sleeper train and the dark window"],
+["Your reaction to genuinely good news?","🎆 Scream, hug, immediate plans","🥹 Happy-cry, then feed you","📢 Tell absolutely everybody","😊 A quiet, warm, deep glow"],
+["You're in charge of the playlist AND the snacks:","🌭 Loud songs, hot food, big energy","🥪 Comfort classics, plenty for everyone","🍸 Trendy tunes and a pretty grazing board","🎼 A mood, a vibe, a slow build"],
+["Your worst group-chat habit:","🚨 47 messages in a row","🥲 Liking everything, replying to nothing","🪞 Steering it back to me","👻 Vanishing for a full week"],
+["You run away to a tiny island. Your job there:","🚁 the one doing something reckless off the cliffs","🏡 running the inn, feeding every lost traveller","🎤 hosting the island's one chaotic talk show","🔭 lighthouse keeper, perfectly content, alone"],
+["How do you give advice?","💢 Brutal honesty, at speed","🤲 Gentle, supportive, with biscuits","🪄 A charming reframe — you feel great","🧭 Thoughtful questions till you find it"],
+["The lights go out at a party. You…","🔦 Take charge and make it a game","🕯 Find candles and calm everyone","🎉 Declare it the best part of the night","👁 Quietly enjoy the eerie new vibe"],
+["It's 2am and you're still awake because:","🌃 the night flatly refuses to end","🌇 I'm checking everyone got home okay","🪩 the good chats only just got going","🌫 my brain simply will not switch off"],
+["Open your camera roll. It's mostly:","🗡 chaotic shots of things I probably shouldn't have done","🧶 people I love and meals I cooked them","📸 outfits, mirrors, and beautiful nonsense","📚 screenshots, quotes, and 200 near-identical skies"],
+["Someone cuts the queue. You…","😠 Say something, immediately","😶 Sigh, let it go, keep the peace","🙄 Make a loud, witty remark","📒 Note it and judge silently forever"],
+["Your ideal Saturday morning:","🚴 Up early for a big adventure","🥞 Pancakes for the whole household","🛍 Market, coffee, being seen","🌿 A walk alone before the world wakes"],
+["What's your karaoke encore?","🎸 Something I'll vocally regret","🎶 A duet, dragging you up too","🌟 The showstopper I've been saving","🥲 A heartfelt ballad nobody requested"],
+["How do you enter a room?","🚪 Loudly — the door swings","👋 Greeting everyone by name","💫 Like I might secretly be famous","🤫 Slip in, find the edge, observe"],
+["Your emergency contact would say you're…","🌪 A liability and a legend","🛡 The safest pair of hands","🎭 Never boring, often late","🌊 Hard to read, but worth it"],
+["Rough day. Your reset button is:","🥊 sweating it out — gym, run, something brutal","🧁 baking something specifically for someone else","🛍 a little treat and a little main-character walk","📖 reading in total silence, phone in another room"],
+["The group needs cheering up. You…","🎇 Plan something outrageous","🍜 Cook and check in on everyone","🤡 Simply become the entertainment","🫂 Send each person a real message"],
+["Your phone wallpaper is…","🏎 Something fast or bold","👨‍👩‍👧 The people I love","🌅 A gorgeous shot I took myself","🌌 Something dreamy and abstract"],
+["The final boss of your personality:","🔥 “Send it.”","🌿 “Have you eaten?”","✨ “Watch this.”","🌊 “I've been thinking…”"],
+["At a funfair you make a beeline for:","🎢 the tallest, scariest coaster — twice","🎠 the carousel, holding someone's smaller human","🎡 the big wheel for the view and the photo","🪞 the weird mirror maze, alone, loving it"],
+["Your reaction to a surprise party:","🎉 Scream, then run the whole party","🥹 Cry, then thank everyone individually","📸 Pose — it's content gold","😳 Genuinely not know where to look"],
+["The household chore you secretly enjoy:","🔨 An aggressive deep-clean blitz","🍳 Cooking for everybody","🪟 Making things look nice","🧺 Quiet, methodical folding"],
+["Pick a way to settle a tie:","🪨 Rock paper scissors, sudden death","🤝 Talk it out till everyone's happy","🎤 Whoever argues funniest wins","🎲 An elaborate fair system I design"],
+["Your ideal birthday:","🎆 A massive, unhinged blowout","🏡 Close friends, home-cooked, cosy","🥂 A glamorous night with a dress code","🌄 Away somewhere quiet — just escape"],
+["What's your job on a group trip?","🧭 Chief of vibes and chaos","💼 Treasurer and itinerary","📣 Morale and the photos","🗺 The one who finds the hidden gems"],
+["A spider appears. You…","🩴 Deal with it, dramatically","🥤 A calm cup-and-card rescue","🙀 Scream, then narrate the whole saga","🧍 Observe it respectfully from afar"],
+["A time machine shows up. You immediately:","⚔️ go somewhere wild and probably dangerous","🏰 visit a cosier, simpler time and stay too long","🎷 hit the glittering twenties in a great outfit","🪐 drift to the strange far future to see how it ends"],
+["How do you celebrate a win?","🍾 Loud, immediate, everyone's invited","🥧 Bake something and share it round","📱 A very well-crafted post","😌 A quiet, private, deep satisfaction"],
+["Your default facial expression:","😼 Up to something","🙂 Open and warm","😏 Mischievously charming","🤨 Mid-thought, somewhere else"],
+["The waiter brings the wrong dish. You…","🗣 Send it back — no drama, just fix it","🤐 Eat it; you don't want a fuss","🎭 Make a charming joke of the whole thing","😬 Quietly accept your new fate"],
+["You go viral tomorrow. It's for:","🏆 a stunt nobody thought was survivable","🌍 quietly doing something kind, caught on camera","✨ simply being effortlessly, annoyingly iconic","🧠 one strange, brilliant idea that rewired people's brains"],
+["Your relationship with plans:","🎯 Plans are for cowards","🗓 Plans are love — I make them","🎈 Loose plans, big energy","🧷 Detailed plans, privately, for safety"],
+["A night out is dying. You…","⚡ Resurrect it with a wild idea","🚖 Gently steer everyone home safe","🎤 One last burst of pure showmanship","🌙 Slip off without saying goodbye"],
+["Pick a kitchen appliance you'd be:","🔥 The blowtorch","🍞 The trusty toaster","☕ The fancy coffee machine","🫖 The slow, patient kettle"],
+["Your group's chat without you would be…","💤 Frankly, a bit boring","🧱 Chaos — nobody organising","🎈 Quieter, with less sparkle","🤔 Missing its deep one"],
+["How do you handle being wrong?","🔄 Loud U-turn, full conviction again","🙏 Apologise warmly and make it right","😅 Charm my way straight through it","🪞 Replay it internally for a decade"],
+["Pick a weekend market stall to run:","🌶 Hot sauces and dares","🍲 Soup and a good chat","🌸 Beautiful handmade things","📜 Rare second-hand books"],
+["Your ideal compliment is:","💪 “You're a force of nature”","🤲 “You always look after everyone”","✨ “You light up the room”","🌊 “You really see people”"],
+["The night ends. Your last message is:","🌟 “BEST night — again soon?!”","❤️ “Home safe? Let me know x”","📸 “Posting these immediately”","🌙 “Thanks for tonight. Needed it.”"],
+["Pick a tattoo you'd get:","⚡ Something bold and impulsive","🌳 A symbol of home and roots","🌹 Something beautiful and visible","🌊 A tiny, meaningful, secret one"],
+["Your approach to spicy food:","🌶 Hottest on the menu — prove it","🍚 Mild and comforting, for everyone","🫦 Whatever's trending and looks good","🧪 Curious and analytical, one chilli at a time"],
+["A talent show needs an act. You…","🎆 Volunteer something dangerous","🍰 Provide the snacks and the support","🎩 Steal the show, naturally","🎹 Quietly nail something delicate"],
+["The dancefloor opens up. You're:","🦅 first on it, no warm-up required","🐘 dragging the shy ones up so they're not left out","🦚 dead centre, living my entire life","🐙 guarding the coats with a drink, perfectly happy"],
+["Your last ten texts are mostly:","🔥 plans, hype, and “SEND IT”","🫶 “you ok?” and heart-hands","✨ memes and gifs, perfectly timed","🥲 paragraphs sent six hours too late"],
+["How do you cope with stress?","🏋️ Burn it off, hard and fast","🧹 Tidy and care for others","🎉 Distract with plans and people","📝 Journal, overthink, slowly process"],
+["A get-rich scheme you'd fall for:","🎰 A wild, high-risk bet","🏡 “Sensible” property with a mate","💼 The shiny thing everyone's hyping","📈 An obscure plan I over-researched"],
+["The group can't agree on a film. You…","🎬 Just press play on something loud","🍿 Make everyone vote, fairly","🌟 Champion the cool indie pick","🧠 Have the perfect under-seen choice"],
+["Someone gives you a houseplant. Six months on it's:","🌋 thriving on pure neglect, somehow","🤍 flourishing — I talk to it daily","📷 chosen entirely for looks (possibly fake)","🌧 a research project I quietly worry about"],
+["A double-dare at the pub. You…","😈 Already did it — what's next","🛟 Be the responsible spotter","🎭 Do it with full theatrics","🤔 Negotiate the terms first"],
+["Pub quiz night — your team relies on you for:","⚡ slamming the buzzer before the question's finished","🤝 keeping morale up when we're losing badly","🎤 working the room and charming the quizmaster","🧠 the one impossible question nobody else knew"],
+["Your dream Sunday-roast role:","🔥 Carving, with flair","🥘 Cooking the whole thing, happily","🍷 Curating the wine and the table","🥧 Quietly perfecting the gravy"],
+["How do you say goodbye?","🚪 Already gone — no fuss","🤗 Long hug, “text me when you're home”","👋 A whole farewell tour of the room","🌙 A quiet wave and a warm feeling"],
+["Pick a chaotic good deed:","🦸 A bold, public rescue","🍞 Quietly feeding the neighbours","🎁 A grand surprise gesture","🕊 An anonymous act of kindness"],
+["Your recent search history would expose you as:","🚨 someone planning something slightly reckless","🩹 frantically googling how to help a mate","🛍 “best [trendy thing] near me”, naturally","🌌 three hours deep in a 2am existential rabbit hole"],
+["The group needs a leader. You…","👑 Are already leading — keep up","🧭 Lead by quietly sorting everything","📣 Lead by inspiring the room","🗳 Nominate the right person and advise"],
+["A surprise free day lands in your lap. You:","🏔 drive somewhere with no plan and find out","🛋 nest at home and refuse to wear real trousers","🥐 brunch, then beautiful mischief around town","📚 a gallery, a notebook, and lovely solitude"],
+["Your reaction to “let's do shots”:","🥃 Already ordering them","💧 “Water for me — but yes, go on”","🎉 “ONLY if we toast properly”","🤨 “Define ‘we' and ‘shots'”"],
+["The campfire needs a story. You tell…","👻 The scariest one, full commitment","🔥 A warm one everyone joins in on","🎭 A wildly embellished personal legend","🌌 A quiet, strange, beautiful tale"],
+["Last call. Your final order:","🍻 “Same again, all round!”","🫖 “Tea? Anyone? No? Just me then.”","🍸 “One more of the fancy one”","🍷 “Just water, thanks — big think incoming”"]
+];
+
+/* ---------------- ELEMENT IDENTITIES ---------------- */
+const ELEMENTS_EN = {
+  f:{key:"f", name:"Fire",  emoji:"🔥", word:"The Spark",   hex:"#ff5a3c", blurb:"bold, chaotic-good, all gas no brakes"},
+  e:{key:"e", name:"Earth", emoji:"🌿", word:"The Hearth",  hex:"#3fae6b", blurb:"warm, grounded, host with the most"},
+  a:{key:"a", name:"Air",   emoji:"✨", word:"The Sparkle", hex:"#b06bff", blurb:"social, witty, main-character energy"},
+  w:{key:"w", name:"Water", emoji:"🌊", word:"The Deep",    hex:"#2f8fe0", blurb:"thoughtful, feeling-fluent, beautiful overthinker"},
+};
+
+/* ---------------- TITLES BY ELEMENT PAIR ---------------- */
+const TITLES_EN = {
+  "fe":{t:"The Cosy Arsonist",        r:"You'll start the bonfire — then make sure everyone has a blanket."},
+  "fa":{t:"The Main Event",           r:"You don't enter rooms, you happen to them. Exhausting. Beloved."},
+  "fw":{t:"The Slow-Motion Explosion",r:"Calm for weeks, then a 2am text that reorganises the whole group chat."},
+  "ef":{t:"The Gentle Menace",        r:"Soft voice, devastating opinions on how the dishwasher should be loaded."},
+  "ea":{t:"The Human Hug",            r:"You know everyone's order and their ex's name. We always sit by you."},
+  "ew":{t:"The Safe Harbour",         r:"People tell you things. You've never once spilled. Saint behaviour."},
+  "af":{t:"The Confetti Cannon",      r:"100% vibes, 0% plan, and somehow it works out every single time."},
+  "ae":{t:"The Glittery Host",        r:"Throws the party AND does the washing up. Genuinely a rare creature."},
+  "aw":{t:"The Beautiful Overthinker",r:"Funniest one at the table; still replays a text from 2019 nightly."},
+  "wf":{t:"The Quiet Storm",          r:"Says three words all night. All three land like thunder."},
+  "we":{t:"The Old Soul",             r:"Born 40, ageing backwards, gives advice worth more than the pint you owe."},
+  "wa":{t:"The Dreamy Narrator",      r:"Lives in a film only you can see. The voiceover, honestly, is incredible."},
+};
+
+/* ---------------- VERDICT POOLS (3 variants per element) ---------------- */
+const POOLS_EN = {
+  pizza:{ label:"Spirit pizza topping", icon:"🍕", by:{
+    f:["Spicy nduja — too much, on purpose","Jalapeño & chilli honey — sweet, then it bites","Pepperoni, double, no apology"],
+    e:["Roasted veg & goat's cheese — quietly the best slice","Four cheese — comfort, incarnate","Mushroom & truffle — humble but deep"],
+    a:["Pineapple — controversial, iconic, unbothered","Prosciutto & rocket — fancy and well aware of it","Hot honey & ricotta — the influencer slice"],
+    w:["Anchovy — a misunderstood genius","Capers & olive — an acquired, superior taste","White pizza, no sauce — thinks differently on principle"],
+  }},
+  plant:{ label:"Inner houseplant", icon:"🪴", by:{
+    f:["A chilli plant, thriving aggressively on the windowsill","Venus flytrap — friendly until provoked","Snake plant — unkillable, faintly threatening"],
+    e:["A sprawling pothos everyone's taken a cutting of","Aloe vera — heals others, asks for nothing","A herb garden you actually maintain. Show-off."],
+    a:["Monstera — big, photogenic, in every single photo","Orchid — high-maintenance, worth it, knows it","String of pearls trailing dramatically off a shelf"],
+    w:["Peace lily — droops theatrically, recovers, repeat","A bathroom fern, thriving in the mist and the feelings","Air plant — needs almost nothing, contains multitudes"],
+  }},
+  house:{ label:"Hogwarts house", icon:"🪄", by:{
+    f:["Gryffindor — obviously, you told us twice","Gryffindor, with a Slytherin streak when there's one slice left","Gryffindor — the Hat barely touched your head"],
+    e:["Hufflepuff — and frankly the best of us","Hufflepuff prefect energy, snacks already in the bag","Hufflepuff, but you'd quietly win the duel"],
+    a:["Ravenclaw who's read the book AND seen the film","Slytherin wearing a Ravenclaw scarf for the aesthetic","Ravenclaw — the witty one, not the smug one"],
+    w:["Ravenclaw — deep waters, dangerous trivia","Slytherin — soft outside, strategic inside","The Sorting Hat thought about you for a long, long time"],
+  }},
+  drink:{ label:"Drink alter-ego", icon:"🥂", by:{
+    f:["A tequila shot wearing a tiny hat","An espresso martini at midnight — bad idea, great night","Jägerbomb energy in a human suit"],
+    e:["A proper cup of tea, two sugars, no notes","A pint of the local — dependable, beloved","Mulled wine — warm, a bit much, in the best way"],
+    a:["An Aperol spritz — looks great, mostly vibes","Champagne that celebrates a Tuesday","A cocktail with an umbrella and a whole backstory"],
+    w:["Red wine and a deep chat in the corner","Single malt, neat, staring meaningfully","Herbal tea and a small emotional breakthrough"],
+  }},
+  crisp:{ label:"Crisp flavour", icon:"🥔", by:{
+    f:["Flamin' Hot — a warning, not a flavour","Salt & vinegar — sharp, eyes watering, worth it","Scampi fries — divisive and proud of it"],
+    e:["Ready Salted — secure enough to need nothing else","Cheese & onion — classic, dependable, no fuss","Roast chicken — comfort in a foil packet"],
+    a:["Prawn cocktail — pink, fun, slightly extra","Sweet chilli — crowd-pleaser and knows it","Truffle crisps — bought partly to be seen buying"],
+    w:["Pickled onion Monster Munch — chaotic hidden depths","Worcester sauce — quietly, smugly complex","Plain popcorn — overthinks even the snack"],
+  }},
+  stool:{ label:"Bar-stool archetype", icon:"🪑", by:{
+    f:["The Instigator — “one more?” is a threat and a promise","The Round-Buyer who cannot be stopped","The Karaoke Initiator (no one asked; everyone's grateful)"],
+    e:["The Mum Friend — plasters, painkillers, and your back","The Coat-Watcher — guards the table like a loyal hound","The Peacemaker who defuses the bill argument"],
+    a:["The Raconteur — every story is 20% true, 100% worth it","The Social Glue — knows the bar staff by name already","The One Who Somehow Knows Everyone"],
+    w:["The Corner Philosopher — best chats happen by you","The Quiet Observer who clocks absolutely everything","The 2am Truth-Teller — gentle, devastating, correct"],
+  }},
+};
+
+const N_QUESTIONS = 5;
+
+/* ---------------- STATE ---------------- */
+let deck = [];          // shuffled queue of BANK indices, persists across players
+let activeQ = [];       // the 5 dealt questions for the current player (with shuffled opts)
+let answers = [];       // chosen option index per active question
+let current = 0;
+let playerName = "";
+
+/* ---------------- HELPERS ---------------- */
+const $ = sel => document.querySelector(sel);
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  $("#"+id).classList.add("active");
+  window.scrollTo(0,0);
+}
+function setAccent(hex){
+  document.documentElement.style.setProperty("--accent", hex);
+  document.querySelector('meta[name=theme-color]').setAttribute("content", hex);
+}
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+
+/* deal N fresh questions from the shuffled deck; reshuffle when low */
+function dealQuestions(n){
+  if(deck.length < n){ deck = shuffle(Array.from({length:BANK.length},(_,i)=>i)); }
+  const picks = deck.splice(0,n);
+  return picks.map(idx=>{
+    const row = BANK[idx];
+    const opts = shuffle([
+      {el:"f",raw:row[1]},{el:"e",raw:row[2]},{el:"a",raw:row[3]},{el:"w",raw:row[4]}
+    ]).map(o=>{
+      const sp = o.raw.indexOf(" ");
+      return { el:o.el, emo: sp<0?o.raw:o.raw.slice(0,sp), label: sp<0?"":o.raw.slice(sp+1) };
+    });
+    return { q: row[0], opts };
+  });
+}
+
+/* deterministic hash of the chosen answers */
+function hashAnswers(){
+  let s = "";
+  answers.forEach((ai,qi)=> s += activeQ[qi].opts[ai].el );
+  let h = 7;
+  for(let i=0;i<s.length;i++) h = (h*31 + s.charCodeAt(i)*(i+3)) % 9973;
+  return h;
+}
+
+/* score the chosen answers into an element vector + ranking */
+function computeProfile(){
+  const score = {f:0,e:0,a:0,w:0};
+  answers.forEach((ai,qi)=>{ score[ activeQ[qi].opts[ai].el ] += 2; });
+  const h = hashAnswers();
+  const tie = {f:0,e:1,a:2,w:3};
+  const seed = el => ((h+1)*(tie[el]+7)) % 97;   // deterministic tie-breaker
+  const order = ["f","e","a","w"].sort((x,y)=> (score[y]-score[x]) || (seed(y)-seed(x)));
+  return {score, dom:order[0], sec:order[1], order};
+}
+
+function pick(pool, prof, salt){
+  const arr = pool[prof.dom];
+  const secIdx = {f:0,e:1,a:2,w:3}[prof.sec];
+  const h = hashAnswers();
+  return arr[(h + secIdx*5 + salt) % arr.length];
+}
+
+/* ---------------- QUIZ FLOW ---------------- */
+function renderProgress(){
+  const p = $("#progress"); p.innerHTML="";
+  for(let i=0;i<N_QUESTIONS;i++){
+    const pip=document.createElement("div");
+    pip.className="pip"+(i<current?" done":"");
+    p.appendChild(pip);
+  }
+}
+function renderQuestion(){
+  const Q = activeQ[current];
+  renderProgress();
+  $("#qcount").textContent = t("quiz.qcount", {n: current+1, total: N_QUESTIONS});
+  $("#qtext").textContent = Q.q;
+  const box = $("#opts"); box.innerHTML="";
+  Q.opts.forEach((o,i)=>{
+    const b=document.createElement("button");
+    b.className="opt";
+    b.innerHTML=`<span class="emo">${o.emo}</span><span>${o.label}</span>`;
+    b.onclick=()=>choose(i);
+    box.appendChild(b);
+  });
+  $("#backBtn").style.visibility = current===0 ? "hidden" : "visible";
+}
+function choose(i){
+  answers[current]=i;
+  if(current < N_QUESTIONS-1){ current++; renderQuestion(); }
+  else startAura();   // answers done -> scan aura (reads the answers + camera)
+}
+$("#backBtn").onclick=()=>{ if(current>0){ current--; renderQuestion(); } };
+
+/* ---------------- RESULT ---------------- */
+function buildResult(){
+  const prof = computeProfile();
+  const el = ELEMENTS[prof.dom];
+  const title = TITLES[prof.dom+prof.sec] || {t:el.word, r:el.blurb};
+  const verdicts = {};
+  let salt=0;
+  for(const key in POOLS){ verdicts[key] = pick(POOLS[key].by, prof, salt++); }
+  return {prof, el, title, verdicts};
+}
+
+function revealResult(){
+  const R = buildResult();
+  window.__lastResult = R;
+  if(!window.__aura) computeFinalAura(R.prof);   // safety: aura is normally set during the scan
+  if(window.__auraSrc && window.__aura && !window.__auraPhoto){
+    window.__auraPhoto = renderAuraPhoto(window.__auraSrc, window.__aura.el, 480, 360, 0.85, window.__auraSubject);
+    window.__auraThumb = renderAuraPhoto(window.__auraSrc, window.__aura.el, 160, 120, 0.6, window.__auraSubject);
+  }
+  setAccent((window.__aura && window.__aura.hex) || R.el.hex);
+  const v = R.verdicts;
+  const order = ["house","plant","pizza","drink","crisp","stool"];
+  let cells="";
+  order.forEach(k=>{
+    cells += `<div class="v"><div class="vh">${POOLS[k].icon} ${POOLS[k].label}</div><div class="vb">${v[k]}</div></div>`;
+  });
+  const A = window.__aura;
+  const photo = window.__auraPhoto;
+  const auraBadge = A ? `<div class="heroBadge"><span class="dot" style="background:${A.hex}"></span>👁 ${A.name}</div>` : "";
+  const heroImg = photo
+    ? `<img src="${photo}" class="heroImg" alt="you">`
+    : `<div class="heroImg heroFallback" style="background:radial-gradient(circle at 40% 35%, ${R.el.hex}, ${R.el.hex}cc)">${R.el.emoji}</div>`;
+  $("#resultCard").innerHTML = `
+    <div class="photoHero">
+      ${heroImg}
+      ${auraBadge}
+      <div class="heroOverlay">
+        <p class="crown">${playerName ? t("result.youare_named",{name:esc(playerName)}) : t("result.youare")}</p>
+        <div class="title">${R.title.t}</div>
+        <div class="element">${t("result.elementLine",{emoji:R.el.emoji,name:R.el.name})}${A?` &middot; ${t("result.auraLine",{name:A.name})}`:""}</div>
+      </div>
+    </div>
+    <div class="roast">${t("quote.open")}${R.title.r}${t("quote.close")}</div>
+    <div class="verdicts">${cells}</div>
+    <button class="btn" id="cardBtn">${t("result.savecard")}</button>
+    <button class="btn secondary small" id="addBtn">${t("result.addme")}</button>
+    <div class="btnrow">
+      <button class="btn secondary small" id="shareBtn">${t("result.copytext")}</button>
+      <button class="btn secondary small" id="retakeBtn">${t("result.retake")}</button>
+    </div>
+    <p class="footer" style="margin-top:10px">${t("result.footer")}</p>
+  `;
+  $("#cardBtn").onclick=saveAuraCard;
+  $("#addBtn").onclick=addToTable;
+  $("#shareBtn").onclick=()=>{ copyText(resultText(R)); toast(t("toast.copied")); };
+  $("#retakeBtn").onclick=()=>{ startGame(); };
+  show("result");
+  confetti();
+}
+
+function resultText(R){
+  const v=R.verdicts;
+  const A=window.__aura;
+  return `${playerName||t("share.i")} — ${R.title.t} ${R.el.emoji}\n`+
+    `${t("quote.open")}${R.title.r}${t("quote.close")}\n`+
+    (A?`👁 ${t("share.auraLabel")}: ${A.name}\n`:"")+
+    `🪄 ${v.house}\n🍕 ${v.pizza}\n🪴 ${v.plant}\n🥂 ${v.drink}\n🥔 ${v.crisp}\n🪑 ${v.stool}\n`+
+    `${t("share.tagline")}`;
+}
+
+/* ---------------- SHAREABLE AURA CARD ---------------- */
+const CARD_FONT = 'system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif';
+const SITE_URL = "https://rostk.github.io/pub-experiment/";
+function rrect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+/* QR (left) + "scan to play" caption + url, drawn at the bottom of a share card */
+function drawCardFooter(ctx,W,H,hex){
+  if(window.__qrImg){
+    const qs=150, qx=64, qy=H-qs-70;
+    ctx.fillStyle="#fff"; rrect(ctx,qx-12,qy-12,qs+24,qs+24,18); ctx.fill();
+    ctx.drawImage(window.__qrImg,qx,qy,qs,qs);
+    ctx.textAlign="left"; ctx.fillStyle="#fff"; ctx.font='800 34px '+CARD_FONT;
+    ctx.fillText(t("card.scantoplay"), qx+qs+30, qy+qs/2-4);
+    ctx.fillStyle=hex; ctx.font='700 26px '+CARD_FONT;
+    ctx.fillText("rostk.github.io/pub-experiment", qx+qs+30, qy+qs/2+42);
+  } else {
+    ctx.textAlign="center"; ctx.fillStyle=hex; ctx.font='800 30px '+CARD_FONT;
+    ctx.fillText("rostk.github.io/pub-experiment", W/2, H-52);
+  }
+}
+function fitLine(ctx,t,maxW){ if(ctx.measureText(t).width<=maxW) return t;
+  let s=t; while(s.length>1 && ctx.measureText(s+"…").width>maxW) s=s.slice(0,-1); return s+"…"; }
+function wrapCentre(ctx,t,cx,y,maxW,lineH,maxLines){
+  const words=String(t).split(" "); const lines=[]; let line="";
+  for(const wd of words){ const test=line?line+" "+wd:wd;
+    if(ctx.measureText(test).width>maxW && line){ lines.push(line); line=wd; } else line=test; }
+  if(line) lines.push(line);
+  if(lines.length>maxLines){ lines.length=maxLines; lines[maxLines-1]=fitLine(ctx,lines[maxLines-1]+"…",maxW); }
+  lines.forEach((ln,i)=>ctx.fillText(ln,cx,y+i*lineH));
+  return y+lines.length*lineH;
+}
+
+function lineCount(ctx,text,font,maxW,maxLines){
+  ctx.font=font; const words=String(text).split(" "); let line="",n=0;
+  for(const wd of words){ const t=line?line+" "+wd:wd; if(ctx.measureText(t).width>maxW && line){ n++; line=wd; } else line=t; }
+  if(line) n++; return Math.max(1,Math.min(n,maxLines));
+}
+
+function buildAuraCard(R){
+  return new Promise(resolve=>{
+    const W=1080;
+    const A=window.__aura||{name:"",hex:R.el.hex}; const hex=A.hex||R.el.hex; const v=R.verdicts;
+    const pw=920, ph=690, px=(W-pw)/2, py=104;
+    // measure how tall the title/roast wrap, then size the card so nothing overlaps the QR footer
+    const mc=document.createElement("canvas").getContext("2d");
+    const titleLines=mc?lineCount(mc,R.title.t,'900 80px '+CARD_FONT,W-120,3):1;
+    const roastLines=mc?lineCount(mc,t("quote.open")+R.title.r+t("quote.close"),'italic 32px '+CARD_FONT,W-150,3):2;
+    let y=py+ph+72;                 // name
+    y+=84;                          // -> title
+    y+=titleLines*84+52;            // title
+    y+=66;                          // element line
+    y+=roastLines*42+46;            // roast
+    y+=6*52;                        // verdicts
+    const H=Math.round(y+40+236);   // gap + QR footer block
+    const c=document.createElement("canvas"); c.width=W; c.height=H;
+    const ctx=c.getContext("2d"); if(!ctx){ resolve(null); return; }
+    const finish=(img)=>{
+      ctx.fillStyle="#0e0a06"; ctx.fillRect(0,0,W,H);
+      const bg=ctx.createRadialGradient(W/2,330,40,W/2,330,820);
+      bg.addColorStop(0,hex+"4d"); bg.addColorStop(1,"#0e0a0600"); ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+      ctx.textAlign="center";
+      ctx.fillStyle="rgba(255,255,255,.7)"; ctx.font='800 30px '+CARD_FONT;
+      ctx.fillText(t("card.header"), W/2, 72);
+      ctx.save(); rrect(ctx,px,py,pw,ph,30); ctx.clip();
+      if(img) ctx.drawImage(img,px,py,pw,ph); else { ctx.fillStyle="#1a130c"; ctx.fillRect(px,py,pw,ph); }
+      ctx.restore();
+      ctx.lineWidth=7; ctx.strokeStyle=hex; rrect(ctx,px,py,pw,ph,30); ctx.stroke();
+      let yy=py+ph+72;
+      ctx.fillStyle="rgba(255,255,255,.72)"; ctx.font='700 34px '+CARD_FONT;
+      ctx.fillText(t("result.youare_named",{name:(playerName||t("share.you"))}), W/2, yy); yy+=84;
+      ctx.fillStyle=hex; ctx.font='900 80px '+CARD_FONT;
+      yy=wrapCentre(ctx,R.title.t,W/2,yy,W-120,84,3); yy+=52;
+      ctx.fillStyle="#fff"; ctx.font='800 34px '+CARD_FONT;
+      ctx.fillText(fitLine(ctx,t("result.elementLine",{emoji:R.el.emoji,name:R.el.name})+(A.name?"  ·  "+t("result.auraLine",{name:A.name}):""),W-120), W/2, yy); yy+=66;
+      ctx.fillStyle="rgba(255,255,255,.85)"; ctx.font='italic 32px '+CARD_FONT;
+      yy=wrapCentre(ctx,t("quote.open")+R.title.r+t("quote.close"),W/2,yy,W-150,42,3); yy+=46;
+      ctx.textAlign="left"; const lx=96, rx=W-96;
+      const rows=[["🪄",v.house],["🍕",v.pizza],["🪴",v.plant],["🥂",v.drink],["🥔",v.crisp],["🪑",v.stool]];
+      ctx.font='600 31px '+CARD_FONT;
+      rows.forEach(([ic,txt])=>{
+        ctx.fillStyle="#fff"; ctx.fillText(ic,lx,yy);
+        ctx.fillStyle="rgba(255,255,255,.92)";
+        ctx.fillText(fitLine(ctx,txt,rx-lx-58), lx+58, yy);
+        yy+=52;
+      });
+      drawCardFooter(ctx,W,H,hex);
+      resolve(c.toDataURL("image/jpeg",0.92));
+    };
+    if(window.__auraPhoto){ const im=new Image(); im.onload=()=>finish(im); im.onerror=()=>finish(null); im.src=window.__auraPhoto; }
+    else finish(null);
+  });
+}
+
+async function saveAuraCard(){
+  const R=window.__lastResult; if(!R) return;
+  toast(t("card.building"));
+  let url; try{ url=await buildAuraCard(R); }catch(e){ url=null; }
+  if(!url){ toast(t("card.cantbuild")); return; }
+  const name=((playerName||"aura").replace(/[^\w-]+/g,"_"))+"-aura-card.jpg";
+  // try the native share sheet (Instagram/WhatsApp/etc) on mobile
+  try{
+    const blob=await (await fetch(url)).blob();
+    const file=new File([blob],name,{type:"image/jpeg"});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file], title:t("card.shareTitle"), text:`${playerName||t("share.i")} — ${R.title.t} ${R.el.emoji}`});
+      return;
+    }
+  }catch(e){ if(e && e.name==="AbortError") return; /* else fall through to download */ }
+  const a=document.createElement("a"); a.href=url; a.download=name;
+  document.body.appendChild(a); a.click(); a.remove();
+  toast(t("card.saved"));
+}
+
+function loadImg(src){ return new Promise(res=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=()=>res(null); im.src=src; }); }
+
+function buildTableCard(){
+  return new Promise(resolve=>{
+    const tbl=loadTable(); if(!tbl.length){ resolve(null); return; }
+    const W=1080, top=232, rowH=172;
+    const champ=k=>{ let b=tbl[0]; tbl.forEach(p=>{ if((p.score?.[k]||0)>(b.score?.[k]||0)) b=p; }); return b.name; };
+    const supers=[["🔥",t("super.chaotic"),champ("f")],["🌿",t("super.warmest"),champ("e")],
+                  ["✨",t("super.main"),champ("a")],["🌊",t("super.deepest"),champ("w")]];
+    const supersTop = top + tbl.length*rowH + 36;
+    const H = supersTop + 64 + supers.length*52 + 240;
+    Promise.all(tbl.map(p=> p.thumb ? loadImg(p.thumb) : Promise.resolve(null))).then(imgs=>{
+      const c=document.createElement("canvas"); c.width=W; c.height=H;
+      const ctx=c.getContext("2d"); if(!ctx){ resolve(null); return; }
+      ctx.fillStyle="#0e0a06"; ctx.fillRect(0,0,W,H);
+      const bg=ctx.createRadialGradient(W/2,200,40,W/2,200,900);
+      bg.addColorStop(0,"#ffd24a33"); bg.addColorStop(1,"#0e0a0600"); ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+      ctx.textAlign="center";
+      ctx.fillStyle="#fff"; ctx.font='900 92px '+CARD_FONT; ctx.fillText(t("card.tableHeader"), W/2, 120);
+      ctx.fillStyle="rgba(255,255,255,.7)"; ctx.font='800 32px '+CARD_FONT;
+      ctx.fillText(t("card.tableSub"), W/2, 174);
+      ctx.textAlign="left";
+      tbl.forEach((p,i)=>{
+        const ry=top+i*rowH, s=128, sx=70, sy=ry+(rowH-s)/2-12, tint=p.tint||"#ffd24a";
+        ctx.save(); rrect(ctx,sx,sy,s,s,22); ctx.clip();
+        if(imgs[i]) ctx.drawImage(imgs[i],sx,sy,s,s);
+        else { ctx.fillStyle="#1a130c"; ctx.fillRect(sx,sy,s,s); ctx.fillStyle="#fff"; ctx.font='70px '+CARD_FONT; ctx.textAlign="center"; ctx.fillText(p.emoji||"👤",sx+s/2,sy+s/2+24); ctx.textAlign="left"; }
+        ctx.restore();
+        ctx.lineWidth=5; ctx.strokeStyle=tint; rrect(ctx,sx,sy,s,s,22); ctx.stroke();
+        const tx=sx+s+34;
+        ctx.fillStyle="#fff"; ctx.font='800 44px '+CARD_FONT; ctx.fillText(fitLine(ctx,p.name||"—",W-tx-60), tx, ry+62);
+        ctx.fillStyle=tint;   ctx.font='800 32px '+CARD_FONT; ctx.fillText(fitLine(ctx,p.title||"",W-tx-60), tx, ry+106);
+        ctx.fillStyle="rgba(255,255,255,.7)"; ctx.font='600 27px '+CARD_FONT;
+        ctx.fillText(fitLine(ctx,(p.aura?"👁 "+p.aura+"  ·  ":"")+(p.house||""),W-tx-60), tx, ry+144);
+      });
+      ctx.textAlign="center"; ctx.fillStyle="#ffd24a"; ctx.font='900 36px '+CARD_FONT;
+      ctx.fillText(t("card.tableSupers"), W/2, supersTop+10);
+      ctx.textAlign="left";
+      supers.forEach(([ic,label,nm],i)=>{
+        const yy=supersTop+58+i*52;
+        ctx.fillStyle="rgba(255,255,255,.92)"; ctx.font='700 30px '+CARD_FONT;
+        ctx.fillText(fitLine(ctx,`${ic}  ${label}:  ${nm}`,W-160), 80, yy);
+      });
+      drawCardFooter(ctx,W,H,"#ffd24a");
+      resolve(c.toDataURL("image/jpeg",0.92));
+    });
+  });
+}
+
+async function saveTableCard(){
+  if(!loadTable().length){ toast(t("table.emptyToast")); return; }
+  toast(t("card.tableBuilding"));
+  let url; try{ url=await buildTableCard(); }catch(e){ url=null; }
+  if(!url){ toast(t("card.cantbuild")); return; }
+  const name="the-table-aura.jpg";
+  try{
+    const blob=await (await fetch(url)).blob();
+    const file=new File([blob],name,{type:"image/jpeg"});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file], title:t("card.tableShareTitle")});
+      return;
+    }
+  }catch(e){ if(e && e.name==="AbortError") return; }
+  const a=document.createElement("a"); a.href=url; a.download=name;
+  document.body.appendChild(a); a.click(); a.remove();
+  toast(t("card.saved"));
+}
+
+/* ---------------- TABLE (localStorage) ---------------- */
+const STORE="war_table_v1";
+function loadTable(){ try{ return JSON.parse(localStorage.getItem(STORE))||[]; }catch(e){ return []; } }
+function saveTable(t){ try{ localStorage.setItem(STORE, JSON.stringify(t)); }catch(e){} }
+
+function addToTable(){
+  const R = window.__lastResult; if(!R) return;
+  const tbl = loadTable();
+  tbl.push({
+    name: playerName || t("table.mystery"),
+    title: R.title.t,
+    emoji: R.el.emoji,
+    element: R.el.name,
+    score: R.prof.score,
+    house: R.verdicts.house,
+    aura: window.__aura ? window.__aura.name : null,
+    tint: (window.__aura && window.__aura.hex) || R.el.hex,
+    thumb: window.__auraThumb || null,
+  });
+  saveTable(tbl);
+  toast(t("table.added"));
+  renderTable();
+  show("table");
+}
+
+function renderTable(){
+  const tbl = loadTable();
+  refreshTableButtons();
+  const sup=$("#supers"), pl=$("#players");
+  if(!tbl.length){
+    sup.innerHTML="";
+    pl.innerHTML=`<p class="empty">${t("table.empty")}</p>`;
+    return;
+  }
+  const champ=(elKey,labelEmoji,label)=>{
+    let best=tbl[0];
+    tbl.forEach(p=>{ if((p.score?.[elKey]||0) > (best.score?.[elKey]||0)) best=p; });
+    return `<div class="super">${labelEmoji} <b>${label}:</b> ${esc(best.name)}</div>`;
+  };
+  const avgF = Math.round(tbl.reduce((s,p)=>s+(p.score?.f||0),0)/tbl.length/10*100);
+  sup.innerHTML =
+    champ("f","🔥",t("super.chaotic"))+
+    champ("e","🌿",t("super.warmest"))+
+    champ("a","✨",t("super.mainBig"))+
+    champ("w","🌊",t("super.deepest"))+
+    `<div class="super">📊 <b>${t("table.readingLabel")}</b> ${t("table.readingPct",{pct:avgF})}</div>`;
+  pl.innerHTML = tbl.map((p,idx)=>`
+    <div class="player">
+      ${p.thumb ? `<img src="${p.thumb}" class="pphoto" style="border-color:${p.tint||'#1d1206'}" alt="">` : `<span class="pemo">${p.emoji}</span>`}
+      <div style="flex:1">
+        <div class="pname">${esc(p.name)}</div>
+        <div class="ptitle">${esc(p.title)}${p.aura?` &middot; 👁 ${esc(p.aura)}`:` &middot; ${esc(p.house)}`}</div>
+      </div>
+      <button class="ghost" style="width:auto;margin:0" data-rm="${idx}">✕</button>
+    </div>`).join("");
+  pl.querySelectorAll("[data-rm]").forEach(b=>{
+    b.onclick=()=>{ const t2=loadTable(); t2.splice(+b.dataset.rm,1); saveTable(t2); renderTable(); };
+  });
+}
+
+function refreshTableButtons(){
+  const n = loadTable().length;
+  const top=$("#toTableTop");
+  top.style.display = n? "block":"none";
+  $("#tableCountTop").textContent = n;
+}
+
+$("#newPlayerBtn").onclick=()=>{ resetIntro(); playerName=""; $("#name").value=""; show("intro"); $("#name").focus(); };
+$("#clearTableBtn").onclick=()=>{
+  if(loadTable().length && confirm(t("table.confirmClear"))){ saveTable([]); renderTable(); }
+};
+$("#shareTableBtn").onclick=()=>{
+  const tbl=loadTable();
+  if(!tbl.length){ toast(t("table.emptyToast")); return; }
+  const txt = t("table.copyHeader")+"\n\n"+
+    tbl.map(p=>`${p.emoji} ${p.name}: ${p.title}`).join("\n");
+  copyText(txt); toast(t("table.copied"));
+};
+$("#saveTableBtn").onclick=saveTableCard;
+$("#toTableTop").onclick=()=>{ renderTable(); show("table"); };
+
+/* ---------------- START / RESET ---------------- */
+function startGame(){
+  activeQ = dealQuestions(N_QUESTIONS);
+  answers = [];
+  current = 0;
+  setAccent("#ff5a3c");
+  renderQuestion();
+  show("quiz");
+}
+function resetIntro(){ setAccent("#ff5a3c"); window.__aura = null; window.__auraPhoto = null; window.__auraThumb = null; window.__auraFeat = null; window.__auraSrc = null; window.__auraReadout = null; window.__auraSubject = null; window.__auraMask = null; }
+
+$("#startBtn").onclick=()=>{
+  playerName = $("#name").value.trim();
+  startGame();
+};
+$("#name").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#startBtn").click(); });
+
+/* ---------------- MISC UI ---------------- */
+function esc(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
+
+let toastTimer;
+function toast(msg){
+  const t=$("#toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove("show"),2200);
+}
+function copyText(txt){
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).catch(()=>fallbackCopy(txt)); }
+  else fallbackCopy(txt);
+}
+function fallbackCopy(txt){
+  const ta=document.createElement("textarea"); ta.value=txt; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); }catch(e){}
+  document.body.removeChild(ta);
+}
+
+function confetti(){
+  const box=$("#confetti");
+  const emojis=["🍕","🪴","🪄","🥂","🔥","🌿","✨","🌊","🍺","🎉"];
+  for(let i=0;i<28;i++){
+    const s=document.createElement("div");
+    s.className="conf"; s.textContent=emojis[(Math.random()*emojis.length)|0];
+    s.style.left=Math.random()*100+"vw";
+    const dur=2.2+Math.random()*1.8, delay=Math.random()*0.5, drift=(Math.random()*2-1)*120;
+    s.style.transition=`transform ${dur}s ease-in ${delay}s, opacity ${dur}s linear ${delay}s`;
+    box.appendChild(s);
+    requestAnimationFrame(()=>{
+      s.style.transform=`translate(${drift}px, 110vh) rotate(${(Math.random()*720-360)|0}deg)`;
+      s.style.opacity="0";
+    });
+    setTimeout(()=>s.remove(), (dur+delay)*1000+200);
+  }
+}
+
+/* ---------------- AURA SCAN (on-device camera vision) ---------------- */
+const AURAS_EN = {
+  f:{ bright:{name:"Solar Flare",     hex:"#ff7a18", read:"Pure kinetic energy. You walked in and the room's thermostat rose."},
+      deep:  {name:"Crimson Ember",   hex:"#d22f2f", read:"A banked fire — calm for now, but we all know what you're capable of."} },
+  e:{ bright:{name:"Spring Meadow",   hex:"#6fcf6f", read:"Warm and growing — faintly smells of fresh bread. People relax near you."},
+      deep:  {name:"Deep Forest",     hex:"#2f7d4f", read:"Rooted and unbothered. The steady one the whole table leans on."} },
+  a:{ bright:{name:"Electric Violet", hex:"#b06bff", read:"Crackling and magnetic, slightly chaotic. You are simply happening."},
+      deep:  {name:"Rose Quartz",     hex:"#e87fb0", read:"Soft glow, sharp wit — charm with a second blade hidden behind it."} },
+  w:{ bright:{name:"Cyan Tide",       hex:"#36c5d6", read:"Bright, clear, a little dreamy. Your thoughts run deeper than they look."},
+      deep:  {name:"Midnight Indigo", hex:"#3a4ea8", read:"Still waters. You've been quietly understanding everyone all night."} },
+};
+
+/* ============================================================
+   UI STRINGS + LANGUAGE TABLE
+   EN_UI: every non-content interface string, keyed.
+   UK_*: Ukrainian content (filled in below; aliased to EN until then).
+   ============================================================ */
+const EN_UI = {
+  "meta.title":"What Are You, Really?",
+  "meta.desc":"A pub party quiz: answer 5 cheeky questions, get an on-device aura scan, and an agent crowns you — spirit pizza topping, inner houseplant, Hogwarts house and more. Run it round the table and compare.",
+  // intro
+  "intro.h1":"What are you,<br>really?",
+  "tag.agent":"🤖 AI Agent",
+  "tag.vision":"👁 Vision",
+  "tag.pub":"🍺 Pub Mode",
+  "intro.sub":"Answer 5 cheeky questions, then we <b>scan your aura</b> 👁 — read from your answers <i>and</i> your camera — and an agent <b>crowns you</b>: pizza topping, inner houseplant, Hogwarts house and more, printed on your aura-tinted photo. Drawn fresh from a bank of <b id=\"bankCount\">120</b> questions, so every player gets a different 5. Run it round the table and compare.",
+  "intro.namelabel":"First, who's playing?",
+  "intro.nameph":"Your name…",
+  "intro.start":"Begin → 5 questions",
+  "intro.totable":"👀 Compare the table (<span id=\"tableCountTop\">0</span>)",
+  "intro.qralt":"Scan to play",
+  "intro.qrhint":"📲 Scan to play on your own phone — pass it round the table",
+  "intro.footer":"100% offline. Your photo is analysed on-device, shown only to you, and never saved or sent.",
+  // quiz
+  "quiz.qcount":"Question {n} of {total}",
+  "quiz.back":"← back",
+  // result
+  "result.youare_named":"{name}, you are…",
+  "result.youare":"You are…",
+  "result.elementLine":"{emoji} {name} element",
+  "result.auraLine":"{name} aura",
+  "result.savecard":"📥 Save / share my aura card",
+  "result.addme":"✋ Add me to the table",
+  "result.copytext":"📋 Copy text",
+  "result.retake":"↻ Retake",
+  "result.footer":"📸 Or screenshot this card. Your photo stays on your phone.",
+  "toast.copied":"Copied! Paste it in the chat 📋",
+  // share text
+  "share.i":"I",
+  "share.you":"You",
+  "share.auraLabel":"Aura",
+  "share.tagline":"— What Are You, Really?",
+  // aura card (canvas)
+  "card.header":"👁  WHAT ARE YOU, REALLY?",
+  "card.scantoplay":"Scan to play 📲",
+  "card.shareTitle":"What Are You, Really?",
+  "card.building":"Building your card…",
+  "card.cantbuild":"Couldn't build the card",
+  "card.saved":"Saved to your photos 📥",
+  "card.tableBuilding":"Building the table card…",
+  "card.tableHeader":"🍻  THE TABLE",
+  "card.tableSub":"WHAT ARE YOU, REALLY?",
+  "card.tableSupers":"✦  TABLE SUPERLATIVES  ✦",
+  "card.tableShareTitle":"What Are You, Really? — the table",
+  // table screen
+  "table.title":"The Table",
+  "table.sub":"Everyone who's been crowned tonight.",
+  "table.newplayer":"+ Crown the next victim",
+  "table.savecard":"📥 Save / share the table card",
+  "table.sharetext":"📋 Share text",
+  "table.clear":"Clear table",
+  "table.empty":"No one's been crowned yet.<br>Go on, you first.",
+  "table.emptyToast":"Table's empty!",
+  "table.confirmClear":"Clear everyone from the table?",
+  "table.copyHeader":"🍻 WHAT ARE YOU, REALLY? — the table:",
+  "table.copied":"Table copied 📋",
+  "table.added":"Added to the table 🍻",
+  "table.mystery":"Mystery guest",
+  "table.readingLabel":"Table reading:",
+  "table.readingPct":"roughly {pct}% pure chaos tonight",
+  "super.chaotic":"Most chaotic",
+  "super.warmest":"Warmest soul",
+  "super.main":"Main character",
+  "super.mainBig":"Biggest main character",
+  "super.deepest":"Deepest thinker",
+  // aura scan screen
+  "aura.title":"👁 Aura Scan",
+  "aura.holdstill":"Hold still… reading your energy field. (Stays on your phone.)",
+  "aura.calibrating":"Calibrating the aura sensor…",
+  "aura.reading":"Reading your 5 answers…",
+  "aura.matching":"Matching them to your colour temperature…",
+  "aura.crowning":"Crowning your aura ✨",
+  "aura.nocamera":"No camera here — switching to psychic mode 🔮",
+  "aura.camerashy":"Camera shy? No bother — psychic mode it is 🔮",
+  "aura.noread":"Couldn't get a clear read — psychic mode 🔮",
+  "aura.energyLine":"{emoji} {name} energy",
+  "aura.seeresult":"See my full result →",
+  "aura.rescan":"↻ Rescan my aura",
+  // photo readout
+  "readout.prefix":"👁 Read from your photo:",
+  "readout.dominant":"{hue} dominant",
+  "readout.hue.red":"red","readout.hue.orange":"orange","readout.hue.green":"green",
+  "readout.hue.teal":"teal","readout.hue.blue":"blue","readout.hue.violet":"violet","readout.hue.pink":"pink",
+  "readout.energy.high":"high-energy","readout.energy.calm":"calm","readout.energy.balanced":"balanced",
+  "readout.light.bright":"bright","readout.light.moody":"moody","readout.light.soft":"soft",
+  "readout.vibe.vivid":"vivid","readout.vibe.muted":"muted",
+  "readout.face.closeup":"close-up",
+  // typography
+  "quote.open":"“","quote.close":"”",
+};
+
+/* ---- Ukrainian content (culturally adapted, not literal) ---- */
+const BANK_UK = [
+["Твоя черга замовляти на всіх. Що береш?","🍺 Що найдешевше, чотири штуки, поїхали","🍵 «Я за кермом» — чай і моральна перевага","🍹 Коктейль із парасолькою та власною легендою","🍷 Одне добре вино, яке потім детально опишу"],
+["Вечір п'ятниці, від якого не нудить:","🔥 Гучний загул, поки не зірву голос","🏠 Вечеря, на яку я наготую вдесятеро більше","✨ Спонтанний хаос десь за три міста звідси","📺 Диван, плед і один дуже конкретний серіал"],
+["У спільному чаті ти з тих, хто…","😈 О третій ночі скидає дикий мем","📋 Планує все (так, є окрема табличка)","🫶 Гасить сварки й пам'ятає всі дні народження","🌀 Зникає на кілька днів, потім шле один абзац"],
+["Лишився останній шматок піци. Ти…","🤌 Береш. Він мій. Наступне питання","😇 Пропонуєш усім — і справді щиро","🎭 Пропонуєш голосно, щоб усі бачили","🔪 Ріжеш на дрібні дипломатичні шматочки"],
+["Твоя енергія в момент, коли заходиш на вечірку:","🔥 «НУ ЩО, ПОНЕСЛАСЯ» — двері ледь на петлях","🌿 одразу на кухню, шукати господарів","✨ коло по кімнаті, обіймаю кожного","🌊 тихо вишукую ту єдину людину, яку реально знаю"],
+["Твоя ідеальна відпустка — це…","🏔 В останній момент, без плану, кажу «так» усьому","🏡 Хата в селі, грубка й нікуди не треба","🌴 Там, де точно вийдуть круті фото","📖 Тиша, книжка і власні думки"],
+["Мікрофон у караоке дійшов до тебе. Ти…","🎤 Хапаєш без вагань — «Океан Ельзи», поїхали","☕ Аж занадто гучно вболіваєш за інших","💃 Ще з вівторка маєш заготовлену пісню","🙈 Раптово згадуєш про терміновий лист, треба написати"],
+["Як ти завантажуєш посудомийку?","🌀 Кидаю як попало, та й по всьому","📐 Є правильний спосіб, і я його знаю","🤷 Аби швидше й щоб похвалили","🧩 Тиха, ідеальна, продумана система"],
+["На телефоні 3% заряду. Ти відчуваєш…","⚡ Свободу. Хай сідає. Анархія","🔌 Спокій — у мене павербанк на всіх","😱 Паніку. А раптом щось пропущу","🧘 Чесно? Навіть трохи полегшення"],
+["На вечірці тебе найімовірніше знайдуть…","🕺 Посеред танцполу","🍳 На кухні, де ти всіх доглядаєш","🎙 Як розповідаєш історію дедалі більшому колу","🐈 За балачкою з однією людиною в тихому кутку"],
+["Твоя токсична риса — це…","🔥 «Ще по одній» — це завжди брехня","🫙 Я фізично не можу перестати всіх годувати","🎬 Я будь-що роблю трохи про себе","🌊 Я репетирую суперечки в душі"],
+["Обери сніданок:","🌶 Вчорашня холодна піца, стоячи","🍳 Нормальна яєчня з ковбасою, на всіх","🥑 Те, що найкраще виглядає в тарілці","☕ Кава, тиша, не говоріть до мене"],
+["Як ти ухвалюєш рішення?","🎲 Нутром, миттєво, без права на відкат","⚖️ Плюси, мінуси, як буде розумніше","🗣 Питаю всіх, зчитую настрій","🌌 Переспати з думкою, відчути, потім вирішити"],
+["Суперсила мрії:","💥 Суперсила, очевидно","🛡 Зцілювати всіх навколо","✨ Телепорт одразу туди, де весело","🔮 Читати думки (так, це прокляття)"],
+["Компанія не може обрати, куди піти поїсти. Ти…","🚩 Просто обираєш одне — ГАЙДА","📞 Тихо бронюєш гарне місце","🎉 Пропонуєш новий модний заклад","🤔 Маєш напоготові три вивчені варіанти"],
+["Твій стиль листування:","‼️ КАПСОМ І ЧИСТОЮ ЕНЕРГІЄЮ","💬 Тепло, з купою уточнювальних питань","😎 Меми й гіфки, ідеально вчасно","📜 Один вдумливий абзац, через кілька годин"],
+["Настілка стає на принцип. Ти…","♟ Граєш на перемогу, без полонених","🤝 Стежиш, щоб нікого не лишили осторонь","🎭 Забезпечуєш живий коментар і драму","🕵️ Тихо й підозріло перемагаєш"],
+["Ідеальний улюбленець:","🐺 Щось трохи дикувате","🐕 Відданий пес, який не може без мене","🦜 Щось барвисте й показне","🐈 Кіт, що засуджує мене щодня"],
+["Ти запізнюєшся. Ти…","🏃 Біжиш, хаос, але якось встигаєш","📅 Ти ніколи не запізнюєшся — закладаєш час на затори","🤳 Приходиш пізно, зате ефектно","😔 Усю дорогу накручуєш себе через це"],
+["По дорозі додому ллє як з відра. Ти:","🔥 біжиш крізь зливу, гукаючи як навіжений","🌿 ділишся курткою і женеш усіх під дах","✨ зупиняєшся на драматичне фото під дощем, авжеж","🌊 потай це обожнюєш і занурюєшся в тихі роздуми"],
+["Твоє абсолютне пекло — це:","📋 Сидіти тихо й чітко дотримуватись правил","🤼 Дозволити комусь готувати замість мене","🙊 Коли тебе не помічають на вечірці","🗣 Світська балачка з геть незнайомими"],
+["На картку впали гроші. Перший крок:","🎰 Спонтанна, трохи божевільна покупка","🏦 Розумно — заощадження, комуналка, смаколики","🛍 Пригостити всіх і виглядати щедро","📊 Тижнями досліджувати, на що витратити оптимально"],
+["Друзі телефонують тобі по…","🚀 Шалений план і водія для втечі","🩹 Обійми, гарячий суп і відверту розмову","🎟 Бо ти точно знаєш, що цікавого на ці вихідні","🧭 Спокійну, чітку пораду о другій ночі"],
+["Який у тебе вигляд кімнати?","🌪 Організований хаос — я знаю, де що лежить","🛏 Затишно, чисто, свічки напоготові","🖼 Усе продумано й дуже фотогенічно","📚 Радше прихисток, повно книжок"],
+["Wi-Fi зник на цілий день. Ти…","🎉 Супер — ходімо робити якусь дурню","🍲 Готую, прибираю, щасливо порпаюся вдома","😵 Тобто як це, що мені ТЕПЕР робити","🕯 Блаженство. Нарешті. Трохи спокою"],
+["Заходиш у напхану маршрутку. Ти з тих, хто:","🚪 стоїть біля дверей, напоготові вистрибнути на своїй","🧺 врешті допомагає незнайомцю із сумками","🪟 займає місце біля вікна — заради краєвиду (і контенту)","🎧 вставляє навушники й повністю зникає"],
+["Хтось плаче за столом. Ти…","💪 Йдеш шукати того, хто винен","🤗 Одразу поруч: серветки й повна підтримка","🍸 Розряджаєш атмосферу влучним жартом","👂 Просто сидиш і слухаєш, по-справжньому"],
+["Ідеальна неділя:","🚵 Пригода, трохи занадто амбітна","🥘 Великий обід, родина, один довгий стіл","🥂 Довгий пізній сніданок з усією компанією","🛁 Ванна, подкаст, нуль людей"],
+["Твоя роль у банді на пограбування?","💣 Відчайдушна сила","🧰 Завжди з перекусом і планом Б","😏 Чарівне відвернення уваги","🧠 Мозок операції в мікроавтобусі"],
+["Тобі роблять щирий комплімент. Ти…","😎 «Я знаю.»","🥰 Миттєво переводиш його на когось іншого","💁 Світишся від нього цілий тиждень","🫣 Зависаєш і не віриш"],
+["«Плани на вихідні є?» Чесна відповідь:","🔥 «без планів = максимум планів, тримай телефон увімкненим»","🌿 «приймаю гостей — смаколиків уже ціла гора»","✨ «щось миле, гарне світло, деталі згодом»","🌊 «прекрасно нічого, і мене не дістати»"],
+["Музика в твоїх руках. Ти вмикаєш…","🎸 Самі хіти, без пропусків, на повну","🎶 Те, що знають і люблять усі","🪩 Те, що зараз неймовірно модне","🎻 Нішеву пісню з цілою передісторією"],
+["Як ти сваришся?","🌋 Гучно, швидко, і за п'ять хвилин усе","🕊 Уникаю взагалі, зберігаю мир","🎤 Виграю публіку, а не саму суть","📝 Спокійно, нищівно, через три дні"],
+["Ідеальне перше побачення:","🎢 Щось гостре й трохи божевільне","🍝 Готуємо разом удома","🍸 Бар на даху і дуже вдалий образ","🚶 Довга прогулянка і глибока-глибока розмова"],
+["У кімнату залетіла оса. Ти з тих, хто:","🔥 оголошує війну й хапає найближчу зброю","🌿 спокійно відчиняє вікно й випроваджує її","✨ верещить, а тоді в прямому ефірі коментує всю сагу","🌊 уже тихенько вислизає з кімнати"],
+["Тобі привалив куш. Компанія дізнається через…","📢 Тебе, з криком, негайно","🎁 Подарунки, що загадково починають з'являтися","📸 Раптово дуже дорогу естетику","🤐 Ніяк — ти кажеш одній людині"],
+["Що найшвидше псує тобі день?","⛓ Коли кажуть «пригальмуй»","😞 Коли засмучена близька людина","🚫 Коли тебе лишили поза планами","🌀 Незавершена, незручна розмова"],
+["Лишаєш записку сусідові по квартирі. У ній:","✍️ «МЕНЕ НЕ ЧЕКАЙ. БУДУ КОЛИСЬ.» — ледь читабельно","🧁 тепла записка з усім, що йому знадобиться","🖋 щось миле з невеличким малюнком","🔬 акуратний абзац, продуманий аж занадто"],
+["Обери закуску на всіх:","🌶 Щось небезпечно гостре","🧀 Щедру нарізку, аж стіл вгинається","🍓 Щось гарне й інстаграмне","🫒 Смак на любителя, який ти захищатимеш"],
+["Тобі впала вільна година. Ти…","🛹 Робиш щось трохи ризиковане","🧹 Викреслюєш справу зі списку, кайфуєш","📲 Дивишся, хто вільний, і складаєш план","🎨 Тихе хобі, про яке ніхто не знає"],
+["Спрацювала пожежна тривога. Ти з тих, хто…","🚒 Уже надворі й організовує людей","🧯 Хапає кота й аптечку","🤳 Знімає все для сторіз","🚪 Спокійно й тихо виходить першим"],
+["Обери напій на завершення вечора:","🥃 Фінальна чарка, а чом би й ні","🍫 Гаряче какао, капці на ноги","🍾 Ще келих чогось ігристого","🍵 Чай і глибокий розбір польотів"],
+["До компанії приєднується новачок. За годину ти вже:","⚡ підбиваєш його на те, про що він пошкодує","🤲 годуєш його й дізнаєшся всю історію його життя","🌟 а він уже від тебе в захваті","🧩 тихо його зчитуєш і притримуєш висновки"],
+["Як ти збираєшся в дорогу?","🎒 Кидаєш усе в сумку за годину до виходу","🧳 Список, усе складене, плюс запас для інших","👗 Образи сплановані під кожен випадок","📦 Мінімум, продумано, рівно стільки, скільки треба"],
+["Незнайомець питає в тебе дорогу. Ти…","🗺 Проводжаєш його аж півдороги","🤝 Терпляче поясниш двічі, якщо треба","😄 Робиш із цього цілий приємний момент","🤓 Даєш реально оптимальний маршрут"],
+["Твій внутрішній монолог — це переважно…","🥁 «Погнали»","🍯 «У всіх усе добре?»","🎬 «А як це виглядає збоку?»","🌌 «Але що це все означає?»"],
+["Якби сьогодні був фільм, трейлер обіцяв би:","💥 вибухи й сумнівні рішення, без гальм","🎄 теплу історію, де всі безпечно дістаються додому","🎩 гламурну авантюру з нереальним гардеробом","🎭 повільну драму, що веде до однієї великої сцени почуттів"],
+["Час спільного фото. Ти…","🤪 Робиш навмисне дурне обличчя","📸 Тримаєш усім келихи","💁 Ловиш свій ракурс — ти його знаєш","😬 Тихо сподіваєшся, що це скоро скінчиться"],
+["Твій стіл чи робоче місце:","🌩 Розкішний безлад на чистому драйві","🪴 Чисто, вазон, смаколики для гостей","🖼 Естетично й зі світлом під відеодзвінки","🧠 Мінімум, фокус, навушники на голові"],
+["У барі твоя роль…","🎉 Заводій хаосу","🚕 Розвозиш усіх по домівках","📣 Генератор хайпу","🛟 Людина-жилетка"],
+["Як ти переживаєш дуже довгу чергу?","😤 Уголос думаєш, чи не піти по-тихому","😌 Заводиш балачку з сусідом по черзі","🤳 Робиш із цього контент","🧘 Зникаєш у власних думках"],
+["Твій фірмовий танцювальний рух:","🤸 Шалений, на повну, без жодної техніки","👏 Той, що змушує інших приєднатися","🕺 Плавний, відрепетируваний, чесно іконічний","🫠 Непомітне переступання з ноги на ногу під стіною"],
+["Що зараз у тебе в сумці?","🔦 Щось ледь хаотичне","🩹 Пластир, м'ятні цукерки й щось про запас — для тебе","💄 Найнеобхідніше, красиво підібране","📓 Блокнот і три ручки"],
+["План змінюється в останню мить. Ти…","🙌 Кайфуєш — так навіть краще","🛠 Тихо лагодиш усю логістику","🎲 Перекручуєш це на щось іще веселіше","😮‍💨 Береш хвилинку, щоб перелаштуватися"],
+["Хтось кричить «спільне фото!». Ти:","🔥 вистрибуєш наперед з дурним обличчям","🌿 зганяєш відсталих, щоб нікого не лишити","✨ уже знаєш свій ракурс і своє світло","🌊 відпливаєш до краю й напівховаєшся ззаду"],
+["Твоя мова любові — це…","🎢 Пригоди разом","🍲 Турбота вчинками (і суп)","🎁 Подарунки й широкі жести","💬 Довгі, відверті, глибокі розмови"],
+["За вечерею спалахує суперечка. Ти…","🥊 Кидаєшся в неї, обираєш бік, стоїш до кінця","🕊 Намагаєшся знайти золоту середину","🎤 Легенько підкидаєш дровець заради видовища","🤫 Тихо тримаєш насправді найкращий аргумент"],
+["Як ти прокидаєшся?","🚀 Будильник раз, підйом, ВПЕРЕД","☕ Повільно, чайник на плиту, ніжно","🌅 Одразу в телефон","😴 Дрімота, роздуми, врешті встаю"],
+["Обери побічний квест:","🧗 Залізти туди, куди не можна","🛒 Допомогти комусь із переїздом","🎤 Завалитися в караоке-бар","🗺 Годинами блукати незнайомим містом наодинці"],
+["Як тебе прозвали в компанії:","🌶 Наше стихійне лихо","🐻 Мама/тато компанії","⭐ Зірка компанії","🦉 Мудрець"],
+["Приносять рахунок. Ти…","💳 «Я заплачу — потім скинетесь»","➗ Тихо рахуєш справедливу частку кожного","😅 Саме відлучаєшся в туалет","🧮 Рахуєш точно, до копійки"],
+["Ідеальний вечір удома:","🎮 Турнір, снеки, підколки","🍪 Спекти щось і ввімкнути фільм","🍷 Вечеря, яку ти оформиш зі смаком","📺 Одна людина, один серіал, без розмов"],
+["Плануєте поїздку з друзями. Ти з тих, хто:","🏍 хоче без плану й «подивитися, що буде»","🚐 організовує бус, щоб усі помістилися","✈️ планує приїзд так, щоб це був справжній Момент","🚂 просто хоче довгий нічний потяг і темне вікно"],
+["Твоя реакція на справді хорошу новину?","🎆 Крик, обійми, негайні плани","🥹 Плачеш від щастя, а тоді йдеш годувати","📢 Розповідаєш геть усім","😊 Тихе, тепле, глибоке сяйво всередині"],
+["Ти відповідаєш і за плейлист, і за частування:","🌭 Гучні пісні, гаряча їжа, потужна енергія","🥪 Затишна класика, удосталь на всіх","🍸 Модні треки й гарна закусочна дошка","🎼 Настрій, вайб, повільне наростання"],
+["Твоя найгірша звичка у спільному чаті:","🚨 47 повідомлень поспіль","🥲 Лайкаю все, не відповідаю ні на що","🪞 Зводжу все назад до себе","👻 Зникаю на цілий тиждень"],
+["Ти на крихітному острові. Твоя робота там:","🚁 робиш щось відчайдушне зі скель","🏡 тримаєш корчму, годуєш кожного заблукалого","🎤 ведеш єдине на острові хаотичне ток-шоу","🔭 доглядаєш маяк — і повний спокій на самоті"],
+["Як ти даєш поради?","💢 Жорстка чесність, швидко","🤲 М'яко, з підтримкою і печивом","🪄 Чарівно переформулюю — і тобі вже добре","🧭 Вдумливі питання, поки сам не дійдеш"],
+["На вечірці вимкнули світло. Ти…","🔦 Береш керівництво й робиш із цього гру","🕯 Знаходиш свічки й усіх заспокоюєш","🎉 Оголошуєш це найкращою частиною вечора","👁 Тихо насолоджуєшся моторошним новим вайбом"],
+["Друга ночі, а ти ще не спиш, бо:","🌃 ніч навідріз відмовляється закінчуватися","🌇 перевіряю, чи всі дісталися додому","🪩 найкращі розмови щойно почалися","🌫 мозок просто не вимикається"],
+["Відкрий галерею. Там переважно:","🗡 хаотичні кадри того, чого мені, мабуть, не варто було","🧶 люди, яких я люблю, і страви, що я їм готую","📸 образи, дзеркала й красива дурня","📚 скріншоти, цитати й 200 майже однакових неб"],
+["Хтось лізе без черги. Ти…","😠 Одразу щось кажеш","😶 Зітхаєш, махаєш рукою, зберігаєш мир","🙄 Кидаєш гучну дотепну ремарку","📒 Береш на замітку й мовчки засуджуєш довіку"],
+["Ідеальний суботній ранок:","🚴 Рано встати заради великої пригоди","🥞 Млинці на всю родину","🛍 Базар, кава, себе показати","🌿 Прогулянка наодинці, поки світ ще спить"],
+["Що ти заспіваєш на біс у караоке?","🎸 Щось, про що пошкодують мої голосові зв'язки","🎶 Дует, витягую тебе теж","🌟 Коронний номер, що тримаю напоготові","🥲 Душевну баладу, якої ніхто не просив"],
+["Як ти заходиш у приміщення?","🚪 Гучно — двері аж розчахуються","👋 Вітаючи кожного на ім'я","💫 Наче я потай знаменитість","🤫 Прослизаю, знаходжу край, спостерігаю"],
+["Твій контакт для екстрених випадків сказав би, що ти…","🌪 Ходяча халепа і легенда","🛡 Найнадійніші руки","🎭 Ніколи не нудно, зате часто запізнюєшся","🌊 Важко зчитати, але воно того варте"],
+["Важкий день. Твоя кнопка перезавантаження:","🥊 випотіти це — зал, пробіжка, щось жорстке","🧁 спекти щось спеціально для когось іншого","🛍 маленький дарунок собі й прогулянка під свій саундтрек","📖 читати в повній тиші, телефон в іншій кімнаті"],
+["Компанію треба підбадьорити. Ти…","🎇 Плануєш щось зухвале","🍜 Готуєш і питаєш у кожного, як справи","🤡 Просто стаєш розвагою","🫂 Пишеш кожному щире особисте повідомлення"],
+["Шпалери на твоєму телефоні — це…","🏎 Щось швидке чи зухвале","👨‍👩‍👧 Люди, яких я люблю","🌅 Мій власний розкішний кадр","🌌 Щось мрійливе й абстрактне"],
+["Твоя фірмова фраза:","🔥 «Погнали.»","🌿 «Ти поїв?»","✨ «Дивись сюди.»","🌊 «Я тут подумав…»"],
+["У парку розваг ти прямуєш одразу до:","🎢 найвищих, найстрашніших гірок — двічі","🎠 каруселі, тримаючи чиюсь малечу","🎡 колеса огляду заради краєвиду й фото","🪞 дивної кімнати кривих дзеркал, наодинці, і кайфую"],
+["Твоя реакція на сюрприз-вечірку:","🎉 Крик, а тоді кермуєш усією вечіркою","🥹 Плачеш, потім дякуєш кожному окремо","📸 Позуєш — це золотий контент","😳 Реально не знаєш, куди подітися"],
+["Хатня робота, яку ти потай любиш:","🔨 Агресивне генеральне прибирання-бліц","🍳 Готувати на всіх","🪟 Наводити красу","🧺 Тихе, методичне складання білизни"],
+["Обери спосіб вирішити нічию:","🪨 Камінь-ножиці-папір, до першої перемоги","🤝 Проговорити, поки всі не задоволені","🎤 Перемагає той, хто смішніше аргументує","🎲 Складна справедлива система, яку я придумаю"],
+["Ідеальний день народження:","🎆 Масштабний, божевільний загул","🏡 Близькі друзі, домашня їжа, затишок","🥂 Гламурний вечір із дрес-кодом","🌄 Кудись у тишу — просто втекти"],
+["Твоя роль у спільній поїздці?","🧭 Відповідаєш за вайб і хаос","💼 Ведеш касу й маршрут","📣 Бойовий дух і фотографії","🗺 Знаходиш приховані перлини"],
+["З'явився павук. Ти…","🩴 Розбираєшся з ним, драматично","🥤 Спокійно рятуєш його склянкою і листівкою","🙀 Верещиш, потім переказуєш усю сагу","🧍 Шанобливо спостерігаєш здалеку"],
+["З'явилася машина часу. Ти негайно:","⚔️ вирушаєш туди, де дико й, мабуть, небезпечно","🏰 навідуєш затишніші, простіші часи й застрягаєш надовго","🎷 летиш у блискучі двадцяті в шикарному вбранні","🪐 пливеш у дивне далеке майбутнє — глянути, чим усе скінчиться"],
+["Як ти святкуєш перемогу?","🍾 Гучно, негайно, запрошені всі","🥧 Спекти щось і пригостити всіх","📱 Дуже ретельно зроблений допис","😌 Тихе, особисте, глибоке задоволення"],
+["Твій вираз обличчя за замовчуванням:","😼 Щось замишляю","🙂 Відкритий і теплий","😏 Пустотливо-чарівний","🤨 На півдумці, десь не тут"],
+["Офіціант приніс не те. Ти…","🗣 Просиш замінити — без драми, просто виправити","🤐 З'їдаєш; не хочеш зчиняти галас","🎭 Робиш із цього милий жарт","😬 Тихо приймаєш свою нову долю"],
+["Завтра про тебе дізнається весь інтернет. За що:","🏆 трюк, який ніхто не вважав за виживний","🌍 тихо робиш щось добре, а це знімають на камеру","✨ за твою невимушену, до дратівливості, іконічність","🧠 одна дивна геніальна ідея, що перепрошила людям мізки"],
+["Твої стосунки з планами:","🎯 Плани — для боягузів","🗓 Плани — це любов, я їх складаю","🎈 Вільні плани, потужна енергія","🧷 Детальні плани, потай, про всяк випадок"],
+["Вечірка згасає. Ти…","⚡ Воскрешаєш її дикою ідеєю","🚖 М'яко розводиш усіх безпечно по домівках","🎤 Останній сплеск чистого шоуменства","🌙 Тихенько зникаєш, не прощаючись"],
+["Обери, яка ти кухонна техніка:","🔥 Газова плита на всіх конфорках","🍞 Надійний тостер","☕ Модна кавомашина","🫖 Повільний терплячий чайник"],
+["Чат без тебе був би…","💤 Чесно кажучи, трохи нудним","🧱 Хаосом — ніхто не організовує","🎈 Тихішим, з меншим блиском","🤔 Без свого філософа"],
+["Як ти поводишся, коли неправий?","🔄 Гучний розворот — і знову з повним переконанням","🙏 Тепло вибачаюся і виправляю","😅 Чарівністю прослизаю наскрізь","🪞 Десятиліттями прокручую це в голові"],
+["Обери ятку на ярмарку вихідного дня:","🌶 Гострі соуси й виклики «на слабо»","🍲 Суп і добра розмова","🌸 Гарні речі ручної роботи","📜 Рідкісні букіністичні книжки"],
+["Ідеальний для тебе комплімент:","💪 «Ти — стихія»","🤲 «Ти завжди про всіх дбаєш»","✨ «Ти освітлюєш кімнату»","🌊 «Ти по-справжньому бачиш людей»"],
+["Вечір завершився. Твоє останнє повідомлення:","🌟 «НАЙКРАЩИЙ вечір — повторимо скоро?!»","❤️ «Дісталися додому? Напишіть»","📸 «Викладаю це негайно»","🌙 «Дякую за сьогодні. Дуже треба було.»"],
+["Обери тату, яке зробиш собі:","⚡ Щось зухвале й імпульсивне","🌳 Символ дому й коріння","🌹 Щось красиве й на видноті","🌊 Крихітне, значуще, таємне"],
+["Твій підхід до гострої їжі:","🌶 Найгостріше в меню — і то буде замало","🍚 Негостре й затишне, на всіх","🫦 Те, що в тренді й гарно виглядає","🧪 Цікаво й аналітично, по одній перчинці"],
+["На конкурсі талантів потрібен номер. Ти…","🎆 Зголошуєшся на щось небезпечне","🍰 Забезпечуєш частування й підтримку","🎩 Крадеш усе шоу, природно","🎹 Тихо бездоганно виконуєш щось тонке"],
+["Відкрився танцпол. Ти:","🦅 одразу на ньому, без розігріву","🐘 витягуєш сором'язливих, щоб нікого не лишити","🦚 точно в центрі, проживаю все своє життя","🐙 стережеш куртки з келихом, цілком щасливо"],
+["Твої останні десять повідомлень — переважно:","🔥 плани, хайп і «ПОНЕСЛАСЯ»","🫶 «ти як?» і сердечка долоньками","✨ меми й гіфки, ідеально вчасно","🥲 абзаци, надіслані на шість годин пізніше"],
+["Як ти даєш раду стресу?","🏋️ Спалюю його, жорстко і швидко","🧹 Прибираю й піклуюся про інших","🎉 Відволікаюся планами й людьми","📝 Веду щоденник, накручую себе, повільно все перетравлюю"],
+["Схема швидкого збагачення, на яку ти б купився:","🎰 Дика ставка з високим ризиком","🏡 «Розумна» нерухомість із другом","💼 Блискуча штука, яку всі хайплять","📈 Малозрозумілий план, який я геть задосліджую"],
+["Компанія не може зійтись на фільмі. Ти…","🎬 Просто вмикаєш щось гучне","🍿 Влаштовуєш чесне голосування","🌟 Просуваєш круте інді","🧠 Маєш ідеальний маловідомий варіант"],
+["Тобі подарували вазон. За пів року він:","🌋 якимось дивом квітне на чистій занедбаності","🤍 розкішно росте — я з ним щодня говорю","📷 обраний суто за вигляд (можливо, штучний)","🌧 науковий проєкт, за який я тихо переживаю"],
+["Виклик «на слабо» в барі. Ти…","😈 Уже роблю — що далі","🛟 Будеш відповідальним підстраховувачем","🎭 Робиш це з повним театром","🤔 Спершу обговориш умови"],
+["Вечір квізу — команда розраховує на тебе, щоб:","⚡ гатити по кнопці ще до кінця питання","🤝 тримати бойовий дух, коли ми ганебно програємо","🎤 заводити залу й чарувати ведучого","🧠 знати те єдине неможливе питання, якого ніхто не знав"],
+["Твоя роль на недільному сімейному обіді:","🔥 Розрізати м'ясо, з шиком","🥘 Радо готувати геть усе","🍷 Підбирати вино й накривати стіл","🥧 Тихо доводити до ідеалу підливу"],
+["Як ти прощаєшся?","🚪 Уже за дверима — без церемоній","🤗 Довгі обійми, «напиши, як дійдеш»","👋 Цілий прощальний тур кімнатою","🌙 Тихий помах рукою і тепло на душі"],
+["Обери хаотично-добру справу:","🦸 Зухвалий публічний порятунок","🍞 Тихо годувати сусідів","🎁 Грандіозний жест-сюрприз","🕊 Анонімний добрий вчинок"],
+["Твоя історія пошуку викрила б у тобі:","🚨 того, хто планує щось трохи відчайдушне","🩹 того, хто гарячково гуглить, як допомогти другові","🛍 «найкраще [модне] поруч», авжеж","🌌 того, хто о 2-й ночі три години тоне в екзистенційних роздумах"],
+["Компанії потрібен лідер. Ти…","👑 Уже керуєш — не відставайте","🧭 Ведеш, тихо все владнавши","📣 Ведеш, надихаючи всіх","🗳 Висуваєш правильну людину й радиш"],
+["Тобі несподівано випав вільний день. Ти:","🏔 їдеш кудись без плану й розбираєшся на місці","🛋 гніздишся вдома й відмовляєшся вдягати нормальні штани","🥐 пізній сніданок, а потім милі витівки по місту","📚 галерея, блокнот і приємна самотність"],
+["Твоя реакція на «давай по чарці»:","🥃 Уже замовляю","💧 «Мені води — але ви давайте»","🎉 «ТІЛЬКИ якщо вип'ємо з нормальним тостом»","🤨 «Уточни, хто такі „ми“ і скільки тих „чарок“»"],
+["Біля багаття потрібна історія. Ти розповідаєш…","👻 Найстрашнішу, на повну","🔥 Теплу, до якої долучаються всі","🎭 Дико прикрашену особисту легенду","🌌 Тиху, дивну, прекрасну оповідь"],
+["Останнє замовлення на сьогодні. Твоє:","🍻 «Те саме, ще раз, на всіх!»","🫖 «Чай? Хтось? Ні? Ну тоді сам.»","🍸 «Ще одну тієї модної»","🍷 «Тільки води, дякую — насувається велика дума»"]
+];
+
+const ELEMENTS_UK = {
+  f:{key:"f", name:"Вогонь", emoji:"🔥", word:"Іскра",   hex:"#ff5a3c", blurb:"сміливість, хаотична доброта, газ у підлогу без гальм"},
+  e:{key:"e", name:"Земля",  emoji:"🌿", word:"Вогнище", hex:"#3fae6b", blurb:"тепло, заземленість, безмежна гостинність"},
+  a:{key:"a", name:"Повітря",emoji:"✨", word:"Блиск",   hex:"#b06bff", blurb:"товариськість, дотепність, природжений центр уваги"},
+  w:{key:"w", name:"Вода",   emoji:"🌊", word:"Глибина", hex:"#2f8fe0", blurb:"вдумливість, чутливість, любов до прекрасних нічних роздумів"},
+};
+
+const TITLES_UK = {
+  "fe":{t:"Затишний палій",            r:"Розпалиш багаття — а тоді переконаєшся, що в кожного є плед."},
+  "fa":{t:"Головна подія",             r:"Ти не заходиш у кімнати — ти в них стаєшся. Виснажливо. Обожнюємо."},
+  "fw":{t:"Вибух у вповільненій зйомці",r:"Тижні спокою — а потім повідомлення о 2-й ночі, що сколихне весь чат."},
+  "ef":{t:"Ніжна загроза",             r:"Тихий голос — і нищівні погляди на те, як правильно вантажити посудомийку."},
+  "ea":{t:"Людина-обійми",             r:"Знаєш замовлення кожного й ім'я його колишнього. Ми завжди сідаємо біля тебе."},
+  "ew":{t:"Тиха гавань",               r:"Тобі розповідають усе. І жодного витоку — жодного разу. Поведінка святого."},
+  "af":{t:"Конфеті-гармата",           r:"100% вайбу, 0% плану — і чомусь щоразу все виходить."},
+  "ae":{t:"Блискучий господар",        r:"Влаштовуєш вечірку І миєш потім посуд. Рідкісний вид, чесно."},
+  "aw":{t:"Поет нічних роздумів",      r:"За столом смішить усіх, а потім щоночі згадує одне повідомлення з 2019-го."},
+  "wf":{t:"Тихий шторм",               r:"За весь вечір три слова. Усі три б'ють як грім."},
+  "we":{t:"Стара душа",                r:"Ніби тобі від народження 40, і ти молодшаєш назад; даєш поради, дорожчі за будь-які гроші."},
+  "wa":{t:"Мрійливий оповідач",        r:"Живеш у фільмі, який бачиш лише ти. Закадровий голос, чесно, неймовірний."},
+};
+
+const POOLS_UK = {
+  pizza:{ label:"Піца твого духу", icon:"🍕", by:{
+    f:["Гостра салямі — занадто, навмисне","Халапеньйо з медом — спершу солодко, потім кусає","Подвійна пепероні, без вибачень"],
+    e:["Печені овочі з бринзою — тихо найкращий шматок","Чотири сири — втілений затишок","Гриби з трюфелем — скромно, але глибоко"],
+    a:["Ананас — спірно, культово, незворушно","Прошуто з рукколою — пафосно й добре про це знає","Гострий мед із рікотою — шматок інфлюенсера"],
+    w:["Анчоуси — недооцінений шедевр","Каперси й оливки — смак набутий і вищий","Біла піца без соусу — принципово мислить інакше"],
+  }},
+  plant:{ label:"Твоя внутрішня рослина", icon:"🪴", by:{
+    f:["Кущик чилі, що агресивно квітне на підвіконні","Венерина мухоловка — дружня, поки не зачепиш","«Тещин язик» — незнищенний, ледь загрозливий"],
+    e:["Традесканція, від якої всі вже взяли відросток","Алое — лікує інших, не просить нічого","Грядка зелені на підвіконні, яку ти реально доглядаєш. Хвалько."],
+    a:["Монстера — велика, фотогенічна, в кожному кадрі","Орхідея — вибаглива, того варта, і знає це","Плющ, що каскадом звисає з полиці суто заради ефекту"],
+    w:["«Жіноче щастя» — театрально никне, оживає, повторити","Папороть у ванній, що квітне в парі й почуттях","Сукулент — майже нічого не треба, а всередині цілі світи"],
+  }},
+  house:{ label:"Факультет Гоґвортсу", icon:"🪄", by:{
+    f:["Ґрифіндор — очевидно, ти нагадуєш про це двічі","Ґрифіндор зі слизеринським прожилком, коли лишився останній шматок","Ґрифіндор — Капелюх ледь торкнувся голови"],
+    e:["Гафелпаф — і, чесно, найкращі з нас","Гафелпаф-староста, снеки вже в сумці","Гафелпаф, але дуель тихо лишилася б за тобою"],
+    a:["Рейвенклов, що прочитав книжку І подивився фільм","Слизерин у шарфі Рейвенклову заради естетики","Рейвенклов — дотепний, а не пихатий"],
+    w:["Рейвенклов — глибокі води, небезпечні факти","Слизерин — м'який зовні, стратег усередині","Сортувальний Капелюх думав над тобою довго-довго"],
+  }},
+  drink:{ label:"Напій-альтер-его", icon:"🥂", by:{
+    f:["Чарка текіли в крихітному капелюшку","Еспресо-мартіні опівночі — погана ідея, чудова ніч","Енергія «бахнути» в людській подобі"],
+    e:["Нормальний чай, дві ложки цукру, без зауважень","Кухоль розливного — надійний, улюблений","Глінтвейн — теплий, трохи занадто, у найкращому сенсі"],
+    a:["Апероль-шприц — гарний вигляд, переважно вайб","Шампанське, що святкує вівторок","Коктейль із парасолькою й цілою передісторією"],
+    w:["Червоне вино й глибока розмова в кутку","Віскі без льоду й значущий погляд удалечінь","Трав'яний чай і маленький емоційний прорив"],
+  }},
+  crisp:{ label:"Снек, який ти є", icon:"🥔", by:{
+    f:["Гострі сухарики — це попередження, а не смак","Чіпси з васабі — гостро, аж очі сльозяться, того варте","Солоний арахіс до пива — хто перший, той і з'їв"],
+    e:["Чіпси з сіллю — впевнені настільки, що більше нічого й не треба","Чіпси «сир і цибуля» — класика, надійно, без метушні","Кукурудзяні палички — затишок із дитинства"],
+    a:["Чіпси «краб» — рожеві, веселі, трохи занадто","Чіпси «солодкий чилі» — улюбленець публіки й знає це","Трюфельні чіпси — куплені почасти щоб бачили, як ти їх купуєш"],
+    w:["Сухарики зі смаком холодцю з хроном — хаотична прихована глибина","Насіння соняшника — тихе, самовдоволено складне заняття","Простий попкорн — але й над ним думав найдовше"],
+  }},
+  stool:{ label:"Архетип за барним столиком", icon:"🪑", by:{
+    f:["Підбурювач — «ще по одній?» це і погроза, і обіцянка","Той, хто бере на всіх і кого не спинити","Зачинатель караоке (ніхто не просив; усі вдячні)"],
+    e:["Мама компанії — пластир, таблетки і завжди тебе прикриє","Сторож курток — стереже столик, як вірний пес","Миротворець, що гасить суперечку за рахунок"],
+    a:["Оповідач — кожна історія на 20% правда, на 100% варта почути","Душа компанії — уже знає всіх барменів на ім'я","Той, хто чомусь знайомий з усіма"],
+    w:["Філософ із кутка — найкращі розмови коло тебе","Тихий спостерігач, що помічає геть усе","Той, хто о 2-й ночі каже правду — лагідно, нищівно, влучно"],
+  }},
+};
+
+const AURAS_UK = {
+  f:{ bright:{name:"Сонячний спалах",  hex:"#ff7a18", read:"Чиста кінетична енергія. Ти заходиш — і в кімнаті відчутно теплішає."},
+      deep:  {name:"Багряний жар",     hex:"#d22f2f", read:"Притлумлений вогонь — поки спокійний, але всі знають твій справжній масштаб."} },
+  e:{ bright:{name:"Весняний луг",     hex:"#6fcf6f", read:"Тепло, що росте — ледь пахне свіжим хлібом. Біля тебе люди розслабляються."},
+      deep:  {name:"Дрімучий ліс",     hex:"#2f7d4f", read:"Глибоке коріння й незворушність. Опора, на яку спирається весь стіл."} },
+  a:{ bright:{name:"Фіалкова блискавка",hex:"#b06bff", read:"Іскристо й магнетично, трохи хаотично. Ти просто стаєшся."},
+      deep:  {name:"Рожевий кварц",    hex:"#e87fb0", read:"М'яке сяйво, гострий розум — чарівність, за якою сховане друге лезо."} },
+  w:{ bright:{name:"Бірюзовий приплив",hex:"#36c5d6", read:"Світло, ясно, трохи мрійливо. Твої думки глибші, ніж здаються."},
+      deep:  {name:"Північний індиго", hex:"#3a4ea8", read:"Тиха вода. Ти весь вечір тихенько всіх розумієш."} },
+};
+
+const UK_UI = {
+  "meta.title":"Ну і хто ж ти?",
+  "meta.desc":"Квіз для компанії: дай відповідь на 5 хитрих питань, отримай сканування аури просто на пристрої — і агент виносить вердикт: піца твого духу, внутрішня рослина, факультет Гоґвортсу й інше. Пускайте по колу за столом і порівнюйте.",
+  "intro.h1":"Ну і хто ж<br>ти?",
+  "tag.agent":"🤖 ШІ-агент",
+  "tag.vision":"👁 Зір",
+  "tag.pub":"🍺 Режим бару",
+  "intro.sub":"Дай відповідь на 5 хитрих питань, а тоді ми <b>скануємо твою ауру</b> 👁 — за твоїми відповідями <i>і</i> камерою — і агент <b>виносить вердикт</b>: піца, внутрішня рослина, факультет Гоґвортсу й інше, надруковані на твоєму фото у відтінку аури. Беремо щоразу свіжі з банку на <b id=\"bankCount\">120</b> питань, тож кожному випадає інша п'ятірка. Пускайте по колу за столом і порівнюйте.",
+  "intro.namelabel":"Спершу — хто грає?",
+  "intro.nameph":"Твоє ім'я…",
+  "intro.start":"Почати → 5 питань",
+  "intro.totable":"👀 Порівняти стіл (<span id=\"tableCountTop\">0</span>)",
+  "intro.qralt":"Скануй, щоб грати",
+  "intro.qrhint":"📲 Скануй, щоб грати на власному телефоні — і пускай по колу",
+  "intro.footer":"100% офлайн. Твоє фото аналізується на пристрої, показується лише тобі й ніколи не зберігається та не надсилається.",
+  "quiz.qcount":"Питання {n} з {total}",
+  "quiz.back":"← назад",
+  "result.youare_named":"{name}, ти…",
+  "result.youare":"Ти…",
+  "result.elementLine":"{emoji} стихія {name}",
+  "result.auraLine":"аура {name}",
+  "result.savecard":"📥 Зберегти / поділитися карткою аури",
+  "result.addme":"✋ Додати мене до столу",
+  "result.copytext":"📋 Скопіювати текст",
+  "result.retake":"↻ Пройти ще раз",
+  "result.footer":"📸 Або зроби скрин картки. Твоє фото лишається в тебе на телефоні.",
+  "toast.copied":"Скопійовано! Вставляй у чат 📋",
+  "share.i":"Я",
+  "share.you":"Ти",
+  "share.auraLabel":"Аура",
+  "share.tagline":"— Ну і хто ж ти?",
+  "card.header":"👁  НУ І ХТО Ж ТИ?",
+  "card.scantoplay":"Скануй, щоб грати 📲",
+  "card.shareTitle":"Ну і хто ж ти?",
+  "card.building":"Будуємо твою картку…",
+  "card.cantbuild":"Не вдалося зібрати картку",
+  "card.saved":"Збережено в галерею 📥",
+  "card.tableBuilding":"Будуємо картку столу…",
+  "card.tableHeader":"🍻  СТІЛ",
+  "card.tableSub":"НУ І ХТО Ж ТИ?",
+  "card.tableSupers":"✦  НОМІНАЦІЇ СТОЛУ  ✦",
+  "card.tableShareTitle":"Ну і хто ж ти? — стіл",
+  "table.title":"Стіл",
+  "table.sub":"Усі, кому сьогодні винесли вердикт.",
+  "table.newplayer":"+ Хто наступний?",
+  "table.savecard":"📥 Зберегти / поділитися карткою столу",
+  "table.sharetext":"📋 Поділитися текстом",
+  "table.clear":"Очистити стіл",
+  "table.empty":"Ще нікому не винесли вердикт.<br>Давай, з тебе й почнемо.",
+  "table.emptyToast":"Стіл порожній!",
+  "table.confirmClear":"Прибрати всіх зі столу?",
+  "table.copyHeader":"🍻 НУ І ХТО Ж ТИ? — стіл:",
+  "table.copied":"Стіл скопійовано 📋",
+  "table.added":"Додано до столу 🍻",
+  "table.mystery":"Таємний гість",
+  "table.readingLabel":"Діагноз столу:",
+  "table.readingPct":"приблизно {pct}% чистого хаосу сьогодні",
+  "super.chaotic":"Найхаотичніший",
+  "super.warmest":"Найтепліша душа",
+  "super.main":"Головний герой",
+  "super.mainBig":"Найголовніший герой",
+  "super.deepest":"Найглибший мислитель",
+  "aura.title":"👁 Сканування аури",
+  "aura.holdstill":"Не рухайся… зчитуємо твоє енергетичне поле. (Лишається в телефоні.)",
+  "aura.calibrating":"Калібруємо сенсор аури…",
+  "aura.reading":"Зчитуємо твої 5 відповідей…",
+  "aura.matching":"Зіставляємо їх із твоєю колірною температурою…",
+  "aura.crowning":"Проявляємо твою ауру ✨",
+  "aura.nocamera":"Камери нема — перемикаємось у режим ясновидіння 🔮",
+  "aura.camerashy":"Соромишся камери? Не біда — буде режим ясновидіння 🔮",
+  "aura.noread":"Не вдалося чітко зчитати — режим ясновидіння 🔮",
+  "aura.energyLine":"{emoji} енергія {name}",
+  "aura.seeresult":"Побачити повний результат →",
+  "aura.rescan":"↻ Пересканувати ауру",
+  "readout.prefix":"👁 Зчитано з твого фото:",
+  "readout.dominant":"переважає {hue}",
+  "readout.hue.red":"червоний","readout.hue.orange":"помаранчевий","readout.hue.green":"зелений",
+  "readout.hue.teal":"бірюзовий","readout.hue.blue":"синій","readout.hue.violet":"фіолетовий","readout.hue.pink":"рожевий",
+  "readout.energy.high":"висока енергія","readout.energy.calm":"спокій","readout.energy.balanced":"рівновага",
+  "readout.light.bright":"яскраве світло","readout.light.moody":"приглушене світло","readout.light.soft":"м'яке світло",
+  "readout.vibe.vivid":"насичено","readout.vibe.muted":"стримано",
+  "readout.face.closeup":"крупним планом",
+  "quote.open":"«","quote.close":"»",
+};
+
+const I18N = {
+  en:{ BANK:BANK_EN, ELEMENTS:ELEMENTS_EN, TITLES:TITLES_EN, POOLS:POOLS_EN, AURAS:AURAS_EN, ui:EN_UI },
+  uk:{ BANK:BANK_UK, ELEMENTS:ELEMENTS_UK, TITLES:TITLES_UK, POOLS:POOLS_UK, AURAS:AURAS_UK, ui:UK_UI },
+};
+let auraStream = null;
+const wait = ms => new Promise(r=>setTimeout(r,ms));
+
+function clamp01(x){ return x<0?0:x>1?1:x; }
+
+function grabFrame(video){
+  if(!video.videoWidth) return null;
+  const w=40,h=30, c=document.createElement("canvas"); c.width=w; c.height=h;
+  c.getContext("2d").drawImage(video,0,0,w,h);
+  return { data:c.getContext("2d").getImageData(0,0,w,h).data, w, h };
+}
+
+/* grab a mirrored cover-fit source canvas (raw selfie) to apply aura effects to */
+function captureSrcCanvas(video){
+  if(!video.videoWidth) return null;
+  const w=480,h=360, c=document.createElement("canvas"); c.width=w; c.height=h;
+  const ctx=c.getContext("2d");
+  ctx.translate(w,0); ctx.scale(-1,1);            // mirror to match the preview
+  const vw=video.videoWidth, vh=video.videoHeight, cr=w/h, vr=vw/vh;
+  let sw,sh,sx,sy;
+  if(vr>cr){ sh=vh; sw=vh*cr; sx=(vw-sw)/2; sy=0; }
+  else     { sw=vw; sh=vw/cr; sx=0;         sy=(vh-sh)/2; }
+  ctx.drawImage(video, sx, sy, sw, sh, 0, 0, w, h);
+  return c;
+}
+
+/* aura colour grade for the sharp (subject) layer */
+function gradedLayer(src, el, w, h){
+  const c=document.createElement("canvas"); c.width=w; c.height=h;
+  const ctx=c.getContext("2d"); if(!ctx) return null;
+  const hex=(ELEMENTS[el]||ELEMENTS.f).hex;
+  const grade={
+    f:"saturate(1.16) contrast(1.08) brightness(1.0)",
+    e:"saturate(1.12) contrast(1.05) brightness(1.03)",
+    a:"saturate(1.24) contrast(1.05) brightness(1.06)",
+    w:"saturate(1.12) contrast(1.12) brightness(0.99)",
+  }[el] || "none";
+  try{ ctx.filter=grade; }catch(e){}
+  ctx.drawImage(src,0,0,w,h);
+  try{ ctx.filter="none"; }catch(e){}
+  ctx.globalCompositeOperation="soft-light"; ctx.globalAlpha=0.28; ctx.fillStyle=hex; ctx.fillRect(0,0,w,h);
+  ctx.globalCompositeOperation="color";      ctx.globalAlpha=0.06; ctx.fillStyle=hex; ctx.fillRect(0,0,w,h);
+  ctx.globalCompositeOperation="source-over"; ctx.globalAlpha=1;
+  return c;
+}
+
+/* bake the aura look: a head/face SPOTLIGHT — your head stays sharp & lit in a
+   soft oval, the room is blurred + hard-darkened, and the aura ring hugs your head */
+function renderAuraPhoto(src, el, w, h, q, subject){
+  if(!src) return null;
+  const hex=(ELEMENTS[el]||ELEMENTS.f).hex;
+  const out=document.createElement("canvas"); out.width=w; out.height=h;
+  const ctx=out.getContext("2d"); if(!ctx) return null;
+  const sharp=gradedLayer(src, el, w, h); if(!sharp) return null;
+  const sub=subject || {cx:0.5, cy:0.40, r:0.40};
+  const cx=sub.cx*w, cy=sub.cy*h, R=sub.r*Math.min(w,h);
+  const OVAL=1.24;   // taller-than-wide so it fits a head
+  const ellipse=(g)=>{ g.save(); g.translate(cx,cy); g.scale(1,OVAL); g.translate(-cx,-cy); };
+
+  // background: blur + strong desaturate + hard darken + a touch of aura tint
+  const bw=Math.max(12, Math.round(w/7)), bh=Math.max(9, Math.round(h/7));
+  const small=document.createElement("canvas"); small.width=bw; small.height=bh;
+  small.getContext("2d").drawImage(sharp, 0, 0, bw, bh);
+  ctx.imageSmoothingEnabled=true;
+  ctx.drawImage(small, 0, 0, bw, bh, 0, 0, w, h);
+  ctx.globalCompositeOperation="saturation"; ctx.globalAlpha=0.9;  ctx.fillStyle="#808080"; ctx.fillRect(0,0,w,h);
+  ctx.globalCompositeOperation="multiply";   ctx.globalAlpha=0.32; ctx.fillStyle="#15100a"; ctx.fillRect(0,0,w,h);
+  ctx.globalCompositeOperation="overlay";    ctx.globalAlpha=0.18; ctx.fillStyle=hex;       ctx.fillRect(0,0,w,h);
+  ctx.globalCompositeOperation="multiply";   ctx.globalAlpha=1;
+  ellipse(ctx);
+  const dk=ctx.createRadialGradient(cx,cy,R*0.48, cx,cy,Math.min(w,h)*0.72);
+  dk.addColorStop(0,"rgba(255,255,255,1)");
+  dk.addColorStop(0.45,"rgba(54,40,32,0.94)");
+  dk.addColorStop(1,"rgba(2,2,1,0.98)");
+  ctx.fillStyle=dk; ctx.fillRect(-w,-h,w*3,h*3);
+  ctx.restore();
+  ctx.globalCompositeOperation="source-over"; ctx.globalAlpha=1;
+
+  // subject: head/face kept sharp & bright inside the soft oval
+  const subj=document.createElement("canvas"); subj.width=w; subj.height=h;
+  const sc=subj.getContext("2d");
+  sc.drawImage(sharp,0,0);
+  sc.globalCompositeOperation="destination-in";
+  ellipse(sc);
+  const mk=sc.createRadialGradient(cx,cy,R*0.5, cx,cy,R*1.04);
+  mk.addColorStop(0,"rgba(0,0,0,1)"); mk.addColorStop(0.66,"rgba(0,0,0,1)"); mk.addColorStop(1,"rgba(0,0,0,0)");
+  sc.fillStyle=mk; sc.fillRect(-w,-h,w*3,h*3);
+  sc.restore();
+  sc.globalCompositeOperation="source-over";
+  ctx.drawImage(subj,0,0);
+
+  // aura HALO ring hugging the head, punched out so it never touches the face
+  const hl=document.createElement("canvas"); hl.width=w; hl.height=h;
+  const hc=hl.getContext("2d");
+  if(hc){
+    ellipse(hc);
+    const ring=hc.createRadialGradient(cx,cy,R*0.42, cx,cy,R*1.06);
+    ring.addColorStop(0, hex+"00"); ring.addColorStop(0.4, hex+"00");
+    ring.addColorStop(0.62, hex+"e6"); ring.addColorStop(0.78, hex+"66"); ring.addColorStop(1, hex+"00");
+    hc.fillStyle=ring; hc.fillRect(-w,-h,w*3,h*3);
+    // faint white inner edge so the halo reads on any background (warm aura on warm room etc.)
+    hc.globalCompositeOperation="lighter";
+    const wedge=hc.createRadialGradient(cx,cy,R*0.6, cx,cy,R*0.98);
+    wedge.addColorStop(0,"rgba(255,255,255,0)"); wedge.addColorStop(0.78,"rgba(255,255,255,0)");
+    wedge.addColorStop(0.87,"rgba(255,255,255,0.5)"); wedge.addColorStop(1,"rgba(255,255,255,0)");
+    hc.fillStyle=wedge; hc.fillRect(-w,-h,w*3,h*3);
+    hc.globalCompositeOperation="destination-out";
+    const cut=hc.createRadialGradient(cx,cy,R*0.38, cx,cy,R*0.76);
+    cut.addColorStop(0,"#000"); cut.addColorStop(0.8,"#000"); cut.addColorStop(1,"rgba(0,0,0,0)");
+    hc.fillStyle=cut; hc.fillRect(-w,-h,w*3,h*3);
+    hc.restore();
+    ctx.globalCompositeOperation="screen"; ctx.globalAlpha=0.82;
+    ctx.drawImage(hl,0,0);
+    ctx.globalAlpha=1;
+  }
+
+  // subtle top bloom + final vignette
+  ctx.globalCompositeOperation="screen"; ctx.globalAlpha=0.13;
+  const bloom=ctx.createRadialGradient(w*0.5,h*0.05,0, w*0.5,h*0.05,h*0.62);
+  bloom.addColorStop(0,hex); bloom.addColorStop(1,"rgba(0,0,0,0)");
+  ctx.fillStyle=bloom; ctx.fillRect(0,0,w,h);
+  ctx.globalCompositeOperation="multiply"; ctx.globalAlpha=1;
+  ellipse(ctx);
+  const vig=ctx.createRadialGradient(cx,cy,R*0.55, cx,cy,Math.min(w,h)*0.86);
+  vig.addColorStop(0,"rgba(255,255,255,1)"); vig.addColorStop(1,"rgba(6,4,2,0.78)");
+  ctx.fillStyle=vig; ctx.fillRect(-w,-h,w*3,h*3);
+  ctx.restore();
+  ctx.globalCompositeOperation="source-over"; ctx.globalAlpha=1;
+
+  try{ return out.toDataURL("image/jpeg", q); }catch(e){ return null; }
+}
+
+/* frame-to-frame movement (your "energy") from the two small frames */
+function frameMotion(f1, f2){
+  if(!f1 || !f2) return 0;
+  const a=f1.data, d=f2.data, n=d.length/4; let m=0;
+  for(let i=0;i<d.length;i+=4){ m += Math.abs(d[i]-a[i])+Math.abs(d[i+1]-a[i+1])+Math.abs(d[i+2]-a[i+2]); }
+  return clamp01((m/n/3)/35);
+}
+
+/* actually analyse the captured photo: dominant colour, edges, vibrancy,
+   brightness mood and a skin-tone pass — all on-device, no libraries */
+function analyzePhoto(src){
+  if(!src) return null;
+  const w=96,h=72, c=document.createElement("canvas"); c.width=w; c.height=h;
+  const ctx=c.getContext("2d"); if(!ctx) return null;
+  ctx.drawImage(src, 0, 0, w, h);
+  let d; try{ d=ctx.getImageData(0,0,w,h).data; }catch(e){ return null; }
+  const n=w*h, lum=new Float32Array(n);
+  let sumL=0, dark=0, skin=0, skinWarm=0;
+  let sumRG=0, sumYB=0, sumRG2=0, sumYB2=0;
+  let sx=0, sy=0, sw=0;                              // centre-weighted skin centroid
+  const mask=new Uint8ClampedArray(n);              // soft subject mask (silhouette)
+  const hueBins=new Array(12).fill(0);              // 12 x 30° hue buckets
+  for(let i=0,p=0;i<d.length;i+=4,p++){
+    const R=d[i], G=d[i+1], B=d[i+2];
+    const L=0.299*R+0.587*G+0.114*B; lum[p]=L; sumL+=L; if(L<60) dark++;
+    const rg=R-G, yb=0.5*(R+G)-B;
+    sumRG+=rg; sumYB+=yb; sumRG2+=rg*rg; sumYB2+=yb*yb;
+    const mx=Math.max(R,G,B), mn=Math.min(R,G,B), delta=mx-mn;
+    const px=p%w, py=(p/w)|0;
+    const isSkin = (R>95&&G>40&&B>20&&delta>15&&Math.abs(R-G)>15&&R>G&&R>B);
+    if(isSkin){
+      skin++; skinWarm+=(R-B);
+      const dxc=px/w-0.5, dyc=py/h-0.5;
+      const wgt=Math.exp(-(dxc*dxc/0.16 + dyc*dyc/0.26));  // mild centre weight (low bias)
+      sw+=wgt; sx+=px*wgt; sy+=py*wgt;
+    }
+    // subject mask: skin = solid; otherwise the central head+torso region (incl. dark hair/cap)
+    const cxd=px/w-0.5, cyd=py/h-0.44;
+    const centre=Math.exp(-((cxd*cxd)/0.14 + (cyd*cyd)/0.22));
+    let m = isSkin ? 1 : centre*(L>34?0.92:0.55);
+    if(centre<0.05) m=0;
+    mask[p]=Math.round((m<0?0:m>1?1:m)*255);
+    const sat = mx<=0?0:delta/mx;
+    if(sat>0.25 && mx>50){
+      let hue;
+      if(delta===0) hue=0;
+      else if(mx===R) hue=60*((((G-B)/delta)%6+6)%6);
+      else if(mx===G) hue=60*(((B-R)/delta)+2);
+      else hue=60*(((R-G)/delta)+4);
+      if(hue<0) hue+=360;
+      hueBins[Math.min(11,Math.floor(hue/30))] += sat*(mx/255);
+    }
+  }
+  const bright=clamp01((sumL/n)/255), darkFrac=dark/n, skinFrac=skin/n;
+  const mRG=sumRG/n, mYB=sumYB/n;
+  const sdRG=Math.sqrt(Math.max(0,sumRG2/n-mRG*mRG)), sdYB=Math.sqrt(Math.max(0,sumYB2/n-mYB*mYB));
+  const colourfulness=clamp01((Math.sqrt(sdRG*sdRG+sdYB*sdYB)+0.3*Math.sqrt(mRG*mRG+mYB*mYB))/120);
+  let domBin=0, hueTotal=0; for(let b=0;b<12;b++){ hueTotal+=hueBins[b]; if(hueBins[b]>hueBins[domBin]) domBin=b; }
+  const domHue=domBin*30+15, domStrength = hueTotal>0 ? hueBins[domBin]/hueTotal : 0;
+  // Sobel edge density (busy/high-energy scene)
+  let edgeSum=0, edgeN=0;
+  for(let y=1;y<h-1;y++) for(let x=1;x<w-1;x++){
+    const o=y*w+x;
+    const gx=lum[o-1-w]+2*lum[o-1]+lum[o-1+w]-lum[o+1-w]-2*lum[o+1]-lum[o+1+w];
+    const gy=lum[o-w-1]+2*lum[o-w]+lum[o-w+1]-lum[o+w-1]-2*lum[o+w]-lum[o+w+1];
+    edgeSum+=Math.sqrt(gx*gx+gy*gy); edgeN++;
+  }
+  const edges=clamp01((edgeSum/edgeN)/180);
+  // subject (face) from the centre-weighted skin centroid, kept in a central band
+  let subject;
+  if(skin > n*0.012 && sw>0){
+    const cxv=sx/sw/w, cyv=sy/sw/h;
+    subject={ cx:Math.max(0.30, Math.min(0.70, cxv)),         // track the face centre
+              cy:Math.max(0.32, Math.min(0.64, cyv)),         // horizontally + vertically
+              r:Math.max(0.32, Math.min(0.44, 0.32 + skinFrac*0.4)) };
+  } else {
+    subject={ cx:0.5, cy:0.46, r:0.40 };           // no clear face -> centred default
+  }
+  const hueEl = (domHue<45||domHue>=315)?"f" : (domHue<170)?"e" : (domHue<260)?"w" : "a";
+  const scores={f:0,e:0,a:0,w:0};
+  scores[hueEl] += 1.2*(0.4+domStrength);                                  // your dominant colour
+  scores.f += edges*0.9 + clamp01((skin?skinWarm/skin:0)/120)*0.4 + (1-darkFrac)*0.2;
+  scores.a += colourfulness*1.1 + bright*0.6 + edges*0.5;
+  scores.e += (1-edges)*0.7 + (1-bright)*0.2 + clamp01(skinFrac*3)*0.3;
+  scores.w += darkFrac*1.0 + (1-colourfulness)*0.5 + (1-bright)*0.3;
+  return { scores, bright, domHue, colourfulness, edges, skinFrac, subject,
+           mask:{ data:mask, w, h },
+           readout: buildReadout(domHue, edges, colourfulness, bright, skinFrac) };
+}
+
+function buildReadout(domHue, edges, colourfulness, bright, skinFrac){
+  const hueKey = (domHue<45||domHue>=330)?"red" : domHue<70?"orange" : domHue<170?"green"
+                 : domHue<200?"teal" : domHue<260?"blue" : domHue<300?"violet" : "pink";
+  const energy = edges>0.55?"high" : edges<0.3?"calm" : "balanced";
+  const light  = bright>0.6?"bright" : bright<0.35?"moody" : "soft";
+  const vibe   = colourfulness>0.55?"vivid" : colourfulness<0.3?"muted" : "";
+  const face   = skinFrac>0.18 ? t("readout.face.closeup") : "";
+  return `${t("readout.prefix")} ${t("readout.dominant",{hue:t("readout.hue."+hueKey)})} · ${t("readout.energy."+energy)} · ${t("readout.light."+light)}`
+       + (vibe?` · ${t("readout.vibe."+vibe)}`:"") + (face?` · ${face}`:"");
+}
+
+/* final aura = camera vibe blended with the quiz answers (answers nudge it) */
+function computeFinalAura(profile){
+  const ans = profile.score, at = (ans.f+ans.e+ans.a+ans.w) || 1;
+  const feat = window.__auraFeat;
+  let csum = 0; if(feat){ for(const k in feat.scores) csum += feat.scores[k]; } csum = csum || 1;
+  const blend = {};
+  ["f","e","a","w"].forEach(k=>{ blend[k] = (ans[k]/at)*1.0 + (feat ? (feat.scores[k]/csum) : 0)*0.8; });
+  let el="f"; for(const k in blend){ if(blend[k]>blend[el]) el=k; }
+  const bright = feat ? feat.bright : ((hashAnswers()%2) ? 0.7 : 0.4);
+  const variant = bright >= 0.5 ? "bright" : "deep";
+  const a = AURAS[el][variant], E = ELEMENTS[el];
+  window.__aura = { name:a.name, hex:a.hex, el, element:E.name, read:a.read };
+  return window.__aura;
+}
+
+function stopAura(){
+  if(auraStream){ auraStream.getTracks().forEach(t=>t.stop()); auraStream=null; }
+}
+
+function scanningMarkup(){
+  return `
+    <p class="auraTitle">${t("aura.title")}</p>
+    <p class="auraHint">${t("aura.holdstill")}</p>
+    <div class="scanwrap"><video id="auraVideo" playsinline muted autoplay></video><div class="scangrid"></div><div class="scanline"></div></div>
+    <p class="auraHint" id="auraStatus" style="margin-top:12px">${t("aura.calibrating")}</p>`;
+}
+
+async function startAura(){
+  setAccent("#b06bff");
+  show("aura");
+  window.__auraFeat = null; window.__auraPhoto = null; window.__auraThumb = null; window.__auraSrc = null; window.__auraReadout = null; window.__auraSubject = null; window.__auraMask = null;
+  $("#auraStage").innerHTML = scanningMarkup();
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ return fallbackAura(t("aura.nocamera")); }
+  try{
+    auraStream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:"user" }, audio:false });
+  }catch(e){ return fallbackAura(t("aura.camerashy")); }
+  const video=$("#auraVideo");
+  video.srcObject=auraStream;
+  try{ await video.play(); }catch(e){}
+  const status=$("#auraStatus");
+  await wait(700);  if(status) status.textContent=t("aura.reading");
+  const f1=grabFrame(video);
+  await wait(500);  if(status) status.textContent=t("aura.matching");
+  const f2=grabFrame(video);
+  window.__auraSrc = captureSrcCanvas(video);                 // raw selfie, kept for aura effects
+  await wait(700);  if(status) status.textContent=t("aura.crowning");
+  await wait(500);
+  stopAura();
+  const photo = analyzePhoto(window.__auraSrc);              // real analysis of the captured selfie
+  if(!photo){ return fallbackAura(t("aura.noread")); }
+  const motion = frameMotion(f1,f2);                          // your movement = extra energy
+  photo.scores.f += motion*1.1; photo.scores.a += motion*0.7;
+  window.__auraFeat = { scores:photo.scores, bright:photo.bright };
+  window.__auraReadout = photo.readout;
+  window.__auraSubject = photo.subject;                       // where you are in frame
+  window.__auraMask = photo.mask;                             // your silhouette, for the glow
+  computeFinalAura(computeProfile());                         // aura from answers + photo analysis
+  window.__auraPhoto = renderAuraPhoto(window.__auraSrc, window.__aura.el, 480, 360, 0.85, window.__auraSubject);
+  window.__auraThumb = renderAuraPhoto(window.__auraSrc, window.__aura.el, 160, 120, 0.6, window.__auraSubject);
+  revealAura(null);
+}
+
+function fallbackAura(note){
+  stopAura();
+  window.__auraFeat = null;   // no camera -> aura comes from the answers alone
+  computeFinalAura(computeProfile());
+  revealAura(note);
+}
+
+function revealAura(note){
+  const A = window.__aura, el = ELEMENTS[A.el];
+  setAccent(A.hex);
+  const heroBg = window.__auraPhoto
+    ? `<img src="${window.__auraPhoto}" class="heroImg" alt="you">`
+    : `<div class="heroImg heroFallback" style="background:radial-gradient(circle at 40% 35%, ${A.hex}, ${A.hex}cc)">${el.emoji}</div>`;
+  $("#auraStage").innerHTML = `
+    <p class="auraTitle">${t("aura.title")}</p>
+    <div class="photoHero">
+      ${heroBg}
+      <div class="heroBadge"><span class="dot" style="background:${A.hex}"></span>👁 ${A.name}</div>
+      <div class="heroOverlay">
+        <div class="auraName" style="color:${A.hex}">${A.name}</div>
+        <div class="element">${t("aura.energyLine",{emoji:el.emoji,name:el.name})}</div>
+      </div>
+    </div>
+    <div class="roast">${t("quote.open")}${A.read}${t("quote.close")}</div>
+    ${(note || window.__auraReadout)?`<p class="auraHint">${note || window.__auraReadout}</p>`:""}
+    <button class="btn" id="auraToResult">${t("aura.seeresult")}</button>
+    <button class="btn secondary small" id="auraRescan">${t("aura.rescan")}</button>`;
+  $("#auraToResult").onclick=revealResult;
+  $("#auraRescan").onclick=startAura;
+  confetti();
+}
+
+// QR code to the site (offline, generated on-device): shown on intro + baked into
+// share cards. Encodes ?lang=uk when Ukrainian, so a scanned link opens localised.
+function buildQR(){
+  try{
+    if(typeof qrcode!=="function") return;
+    const qr=qrcode(0,"M"); qr.addData(shareURL()); qr.make();
+    const url=qr.createDataURL(6,2);
+    const img=$("#qrimg"), box=$("#qrbox");
+    if(img && box){ img.src=url; box.style.display="block"; }
+    const qi=new Image(); qi.onload=()=>{ window.__qrImg=qi; }; qi.src=url;
+  }catch(e){ /* QR is optional — ignore if unavailable */ }
+}
+
+/* boot */
+document.querySelectorAll("#langSwitch [data-lang]").forEach(b=>{
+  b.onclick=()=>setLang(b.getAttribute("data-lang"));
+});
+applyLang(resolveLang());   // binds data, fills static text, sets <html lang>, bankCount, table badges + QR
+})();
+</script>
+<script>
+/* register the service worker for offline + installable PWA. The relative
+   "sw.js" resolves against the document base — which <base href="../"> in
+   /uk/index.html points back at the root — so one SW at the root serves both. */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  });
+}
+</script>
 </body>
 </html>

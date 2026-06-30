@@ -4,27 +4,32 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="theme-color" content="#e8552d" />
-<title>What Are You, Really?</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png" />
 <link rel="icon" href="favicon-16.png" sizes="16x16" type="image/png" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-<link rel="manifest" href="manifest.webmanifest" id="manifestLink" />
-<meta name="description" content="A pub party quiz: answer 5 cheeky questions, get an on-device aura scan, and an agent crowns you — spirit pizza topping, inner houseplant, Hogwarts house and more. Run it round the table and compare." />
 <meta property="og:type" content="website" />
+<meta property="og:image" content="https://rostk.github.io/pub-experiment/icon-512.png" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://rostk.github.io/pub-experiment/icon-512.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<!-- I18N-HEAD:START — these tags are swapped to Ukrainian in /uk/index.html by scripts/build-uk.mjs; edit them here only -->
+<title>What Are You, Really?</title>
+<link rel="manifest" href="manifest.webmanifest" id="manifestLink" />
+<link rel="canonical" href="https://rostk.github.io/pub-experiment/" />
+<meta name="description" content="A pub party quiz: answer 5 cheeky questions, get an on-device aura scan, and an agent crowns you — spirit pizza topping, inner houseplant, Hogwarts house and more. Run it round the table and compare." />
+<meta property="og:locale" content="en_GB" />
 <meta property="og:site_name" content="What Are You, Really?" />
 <meta property="og:url" content="https://rostk.github.io/pub-experiment/" />
 <meta property="og:title" content="What Are You, Really?" />
 <meta property="og:description" content="A pub party quiz: answer 5 cheeky questions, get an on-device aura scan, and an agent crowns you — spirit pizza topping, inner houseplant, Hogwarts house and more." />
-<meta property="og:image" content="https://rostk.github.io/pub-experiment/icon-512.png" />
-<meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="What Are You, Really?" />
 <meta name="twitter:description" content="A pub party quiz — 5 cheeky questions and an agent crowns you." />
-<meta name="twitter:image" content="https://rostk.github.io/pub-experiment/icon-512.png" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="What Are You" id="appleTitle" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<!-- I18N-HEAD:END -->
+<script>window.__DEFAULT_LANG = "en"; /* /uk/index.html flips this to "uk" */</script>
 <style>
   :root{
     --ink:#1d1206;
@@ -2581,18 +2586,19 @@ function ukPlural(n, one, few, many){
 }
 
 /* language to share/QR with (so a scanned link opens in the right language) */
-function shareURL(){ return SITE_URL + (lang==="uk" ? "?lang=uk" : ""); }
+function shareURL(){ return SITE_URL + (lang==="uk" ? "uk/" : ""); }
 
 /* resolution order: ?lang= → localStorage → navigator → default en */
 function resolveLang(){
-  // Language comes ONLY from the URL ?lang= param. The bare site is always
-  // English (canonical); Ukrainian is reached via ?lang=uk or the /uk/ entry.
-  // (No navigator/localStorage auto-switch, so "/" never flips to Ukrainian.)
+  // Each page is a real static entry point: "/" is English, "/uk/" is Ukrainian.
+  // The page declares its own default via window.__DEFAULT_LANG (set in <head>,
+  // flipped to "uk" by the build script for /uk/index.html). A ?lang= param is
+  // still honoured as a backward-compatible override for old shared links.
   try{
     const q = new URLSearchParams(location.search).get("lang");
     if(q==="uk" || q==="en") return q;
   }catch(e){}
-  return "en";
+  return (window.__DEFAULT_LANG==="uk") ? "uk" : "en";
 }
 
 /* fill static HTML marked with data-i18n* attributes */
@@ -2610,15 +2616,12 @@ function applyLang(next){
   BANK = L.BANK; ELEMENTS = L.ELEMENTS; TITLES = L.TITLES; POOLS = L.POOLS; AURAS = L.AURAS; UI = L.ui;
   document.documentElement.setAttribute("lang", lang);
   try{ localStorage.setItem("war_lang", lang); }catch(e){}
+  // Keep <title>/description in sync with the active language. The manifest,
+  // canonical and social tags are baked statically into each page's <head>
+  // (English in /, Ukrainian in /uk/), so they don't need a runtime swap.
   document.title = t("meta.title");
   const md = document.querySelector('meta[name="description"]');
   if(md) md.setAttribute("content", t("meta.desc"));
-  // swap the PWA manifest + iOS title per language so an install reflects the
-  // active language (English on the main page, Ukrainian when lang=uk)
-  const ml = document.getElementById("manifestLink");
-  if(ml) ml.setAttribute("href", lang==="uk" ? "manifest-uk.webmanifest" : "manifest.webmanifest");
-  const at = document.getElementById("appleTitle");
-  if(at) at.setAttribute("content", lang==="uk" ? "Хто ж ти?" : "What Are You");
   applyI18nDom();                                       // fill static text first
   const bc = document.getElementById("bankCount"); if(bc) bc.textContent = BANK.length;
   document.querySelectorAll("#langSwitch [data-lang]").forEach(b=>{
@@ -2628,25 +2631,11 @@ function applyLang(next){
   buildQR();                                            // QR encodes the active language
 }
 
-/* re-render whichever screen is showing so a mid-game toggle updates live */
-function rerenderActiveScreen(){
-  const active = document.querySelector(".screen.active");
-  const id = active ? active.id : "";
-  if(id==="quiz" && activeQ && activeQ.length) renderQuestion();
-  else if(id==="result" && window.__lastResult) revealResult();
-  else if(id==="aura" && window.__aura) revealAura(null);
-  else if(id==="table") renderTable();
-}
-
-/* user-facing toggle: apply + persist in the URL (shareable) + re-render */
+/* user-facing toggle: navigate to the sibling page so the URL is always the real,
+   shareable, crawlable one ("/" for English, "/uk/" for Ukrainian). A <base href>
+   in /uk/index.html makes these relative targets resolve from the root either way. */
 function setLang(next){
-  applyLang(next);
-  try{
-    const url = new URL(location.href);
-    url.searchParams.set("lang", lang);
-    history.replaceState(null, "", url);
-  }catch(e){}
-  rerenderActiveScreen();
+  location.href = (next==="uk") ? "uk/" : "./";
 }
 
 /* ----------------------------------------------------------
@@ -4073,7 +4062,9 @@ applyLang(resolveLang());   // binds data, fills static text, sets <html lang>, 
 })();
 </script>
 <script>
-/* register the service worker for offline + installable PWA */
+/* register the service worker for offline + installable PWA. The relative
+   "sw.js" resolves against the document base — which <base href="../"> in
+   /uk/index.html points back at the root — so one SW at the root serves both. */
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function(){
     navigator.serviceWorker.register("sw.js").catch(function(){});

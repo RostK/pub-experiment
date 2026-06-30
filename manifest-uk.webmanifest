@@ -3,7 +3,7 @@
   "short_name": "Хто ж ти?",
   "description": "Квіз для компанії: 5 хитрих питань, сканування аури просто на пристрої — і агент виносить вердикт. Пускайте по колу за столом.",
   "lang": "uk",
-  "start_url": "./?lang=uk",
+  "start_url": "uk/",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
