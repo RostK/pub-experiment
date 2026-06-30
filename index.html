@@ -159,26 +159,36 @@
   .pphoto{width:80px;height:80px;border-radius:16px;object-fit:cover;border:3px solid var(--ink);flex:none}
   .player .pname{font-size:19px}
   .player .ptitle{font-size:14px}
+  .langswitch{position:fixed;top:10px;right:10px;z-index:50;display:flex;
+    border:2px solid var(--ink);border-radius:999px;overflow:hidden;
+    background:rgba(255,255,255,.82);backdrop-filter:blur(6px);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .langswitch button{appearance:none;border:0;background:transparent;cursor:pointer;
+    font:inherit;font-weight:900;font-size:13px;letter-spacing:.04em;color:var(--ink);
+    padding:6px 12px;line-height:1;opacity:.55;transition:opacity .15s,background .15s}
+  .langswitch button.active{opacity:1;background:var(--accent);color:#fff}
 </style>
 </head>
 <body>
+<div id="langSwitch" class="langswitch" aria-label="Language">
+  <button type="button" data-lang="en">EN</button><button type="button" data-lang="uk">UA</button>
+</div>
 <div class="wrap">
 
   <!-- INTRO -->
   <section id="intro" class="screen active">
     <div class="card">
-      <h1>What are you,<br>really?</h1>
-      <div class="tags"><span class="tag">🤖 AI Agent</span><span class="tag">👁 Vision</span><span class="tag">🍺 Pub Mode</span></div>
-      <p class="sub">Answer 5 cheeky questions, then we <b>scan your aura</b> 👁 — read from your answers <i>and</i> your camera — and an agent <b>crowns you</b>: pizza topping, inner houseplant, Hogwarts house and more, printed on your aura-tinted photo. Drawn fresh from a bank of <b id="bankCount">120</b> questions, so every player gets a different 5. Run it round the table and compare.</p>
-      <label class="fieldlabel" for="name">First, who's playing?</label>
-      <input id="name" type="text" placeholder="Your name…" autocomplete="off" maxlength="22" />
-      <button class="btn" id="startBtn">Begin → 5 questions</button>
-      <button class="ghost" id="toTableTop" style="display:none">👀 Compare the table (<span id="tableCountTop">0</span>)</button>
+      <h1 data-i18n-html="intro.h1">What are you,<br>really?</h1>
+      <div class="tags"><span class="tag" data-i18n="tag.agent">🤖 AI Agent</span><span class="tag" data-i18n="tag.vision">👁 Vision</span><span class="tag" data-i18n="tag.pub">🍺 Pub Mode</span></div>
+      <p class="sub" data-i18n-html="intro.sub">Answer 5 cheeky questions, then we <b>scan your aura</b> 👁 — read from your answers <i>and</i> your camera — and an agent <b>crowns you</b>: pizza topping, inner houseplant, Hogwarts house and more, printed on your aura-tinted photo. Drawn fresh from a bank of <b id="bankCount">120</b> questions, so every player gets a different 5. Run it round the table and compare.</p>
+      <label class="fieldlabel" for="name" data-i18n="intro.namelabel">First, who's playing?</label>
+      <input id="name" type="text" placeholder="Your name…" data-i18n-ph="intro.nameph" autocomplete="off" maxlength="22" />
+      <button class="btn" id="startBtn" data-i18n="intro.start">Begin → 5 questions</button>
+      <button class="ghost" id="toTableTop" data-i18n-html="intro.totable" style="display:none">👀 Compare the table (<span id="tableCountTop">0</span>)</button>
       <div id="qrbox" style="text-align:center;margin-top:18px;display:none">
-        <img id="qrimg" alt="Scan to play" width="132" height="132" style="border:3px solid var(--ink);border-radius:14px;background:#fff;padding:6px;image-rendering:pixelated" />
-        <div style="font-size:13px;font-weight:800;opacity:.75;margin-top:6px">📲 Scan to play on your own phone — pass it round the table</div>
+        <img id="qrimg" alt="Scan to play" data-i18n-alt="intro.qralt" width="132" height="132" style="border:3px solid var(--ink);border-radius:14px;background:#fff;padding:6px;image-rendering:pixelated" />
+        <div style="font-size:13px;font-weight:800;opacity:.75;margin-top:6px" data-i18n="intro.qrhint">📲 Scan to play on your own phone — pass it round the table</div>
       </div>
-      <p class="footer">100% offline. Your photo is analysed on-device, shown only to you, and never saved or sent.</p>
+      <p class="footer" data-i18n="intro.footer">100% offline. Your photo is analysed on-device, shown only to you, and never saved or sent.</p>
     </div>
   </section>
 
@@ -196,7 +206,7 @@
       <p class="qcount" id="qcount">Question 1 of 5</p>
       <p class="qtext" id="qtext"></p>
       <div id="opts"></div>
-      <button class="ghost" id="backBtn">← back</button>
+      <button class="ghost" id="backBtn" data-i18n="quiz.back">← back</button>
     </div>
   </section>
 
@@ -208,15 +218,15 @@
   <!-- TABLE COMPARE -->
   <section id="table" class="screen">
     <div class="card">
-      <h1 style="font-size:32px">The Table</h1>
-      <p class="sub" style="margin-top:8px">Everyone who's been crowned tonight.</p>
+      <h1 style="font-size:32px" data-i18n="table.title">The Table</h1>
+      <p class="sub" style="margin-top:8px" data-i18n="table.sub">Everyone who's been crowned tonight.</p>
       <div id="supers"></div>
       <div id="players"></div>
-      <button class="btn" id="newPlayerBtn">+ Crown the next victim</button>
-      <button class="btn secondary small" id="saveTableBtn">📥 Save / share the table card</button>
+      <button class="btn" id="newPlayerBtn" data-i18n="table.newplayer">+ Crown the next victim</button>
+      <button class="btn secondary small" id="saveTableBtn" data-i18n="table.savecard">📥 Save / share the table card</button>
       <div class="btnrow">
-        <button class="btn secondary small" id="shareTableBtn">📋 Share text</button>
-        <button class="btn secondary small" id="clearTableBtn">Clear table</button>
+        <button class="btn secondary small" id="shareTableBtn" data-i18n="table.sharetext">📋 Share text</button>
+        <button class="btn secondary small" id="clearTableBtn" data-i18n="table.clear">Clear table</button>
       </div>
     </div>
   </section>
@@ -2531,6 +2541,101 @@ var qrcode = function() {
 (function(){
 "use strict";
 
+/* ============================================================
+   i18n — language state + helpers.
+   The five data bindings below point at the ACTIVE language's
+   content (assigned in applyLang), so every existing reference
+   (BANK[i], POOLS[k].label, ELEMENTS[el], …) keeps working with
+   zero call-site changes. Element keys f/e/a/w and the scoring
+   logic stay language-independent. I18N itself is built lower
+   down, after all the EN/UK data blocks are declared.
+   ============================================================ */
+let lang = "en";
+let BANK, ELEMENTS, TITLES, POOLS, AURAS, UI;
+
+/* look up a UI string by key, with {token} interpolation;
+   falls back to EN, then to the key itself, so nothing blanks out */
+function t(key, vars){
+  let s = (UI && UI[key] != null) ? UI[key]
+        : (I18N.en.ui[key] != null ? I18N.en.ui[key] : key);
+  if(vars){ for(const k in vars){ s = s.split("{"+k+"}").join(vars[k]); } }
+  return s;
+}
+
+/* Ukrainian plural picker (one / few / many) */
+function ukPlural(n, one, few, many){
+  const m10 = n%10, m100 = n%100;
+  if(m10===1 && m100!==11) return one;
+  if(m10>=2 && m10<=4 && !(m100>=12 && m100<=14)) return few;
+  return many;
+}
+
+/* language to share/QR with (so a scanned link opens in the right language) */
+function shareURL(){ return SITE_URL + (lang==="uk" ? "?lang=uk" : ""); }
+
+/* resolution order: ?lang= → localStorage → navigator → default en */
+function resolveLang(){
+  try{
+    const q = new URLSearchParams(location.search).get("lang");
+    if(q==="uk" || q==="en") return q;
+  }catch(e){}
+  try{
+    const stored = localStorage.getItem("war_lang");
+    if(stored==="uk" || stored==="en") return stored;
+  }catch(e){}
+  const nav = (navigator.language || "").toLowerCase();
+  if(nav.startsWith("uk")) return "uk";
+  return "en";
+}
+
+/* fill static HTML marked with data-i18n* attributes */
+function applyI18nDom(){
+  document.querySelectorAll("[data-i18n]").forEach(el=>{ el.textContent = t(el.getAttribute("data-i18n")); });
+  document.querySelectorAll("[data-i18n-html]").forEach(el=>{ el.innerHTML = t(el.getAttribute("data-i18n-html")); });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el=>{ el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph"))); });
+  document.querySelectorAll("[data-i18n-alt]").forEach(el=>{ el.setAttribute("alt", t(el.getAttribute("data-i18n-alt"))); });
+}
+
+/* switch active language: rebind data, refresh chrome, lang-aware QR */
+function applyLang(next){
+  lang = (next==="uk") ? "uk" : "en";
+  const L = I18N[lang];
+  BANK = L.BANK; ELEMENTS = L.ELEMENTS; TITLES = L.TITLES; POOLS = L.POOLS; AURAS = L.AURAS; UI = L.ui;
+  document.documentElement.setAttribute("lang", lang);
+  try{ localStorage.setItem("war_lang", lang); }catch(e){}
+  document.title = t("meta.title");
+  const md = document.querySelector('meta[name="description"]');
+  if(md) md.setAttribute("content", t("meta.desc"));
+  applyI18nDom();                                       // fill static text first
+  const bc = document.getElementById("bankCount"); if(bc) bc.textContent = BANK.length;
+  document.querySelectorAll("#langSwitch [data-lang]").forEach(b=>{
+    b.classList.toggle("active", b.getAttribute("data-lang")===lang);
+  });
+  refreshTableButtons();                                // then re-set the count badges
+  buildQR();                                            // QR encodes the active language
+}
+
+/* re-render whichever screen is showing so a mid-game toggle updates live */
+function rerenderActiveScreen(){
+  const active = document.querySelector(".screen.active");
+  const id = active ? active.id : "";
+  if(id==="quiz" && activeQ && activeQ.length) renderQuestion();
+  else if(id==="result" && window.__lastResult) revealResult();
+  else if(id==="aura" && window.__aura) revealAura(null);
+  else if(id==="table") renderTable();
+}
+
+/* user-facing toggle: apply + persist in the URL (shareable) + re-render */
+function setLang(next){
+  applyLang(next);
+  try{
+    const url = new URL(location.href);
+    url.searchParams.set("lang", lang);
+    history.replaceState(null, "", url);
+  }catch(e){}
+  rerenderActiveScreen();
+}
+
 /* ----------------------------------------------------------
    THE QUESTION BANK
    Each entry: [question, FIRE_opt, EARTH_opt, AIR_opt, WATER_opt]
@@ -2539,7 +2644,7 @@ var qrcode = function() {
    Air=sparkle/social, Water=deep/overthinker.
    The game deals a random 5 of these per player.
 ----------------------------------------------------------- */
-const BANK = [
+const BANK_EN = [
 ["It's your round. What are you actually getting in?","🍺 Whatever's cheapest, four of them, go","🍵 “I'm driving” — lime soda and moral high ground","🍹 A cocktail with an umbrella and a backstory","🍷 One nice thing I'll describe in great detail"],
 ["A Friday night that doesn't fill you with dread:","🔥 Big night out, lose my voice","🏠 A dinner I'll absolutely over-cater for","✨ Spontaneous chaos, three towns over","📺 Sofa, blanket, one very specific show"],
 ["The group chat says you're the one who…","😈 Replies at 3am with an unhinged meme","📋 Plans everything (yes, there's a spreadsheet)","🫶 Keeps the peace, remembers every birthday","🌀 Goes quiet for days, then sends one paragraph"],
@@ -2663,7 +2768,7 @@ const BANK = [
 ];
 
 /* ---------------- ELEMENT IDENTITIES ---------------- */
-const ELEMENTS = {
+const ELEMENTS_EN = {
   f:{key:"f", name:"Fire",  emoji:"🔥", word:"The Spark",   hex:"#ff5a3c", blurb:"bold, chaotic-good, all gas no brakes"},
   e:{key:"e", name:"Earth", emoji:"🌿", word:"The Hearth",  hex:"#3fae6b", blurb:"warm, grounded, host with the most"},
   a:{key:"a", name:"Air",   emoji:"✨", word:"The Sparkle", hex:"#b06bff", blurb:"social, witty, main-character energy"},
@@ -2671,7 +2776,7 @@ const ELEMENTS = {
 };
 
 /* ---------------- TITLES BY ELEMENT PAIR ---------------- */
-const TITLES = {
+const TITLES_EN = {
   "fe":{t:"The Cosy Arsonist",        r:"You'll start the bonfire — then make sure everyone has a blanket."},
   "fa":{t:"The Main Event",           r:"You don't enter rooms, you happen to them. Exhausting. Beloved."},
   "fw":{t:"The Slow-Motion Explosion",r:"Calm for weeks, then a 2am text that reorganises the whole group chat."},
@@ -2687,7 +2792,7 @@ const TITLES = {
 };
 
 /* ---------------- VERDICT POOLS (3 variants per element) ---------------- */
-const POOLS = {
+const POOLS_EN = {
   pizza:{ label:"Spirit pizza topping", icon:"🍕", by:{
     f:["Spicy nduja — too much, on purpose","Jalapeño & chilli honey — sweet, then it bites","Pepperoni, double, no apology"],
     e:["Roasted veg & goat's cheese — quietly the best slice","Four cheese — comfort, incarnate","Mushroom & truffle — humble but deep"],
@@ -2806,7 +2911,7 @@ function renderProgress(){
 function renderQuestion(){
   const Q = activeQ[current];
   renderProgress();
-  $("#qcount").textContent = `Question ${current+1} of ${N_QUESTIONS}`;
+  $("#qcount").textContent = t("quiz.qcount", {n: current+1, total: N_QUESTIONS});
   $("#qtext").textContent = Q.q;
   const box = $("#opts"); box.innerHTML="";
   Q.opts.forEach((o,i)=>{
@@ -2862,24 +2967,24 @@ function revealResult(){
       ${heroImg}
       ${auraBadge}
       <div class="heroOverlay">
-        <p class="crown">${playerName ? esc(playerName)+", you are…" : "You are…"}</p>
+        <p class="crown">${playerName ? t("result.youare_named",{name:esc(playerName)}) : t("result.youare")}</p>
         <div class="title">${R.title.t}</div>
-        <div class="element">${R.el.emoji} ${R.el.name} element${A?` &middot; ${A.name} aura`:""}</div>
+        <div class="element">${t("result.elementLine",{emoji:R.el.emoji,name:R.el.name})}${A?` &middot; ${t("result.auraLine",{name:A.name})}`:""}</div>
       </div>
     </div>
-    <div class="roast">“${R.title.r}”</div>
+    <div class="roast">${t("quote.open")}${R.title.r}${t("quote.close")}</div>
     <div class="verdicts">${cells}</div>
-    <button class="btn" id="cardBtn">📥 Save / share my aura card</button>
-    <button class="btn secondary small" id="addBtn">✋ Add me to the table</button>
+    <button class="btn" id="cardBtn">${t("result.savecard")}</button>
+    <button class="btn secondary small" id="addBtn">${t("result.addme")}</button>
     <div class="btnrow">
-      <button class="btn secondary small" id="shareBtn">📋 Copy text</button>
-      <button class="btn secondary small" id="retakeBtn">↻ Retake</button>
+      <button class="btn secondary small" id="shareBtn">${t("result.copytext")}</button>
+      <button class="btn secondary small" id="retakeBtn">${t("result.retake")}</button>
     </div>
-    <p class="footer" style="margin-top:10px">📸 Or screenshot this card. Your photo stays on your phone.</p>
+    <p class="footer" style="margin-top:10px">${t("result.footer")}</p>
   `;
   $("#cardBtn").onclick=saveAuraCard;
   $("#addBtn").onclick=addToTable;
-  $("#shareBtn").onclick=()=>{ copyText(resultText(R)); toast("Copied! Paste it in the chat 📋"); };
+  $("#shareBtn").onclick=()=>{ copyText(resultText(R)); toast(t("toast.copied")); };
   $("#retakeBtn").onclick=()=>{ startGame(); };
   show("result");
   confetti();
@@ -2888,11 +2993,11 @@ function revealResult(){
 function resultText(R){
   const v=R.verdicts;
   const A=window.__aura;
-  return `${playerName||"I"} — ${R.title.t} ${R.el.emoji}\n`+
-    `"${R.title.r}"\n`+
-    (A?`👁 Aura: ${A.name}\n`:"")+
+  return `${playerName||t("share.i")} — ${R.title.t} ${R.el.emoji}\n`+
+    `${t("quote.open")}${R.title.r}${t("quote.close")}\n`+
+    (A?`👁 ${t("share.auraLabel")}: ${A.name}\n`:"")+
     `🪄 ${v.house}\n🍕 ${v.pizza}\n🪴 ${v.plant}\n🥂 ${v.drink}\n🥔 ${v.crisp}\n🪑 ${v.stool}\n`+
-    `— What Are You, Really?`;
+    `${t("share.tagline")}`;
 }
 
 /* ---------------- SHAREABLE AURA CARD ---------------- */
@@ -2907,7 +3012,7 @@ function drawCardFooter(ctx,W,H,hex){
     ctx.fillStyle="#fff"; rrect(ctx,qx-12,qy-12,qs+24,qs+24,18); ctx.fill();
     ctx.drawImage(window.__qrImg,qx,qy,qs,qs);
     ctx.textAlign="left"; ctx.fillStyle="#fff"; ctx.font='800 34px '+CARD_FONT;
-    ctx.fillText("Scan to play 📲", qx+qs+30, qy+qs/2-4);
+    ctx.fillText(t("card.scantoplay"), qx+qs+30, qy+qs/2-4);
     ctx.fillStyle=hex; ctx.font='700 26px '+CARD_FONT;
     ctx.fillText("rostk.github.io/pub-experiment", qx+qs+30, qy+qs/2+42);
   } else {
@@ -2941,7 +3046,7 @@ function buildAuraCard(R){
     // measure how tall the title/roast wrap, then size the card so nothing overlaps the QR footer
     const mc=document.createElement("canvas").getContext("2d");
     const titleLines=mc?lineCount(mc,R.title.t,'900 80px '+CARD_FONT,W-120,2):1;
-    const roastLines=mc?lineCount(mc,"“"+R.title.r+"”",'italic 32px '+CARD_FONT,W-150,2):2;
+    const roastLines=mc?lineCount(mc,t("quote.open")+R.title.r+t("quote.close"),'italic 32px '+CARD_FONT,W-150,2):2;
     let y=py+ph+72;                 // name
     y+=84;                          // -> title
     y+=titleLines*84+52;            // title
@@ -2957,20 +3062,20 @@ function buildAuraCard(R){
       bg.addColorStop(0,hex+"4d"); bg.addColorStop(1,"#0e0a0600"); ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
       ctx.textAlign="center";
       ctx.fillStyle="rgba(255,255,255,.7)"; ctx.font='800 30px '+CARD_FONT;
-      ctx.fillText("👁  WHAT ARE YOU, REALLY?", W/2, 72);
+      ctx.fillText(t("card.header"), W/2, 72);
       ctx.save(); rrect(ctx,px,py,pw,ph,30); ctx.clip();
       if(img) ctx.drawImage(img,px,py,pw,ph); else { ctx.fillStyle="#1a130c"; ctx.fillRect(px,py,pw,ph); }
       ctx.restore();
       ctx.lineWidth=7; ctx.strokeStyle=hex; rrect(ctx,px,py,pw,ph,30); ctx.stroke();
       let yy=py+ph+72;
       ctx.fillStyle="rgba(255,255,255,.72)"; ctx.font='700 34px '+CARD_FONT;
-      ctx.fillText((playerName||"You")+", you are…", W/2, yy); yy+=84;
+      ctx.fillText(t("result.youare_named",{name:(playerName||t("share.you"))}), W/2, yy); yy+=84;
       ctx.fillStyle=hex; ctx.font='900 80px '+CARD_FONT;
       yy=wrapCentre(ctx,R.title.t,W/2,yy,W-120,84,2); yy+=52;
       ctx.fillStyle="#fff"; ctx.font='800 34px '+CARD_FONT;
-      ctx.fillText(fitLine(ctx,R.el.emoji+"  "+R.el.name+(A.name?"  ·  "+A.name+" aura":""),W-120), W/2, yy); yy+=66;
+      ctx.fillText(fitLine(ctx,t("result.elementLine",{emoji:R.el.emoji,name:R.el.name})+(A.name?"  ·  "+t("result.auraLine",{name:A.name}):""),W-120), W/2, yy); yy+=66;
       ctx.fillStyle="rgba(255,255,255,.85)"; ctx.font='italic 32px '+CARD_FONT;
-      yy=wrapCentre(ctx,"“"+R.title.r+"”",W/2,yy,W-150,42,2); yy+=46;
+      yy=wrapCentre(ctx,t("quote.open")+R.title.r+t("quote.close"),W/2,yy,W-150,42,2); yy+=46;
       ctx.textAlign="left"; const lx=96, rx=W-96;
       const rows=[["🪄",v.house],["🍕",v.pizza],["🪴",v.plant],["🥂",v.drink],["🥔",v.crisp],["🪑",v.stool]];
       ctx.font='600 31px '+CARD_FONT;
@@ -2990,47 +3095,47 @@ function buildAuraCard(R){
 
 async function saveAuraCard(){
   const R=window.__lastResult; if(!R) return;
-  toast("Building your card…");
+  toast(t("card.building"));
   let url; try{ url=await buildAuraCard(R); }catch(e){ url=null; }
-  if(!url){ toast("Couldn't build the card"); return; }
+  if(!url){ toast(t("card.cantbuild")); return; }
   const name=((playerName||"aura").replace(/[^\w-]+/g,"_"))+"-aura-card.jpg";
   // try the native share sheet (Instagram/WhatsApp/etc) on mobile
   try{
     const blob=await (await fetch(url)).blob();
     const file=new File([blob],name,{type:"image/jpeg"});
     if(navigator.canShare && navigator.canShare({files:[file]})){
-      await navigator.share({files:[file], title:"What Are You, Really?", text:`${playerName||"I"} — ${R.title.t} ${R.el.emoji}`});
+      await navigator.share({files:[file], title:t("card.shareTitle"), text:`${playerName||t("share.i")} — ${R.title.t} ${R.el.emoji}`});
       return;
     }
   }catch(e){ if(e && e.name==="AbortError") return; /* else fall through to download */ }
   const a=document.createElement("a"); a.href=url; a.download=name;
   document.body.appendChild(a); a.click(); a.remove();
-  toast("Saved to your photos 📥");
+  toast(t("card.saved"));
 }
 
 function loadImg(src){ return new Promise(res=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=()=>res(null); im.src=src; }); }
 
 function buildTableCard(){
   return new Promise(resolve=>{
-    const t=loadTable(); if(!t.length){ resolve(null); return; }
+    const tbl=loadTable(); if(!tbl.length){ resolve(null); return; }
     const W=1080, top=232, rowH=172;
-    const champ=k=>{ let b=t[0]; t.forEach(p=>{ if((p.score?.[k]||0)>(b.score?.[k]||0)) b=p; }); return b.name; };
-    const supers=[["🔥","Most chaotic",champ("f")],["🌿","Warmest soul",champ("e")],
-                  ["✨","Main character",champ("a")],["🌊","Deepest thinker",champ("w")]];
-    const supersTop = top + t.length*rowH + 36;
+    const champ=k=>{ let b=tbl[0]; tbl.forEach(p=>{ if((p.score?.[k]||0)>(b.score?.[k]||0)) b=p; }); return b.name; };
+    const supers=[["🔥",t("super.chaotic"),champ("f")],["🌿",t("super.warmest"),champ("e")],
+                  ["✨",t("super.main"),champ("a")],["🌊",t("super.deepest"),champ("w")]];
+    const supersTop = top + tbl.length*rowH + 36;
     const H = supersTop + 64 + supers.length*52 + 240;
-    Promise.all(t.map(p=> p.thumb ? loadImg(p.thumb) : Promise.resolve(null))).then(imgs=>{
+    Promise.all(tbl.map(p=> p.thumb ? loadImg(p.thumb) : Promise.resolve(null))).then(imgs=>{
       const c=document.createElement("canvas"); c.width=W; c.height=H;
       const ctx=c.getContext("2d"); if(!ctx){ resolve(null); return; }
       ctx.fillStyle="#0e0a06"; ctx.fillRect(0,0,W,H);
       const bg=ctx.createRadialGradient(W/2,200,40,W/2,200,900);
       bg.addColorStop(0,"#ffd24a33"); bg.addColorStop(1,"#0e0a0600"); ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
       ctx.textAlign="center";
-      ctx.fillStyle="#fff"; ctx.font='900 92px '+CARD_FONT; ctx.fillText("🍻  THE TABLE", W/2, 120);
+      ctx.fillStyle="#fff"; ctx.font='900 92px '+CARD_FONT; ctx.fillText(t("card.tableHeader"), W/2, 120);
       ctx.fillStyle="rgba(255,255,255,.7)"; ctx.font='800 32px '+CARD_FONT;
-      ctx.fillText("WHAT ARE YOU, REALLY?", W/2, 174);
+      ctx.fillText(t("card.tableSub"), W/2, 174);
       ctx.textAlign="left";
-      t.forEach((p,i)=>{
+      tbl.forEach((p,i)=>{
         const ry=top+i*rowH, s=128, sx=70, sy=ry+(rowH-s)/2-12, tint=p.tint||"#ffd24a";
         ctx.save(); rrect(ctx,sx,sy,s,s,22); ctx.clip();
         if(imgs[i]) ctx.drawImage(imgs[i],sx,sy,s,s);
@@ -3044,7 +3149,7 @@ function buildTableCard(){
         ctx.fillText(fitLine(ctx,(p.aura?"👁 "+p.aura+"  ·  ":"")+(p.house||""),W-tx-60), tx, ry+144);
       });
       ctx.textAlign="center"; ctx.fillStyle="#ffd24a"; ctx.font='900 36px '+CARD_FONT;
-      ctx.fillText("✦  TABLE SUPERLATIVES  ✦", W/2, supersTop+10);
+      ctx.fillText(t("card.tableSupers"), W/2, supersTop+10);
       ctx.textAlign="left";
       supers.forEach(([ic,label,nm],i)=>{
         const yy=supersTop+58+i*52;
@@ -3058,22 +3163,22 @@ function buildTableCard(){
 }
 
 async function saveTableCard(){
-  if(!loadTable().length){ toast("Table's empty!"); return; }
-  toast("Building the table card…");
+  if(!loadTable().length){ toast(t("table.emptyToast")); return; }
+  toast(t("card.tableBuilding"));
   let url; try{ url=await buildTableCard(); }catch(e){ url=null; }
-  if(!url){ toast("Couldn't build the card"); return; }
+  if(!url){ toast(t("card.cantbuild")); return; }
   const name="the-table-aura.jpg";
   try{
     const blob=await (await fetch(url)).blob();
     const file=new File([blob],name,{type:"image/jpeg"});
     if(navigator.canShare && navigator.canShare({files:[file]})){
-      await navigator.share({files:[file], title:"What Are You, Really? — the table"});
+      await navigator.share({files:[file], title:t("card.tableShareTitle")});
       return;
     }
   }catch(e){ if(e && e.name==="AbortError") return; }
   const a=document.createElement("a"); a.href=url; a.download=name;
   document.body.appendChild(a); a.click(); a.remove();
-  toast("Saved to your photos 📥");
+  toast(t("card.saved"));
 }
 
 /* ---------------- TABLE (localStorage) ---------------- */
@@ -3083,9 +3188,9 @@ function saveTable(t){ try{ localStorage.setItem(STORE, JSON.stringify(t)); }cat
 
 function addToTable(){
   const R = window.__lastResult; if(!R) return;
-  const t = loadTable();
-  t.push({
-    name: playerName || "Mystery guest",
+  const tbl = loadTable();
+  tbl.push({
+    name: playerName || t("table.mystery"),
     title: R.title.t,
     emoji: R.el.emoji,
     element: R.el.name,
@@ -3095,34 +3200,34 @@ function addToTable(){
     tint: (window.__aura && window.__aura.hex) || R.el.hex,
     thumb: window.__auraThumb || null,
   });
-  saveTable(t);
-  toast("Added to the table 🍻");
+  saveTable(tbl);
+  toast(t("table.added"));
   renderTable();
   show("table");
 }
 
 function renderTable(){
-  const t = loadTable();
+  const tbl = loadTable();
   refreshTableButtons();
   const sup=$("#supers"), pl=$("#players");
-  if(!t.length){
+  if(!tbl.length){
     sup.innerHTML="";
-    pl.innerHTML=`<p class="empty">No one's been crowned yet.<br>Go on, you first.</p>`;
+    pl.innerHTML=`<p class="empty">${t("table.empty")}</p>`;
     return;
   }
   const champ=(elKey,labelEmoji,label)=>{
-    let best=t[0];
-    t.forEach(p=>{ if((p.score?.[elKey]||0) > (best.score?.[elKey]||0)) best=p; });
+    let best=tbl[0];
+    tbl.forEach(p=>{ if((p.score?.[elKey]||0) > (best.score?.[elKey]||0)) best=p; });
     return `<div class="super">${labelEmoji} <b>${label}:</b> ${esc(best.name)}</div>`;
   };
-  const avgF = Math.round(t.reduce((s,p)=>s+(p.score?.f||0),0)/t.length/10*100);
+  const avgF = Math.round(tbl.reduce((s,p)=>s+(p.score?.f||0),0)/tbl.length/10*100);
   sup.innerHTML =
-    champ("f","🔥","Most chaotic")+
-    champ("e","🌿","Warmest soul")+
-    champ("a","✨","Biggest main character")+
-    champ("w","🌊","Deepest thinker")+
-    `<div class="super">📊 <b>Table reading:</b> roughly ${avgF}% pure chaos tonight</div>`;
-  pl.innerHTML = t.map((p,idx)=>`
+    champ("f","🔥",t("super.chaotic"))+
+    champ("e","🌿",t("super.warmest"))+
+    champ("a","✨",t("super.mainBig"))+
+    champ("w","🌊",t("super.deepest"))+
+    `<div class="super">📊 <b>${t("table.readingLabel")}</b> ${t("table.readingPct",{pct:avgF})}</div>`;
+  pl.innerHTML = tbl.map((p,idx)=>`
     <div class="player">
       ${p.thumb ? `<img src="${p.thumb}" class="pphoto" style="border-color:${p.tint||'#1d1206'}" alt="">` : `<span class="pemo">${p.emoji}</span>`}
       <div style="flex:1">
@@ -3145,14 +3250,14 @@ function refreshTableButtons(){
 
 $("#newPlayerBtn").onclick=()=>{ resetIntro(); playerName=""; $("#name").value=""; show("intro"); $("#name").focus(); };
 $("#clearTableBtn").onclick=()=>{
-  if(loadTable().length && confirm("Clear everyone from the table?")){ saveTable([]); renderTable(); }
+  if(loadTable().length && confirm(t("table.confirmClear"))){ saveTable([]); renderTable(); }
 };
 $("#shareTableBtn").onclick=()=>{
-  const t=loadTable();
-  if(!t.length){ toast("Table's empty!"); return; }
-  const txt = "🍻 WHAT ARE YOU, REALLY? — the table:\n\n"+
-    t.map(p=>`${p.emoji} ${p.name}: ${p.title}`).join("\n");
-  copyText(txt); toast("Table copied 📋");
+  const tbl=loadTable();
+  if(!tbl.length){ toast(t("table.emptyToast")); return; }
+  const txt = t("table.copyHeader")+"\n\n"+
+    tbl.map(p=>`${p.emoji} ${p.name}: ${p.title}`).join("\n");
+  copyText(txt); toast(t("table.copied"));
 };
 $("#saveTableBtn").onclick=saveTableCard;
 $("#toTableTop").onclick=()=>{ renderTable(); show("table"); };
@@ -3212,7 +3317,7 @@ function confetti(){
 }
 
 /* ---------------- AURA SCAN (on-device camera vision) ---------------- */
-const AURAS = {
+const AURAS_EN = {
   f:{ bright:{name:"Solar Flare",     hex:"#ff7a18", read:"Pure kinetic energy. You walked in and the room's thermostat rose."},
       deep:  {name:"Crimson Ember",   hex:"#d22f2f", read:"A banked fire — calm for now, but we all know what you're capable of."} },
   e:{ bright:{name:"Spring Meadow",   hex:"#6fcf6f", read:"Warm and growing — faintly smells of fresh bread. People relax near you."},
@@ -3221,6 +3326,391 @@ const AURAS = {
       deep:  {name:"Rose Quartz",     hex:"#e87fb0", read:"Soft glow, sharp wit — charm with a second blade hidden behind it."} },
   w:{ bright:{name:"Cyan Tide",       hex:"#36c5d6", read:"Bright, clear, a little dreamy. Your thoughts run deeper than they look."},
       deep:  {name:"Midnight Indigo", hex:"#3a4ea8", read:"Still waters. You've been quietly understanding everyone all night."} },
+};
+
+/* ============================================================
+   UI STRINGS + LANGUAGE TABLE
+   EN_UI: every non-content interface string, keyed.
+   UK_*: Ukrainian content (filled in below; aliased to EN until then).
+   ============================================================ */
+const EN_UI = {
+  "meta.title":"What Are You, Really?",
+  "meta.desc":"A pub party quiz: answer 5 cheeky questions, get an on-device aura scan, and an agent crowns you — spirit pizza topping, inner houseplant, Hogwarts house and more. Run it round the table and compare.",
+  // intro
+  "intro.h1":"What are you,<br>really?",
+  "tag.agent":"🤖 AI Agent",
+  "tag.vision":"👁 Vision",
+  "tag.pub":"🍺 Pub Mode",
+  "intro.sub":"Answer 5 cheeky questions, then we <b>scan your aura</b> 👁 — read from your answers <i>and</i> your camera — and an agent <b>crowns you</b>: pizza topping, inner houseplant, Hogwarts house and more, printed on your aura-tinted photo. Drawn fresh from a bank of <b id=\"bankCount\">120</b> questions, so every player gets a different 5. Run it round the table and compare.",
+  "intro.namelabel":"First, who's playing?",
+  "intro.nameph":"Your name…",
+  "intro.start":"Begin → 5 questions",
+  "intro.totable":"👀 Compare the table (<span id=\"tableCountTop\">0</span>)",
+  "intro.qralt":"Scan to play",
+  "intro.qrhint":"📲 Scan to play on your own phone — pass it round the table",
+  "intro.footer":"100% offline. Your photo is analysed on-device, shown only to you, and never saved or sent.",
+  // quiz
+  "quiz.qcount":"Question {n} of {total}",
+  "quiz.back":"← back",
+  // result
+  "result.youare_named":"{name}, you are…",
+  "result.youare":"You are…",
+  "result.elementLine":"{emoji} {name} element",
+  "result.auraLine":"{name} aura",
+  "result.savecard":"📥 Save / share my aura card",
+  "result.addme":"✋ Add me to the table",
+  "result.copytext":"📋 Copy text",
+  "result.retake":"↻ Retake",
+  "result.footer":"📸 Or screenshot this card. Your photo stays on your phone.",
+  "toast.copied":"Copied! Paste it in the chat 📋",
+  // share text
+  "share.i":"I",
+  "share.you":"You",
+  "share.auraLabel":"Aura",
+  "share.tagline":"— What Are You, Really?",
+  // aura card (canvas)
+  "card.header":"👁  WHAT ARE YOU, REALLY?",
+  "card.scantoplay":"Scan to play 📲",
+  "card.shareTitle":"What Are You, Really?",
+  "card.building":"Building your card…",
+  "card.cantbuild":"Couldn't build the card",
+  "card.saved":"Saved to your photos 📥",
+  "card.tableBuilding":"Building the table card…",
+  "card.tableHeader":"🍻  THE TABLE",
+  "card.tableSub":"WHAT ARE YOU, REALLY?",
+  "card.tableSupers":"✦  TABLE SUPERLATIVES  ✦",
+  "card.tableShareTitle":"What Are You, Really? — the table",
+  // table screen
+  "table.title":"The Table",
+  "table.sub":"Everyone who's been crowned tonight.",
+  "table.newplayer":"+ Crown the next victim",
+  "table.savecard":"📥 Save / share the table card",
+  "table.sharetext":"📋 Share text",
+  "table.clear":"Clear table",
+  "table.empty":"No one's been crowned yet.<br>Go on, you first.",
+  "table.emptyToast":"Table's empty!",
+  "table.confirmClear":"Clear everyone from the table?",
+  "table.copyHeader":"🍻 WHAT ARE YOU, REALLY? — the table:",
+  "table.copied":"Table copied 📋",
+  "table.added":"Added to the table 🍻",
+  "table.mystery":"Mystery guest",
+  "table.readingLabel":"Table reading:",
+  "table.readingPct":"roughly {pct}% pure chaos tonight",
+  "super.chaotic":"Most chaotic",
+  "super.warmest":"Warmest soul",
+  "super.main":"Main character",
+  "super.mainBig":"Biggest main character",
+  "super.deepest":"Deepest thinker",
+  // aura scan screen
+  "aura.title":"👁 Aura Scan",
+  "aura.holdstill":"Hold still… reading your energy field. (Stays on your phone.)",
+  "aura.calibrating":"Calibrating the aura sensor…",
+  "aura.reading":"Reading your 5 answers…",
+  "aura.matching":"Matching them to your colour temperature…",
+  "aura.crowning":"Crowning your aura ✨",
+  "aura.nocamera":"No camera here — switching to psychic mode 🔮",
+  "aura.camerashy":"Camera shy? No bother — psychic mode it is 🔮",
+  "aura.noread":"Couldn't get a clear read — psychic mode 🔮",
+  "aura.energyLine":"{emoji} {name} energy",
+  "aura.seeresult":"See my full result →",
+  "aura.rescan":"↻ Rescan my aura",
+  // photo readout
+  "readout.prefix":"👁 Read from your photo:",
+  "readout.dominant":"{hue} dominant",
+  "readout.hue.red":"red","readout.hue.orange":"orange","readout.hue.green":"green",
+  "readout.hue.teal":"teal","readout.hue.blue":"blue","readout.hue.violet":"violet","readout.hue.pink":"pink",
+  "readout.energy.high":"high-energy","readout.energy.calm":"calm","readout.energy.balanced":"balanced",
+  "readout.light.bright":"bright","readout.light.moody":"moody","readout.light.soft":"soft",
+  "readout.vibe.vivid":"vivid","readout.vibe.muted":"muted",
+  "readout.face.closeup":"close-up",
+  // typography
+  "quote.open":"“","quote.close":"”",
+};
+
+/* ---- Ukrainian content (culturally adapted, not literal) ---- */
+const BANK_UK = [
+["Твоя черга замовляти на всіх. Що береш?","🍺 Що найдешевше, чотири штуки, погнали","🍵 «Я за кермом» — морс і моральна перевага","🍹 Коктейль із парасолькою та власною легендою","🍷 Одну добру штуку, яку потім детально описуватиму"],
+["Вечір п'ятниці, від якого не нудить:","🔥 Гучний загул, поки не зірву голос","🏠 Вечеря, на яку я наготую вдесятеро більше","✨ Спонтанний хаос десь за три міста звідси","📺 Диван, плед і один дуже конкретний серіал"],
+["У спільному чаті ти той, хто…","😈 О третій ночі скидає дикий мем","📋 Планує все (так, є окрема табличка)","🫶 Гасить сварки й пам'ятає всі дні народження","🌀 Зникає на кілька днів, потім шле один абзац"],
+["Лишився останній шматок піци. Ти…","🤌 Береш. Він мій. Наступне питання","😇 Пропонуєш усім — і справді щиро","🎭 Пропонуєш голосно, щоб усі бачили","🔪 Ріжеш на дрібні дипломатичні шматочки"],
+["Твоя енергія в момент, коли заходиш на вечірку:","🔥 «НУ ЩО, ПОНЕСЛАСЯ» — двері ледь на петлях","🌿 одразу на кухню, шукати господарів","✨ коло по кімнаті, обіймаю кожного","🌊 тихо вишукую ту єдину людину, яку реально знаю"],
+["Твоя ідеальна відпустка — це…","🏔 В останній момент, без плану, кажу «так» усьому","🏡 Хата в селі, грубка й нікуди не треба","🌴 Там, де точно вийдуть круті фото","📖 Тиша, книжка і власні думки"],
+["Мікрофон у караоке дійшов до тебе. Ти…","🎤 Хапаєш без вагань — «Океан Ельзи», поїхали","☕ Аж занадто гучно вболіваєш за інших","💃 Ще з вівторка маєш заготовлену пісню","🙈 Раптово згадуєш про терміновий лист, треба написати"],
+["Як ти завантажуєш посудомийку?","🌀 Кидаю як попало, та й по всьому","📐 Є правильний спосіб, і я його знаю","🤷 Аби швидше й щоб похвалили","🧩 Тиха, ідеальна, продумана система"],
+["На телефоні 3% заряду. Ти відчуваєш…","⚡ Свободу. Хай сідає. Анархія","🔌 Спокій — у мене павербанк на всіх","😱 Паніку. А раптом щось пропущу","🧘 Чесно? Навіть трохи полегшення"],
+["На вечірці тебе найімовірніше знайдуть…","🕺 Посеред танцполу","🍳 На кухні, де ти всіх доглядаєш","🎙 Як розповідаєш історію дедалі більшому колу","🐈 За балачкою з однією людиною в тихому кутку"],
+["Твоя токсична риса — це…","🔥 «Ще по одній» — це завжди брехня","🫙 Я фізично не можу перестати всіх годувати","🎬 Я будь-що роблю трохи про себе","🌊 Я репетирую суперечки в душі"],
+["Обери сніданок:","🌶 Вчорашня холодна піца, стоячи","🍳 Нормальна яєчня з ковбасою, на всіх","🥑 Те, що найкраще виглядає в тарілці","☕ Кава, тиша, не говоріть до мене"],
+["Як ти ухвалюєш рішення?","🎲 Нутром, миттєво, без права на відкат","⚖️ Плюси, мінуси, як буде розумніше","🗣 Питаю всіх, зчитую настрій","🌌 Переспати з думкою, відчути, потім вирішити"],
+["Суперсила мрії:","💥 Суперсила, очевидно","🛡 Зцілювати всіх навколо","✨ Телепорт одразу туди, де весело","🔮 Читати думки (так, це прокляття)"],
+["Компанія не може обрати, куди піти поїсти. Ти…","🚩 Просто обираєш одне — ПОГНАЛИ","📞 Тихо бронюєш гарне місце","🎉 Пропонуєш новий модний заклад","🤔 Маєш напоготові три вивчені варіанти"],
+["Твій стиль листування:","‼️ КАПСОМ І ЧИСТОЮ ЕНЕРГІЄЮ","💬 Тепло, з купою уточнювальних питань","😎 Меми й гіфки, ідеально вчасно","📜 Один вдумливий абзац, через кілька годин"],
+["Настілка стає на принцип. Ти…","♟ Граєш на перемогу, без полонених","🤝 Стежиш, щоб нікого не лишили осторонь","🎭 Забезпечуєш живий коментар і драму","🕵️ Тихо й підозріло перемагаєш"],
+["Ідеальний улюбленець:","🐺 Щось трохи дикувате","🐕 Відданий пес, якому я потрібен","🦜 Щось барвисте й показне","🐈 Кіт, що засуджує мене щодня"],
+["Ти запізнюєшся. Ти…","🏃 Біжиш, хаос, але якось встигаєш","📅 Ти ніколи не запізнюєшся — заклав час на затори","🤳 Приходиш пізно, зате з виходом","😔 Усю дорогу накручуєш себе через це"],
+["По дорозі додому ллє як з відра. Ти:","🔥 біжиш крізь зливу, гукаючи як навіжений","🌿 ділишся курткою і женеш усіх під дах","✨ зупиняєшся на драматичне фото під дощем, авжеж","🌊 потай це обожнюєш і стаєш тихим та задумливим"],
+["Твоє абсолютне пекло — це:","📋 Сидіти тихо й чітко дотримуватись правил","🤼 Дозволити комусь готувати замість мене","🙊 Бути непоміченим на вечірці","🗣 Світська балачка з геть незнайомими"],
+["На картку впали гроші. Перший крок:","🎰 Спонтанна, трохи божевільна покупка","🏦 Розумно — заощадження, комуналка, смаколики","🛍 Пригостити всіх і виглядати щедрим","📊 Тижнями досліджувати, на що витратити оптимально"],
+["Друзі телефонують тобі по…","🚀 Шалений план і водія для втечі","🩹 Обійми, гарячий суп і відверту розмову","🎟 Бо ти точно знаєш, що цікавого на ці вихідні","🧭 Спокійну, чітку пораду о другій ночі"],
+["Який у тебе вигляд кімнати?","🌪 Організований хаос — я знаю, де що лежить","🛏 Затишно, чисто, свічки напоготові","🖼 Усе продумано й дуже фотогенічно","📚 Радше прихисток, повно книжок"],
+["Wi-Fi зник на цілий день. Ти…","🎉 Супер — ходімо робити якусь дурню","🍲 Готую, прибираю, щасливо порпаюся вдома","😵 Тобто як це, що мені ТЕПЕР робити","🕯 Блаженство. Нарешті. Трохи спокою"],
+["Заходиш у напхану маршрутку. Ти той, хто:","🚪 стоїть біля дверей, готовий вистрибнути на своїй","🧺 врешті допомагає незнайомцю із сумками","🪟 займає місце біля вікна — заради краєвиду (і контенту)","🎧 вставляє навушники й повністю зникає"],
+["Хтось плаче за столом. Ти…","💪 Йдеш шукати того, хто винен","🤗 Одразу поруч: серветки й повна підтримка","🍸 Розряджаєш атмосферу влучним жартом","👂 Просто сидиш і слухаєш, по-справжньому"],
+["Ідеальна неділя:","🚵 Пригода, трохи занадто амбітна","🥘 Великий обід, родина, один довгий стіл","🥂 Нескінченний бранч з усією компанією","🛁 Ванна, подкаст, нуль людей"],
+["Твоя роль у банді на пограбування?","💣 Безбашенна сила","🧰 Той, хто взяв перекус і план Б","😏 Чарівне відвернення уваги","🧠 Мозок операції в мікроавтобусі"],
+["Тобі роблять щирий комплімент. Ти…","😎 «Я знаю.»","🥰 Миттєво переводиш його на когось іншого","💁 Світишся від нього цілий тиждень","🫣 Зависаєш і не віриш"],
+["«Плани на вихідні є?» Чесна відповідь:","🔥 «без планів = максимум планів, тримай телефон увімкненим»","🌿 «приймаю гостей — уже накупив смаколиків з запасом»","✨ «щось миле, гарне світло, деталі згодом»","🌊 «прекрасно нічого, і я буду недосяжний»"],
+["Музика в твоїх руках. Ти вмикаєш…","🎸 Самі хіти, без пропусків, на повну","🎶 Те, що знають і люблять усі","🪩 Те, що зараз неймовірно модне","🎻 Нішеву пісню з цілою передісторією"],
+["Як ти сваришся?","🌋 Гучно, швидко, і за п'ять хвилин усе","🕊 Уникаю взагалі, зберігаю мир","🎤 Виграю публіку, а не саму суть","📝 Спокійно, нищівно, через три дні"],
+["Ідеальне перше побачення:","🎢 Щось гостре й трохи божевільне","🍝 Готуємо разом удома","🍸 Бар на даху і дуже вдалий образ","🚶 Довга прогулянка і глибока-глибока розмова"],
+["У кімнату залетіла оса. Ти той, хто:","🔥 оголошує війну й хапає найближчу зброю","🌿 спокійно відчиняє вікно й випроваджує її","✨ верещить, а тоді в прямому ефірі коментує всю сагу","🌊 уже тихенько вийшов з кімнати"],
+["Ти зірвав куш. Компанія дізнається через…","📢 Тебе, з криком, негайно","🎁 Подарунки, що загадково починають з'являтися","📸 Раптово дуже дорогу естетику","🤐 Ніяк — ти кажеш одній людині"],
+["Що найшвидше псує тобі день?","⛓ Коли кажуть «пригальмуй»","😞 Коли засмучена близька людина","🚫 Коли тебе лишили поза планами","🌀 Незавершена, незручна розмова"],
+["Лишаєш записку сусідові по квартирі. У ній:","✍️ «ПІШОВ. БУДУ КОЛИСЬ.» — ледь читабельно","🧁 тепла записка з усім, що йому знадобиться","🖋 щось миле з невеличким малюнком","🔬 ретельний, трохи перемудрований абзац"],
+["Обери закуску на всіх:","🌶 Щось небезпечно гостре","🧀 Щедру нарізку, аж стіл вгинається","🍓 Щось гарне й інстаграмне","🫒 Смак на любителя, який ти захищатимеш"],
+["Тобі впала вільна година. Ти…","🛹 Робиш щось трохи ризиковане","🧹 Викреслюєш справу зі списку, кайфуєш","📲 Дивишся, хто вільний, і складаєш план","🎨 Тихе хобі, про яке ніхто не знає"],
+["Спрацювала пожежна тривога. Ти той, хто…","🚒 Уже надворі й організовує людей","🧯 Хапає кота й аптечку","🤳 Знімає все для сторіз","🚪 Спокійно й тихо виходить першим"],
+["Обери напій на завершення вечора:","🥃 Фінальна чарка, а чом би й ні","🍫 Гаряче какао, капці на ноги","🍾 Ще келих чогось ігристого","🍵 Чай і глибокий розбір польотів"],
+["До компанії приєднується новачок. За годину ти вже:","⚡ підбив його на те, про що він пошкодує","🤲 нагодував і дізнався всю історію його життя","🌟 якось став його улюбленцем тут","🧩 тихо його зчитав і притримав висновки"],
+["Як ти збираєшся в дорогу?","🎒 Кидаєш усе в сумку за годину до виходу","🧳 Список, усе складене, плюс запас для інших","👗 Образи сплановані під кожен випадок","📦 Мінімум, продумано, рівно стільки, скільки треба"],
+["Незнайомець питає в тебе дорогу. Ти…","🗺 Сам проводжаєш його півдороги","🤝 Терпляче поясниш двічі, якщо треба","😄 Робиш із цього цілий приємний момент","🤓 Даєш реально оптимальний маршрут"],
+["Твій внутрішній монолог — це переважно…","🥁 «Погнали»","🍯 «У всіх усе добре?»","🎬 «А як це виглядає збоку?»","🌌 «Але що це все означає?»"],
+["Якби сьогодні був фільм, трейлер обіцяв би:","💥 вибухи й сумнівні рішення, без гальм","🎄 теплу історію, де всі безпечно дістаються додому","🎩 гламурну авантюру з нереальним гардеробом","🎭 повільну драму, що веде до однієї великої сцени почуттів"],
+["Час спільного фото. Ти…","🤪 Робиш навмисне дурне обличчя","📸 Тримаєш усім келихи","💁 Ловиш свій ракурс — ти його знаєш","😬 Тихо сподіваєшся, що це скоро скінчиться"],
+["Твій стіл чи робоче місце:","🌩 Розкішний безлад чистого імпульсу","🪴 Чисто, вазон, смаколики для гостей","🖼 Естетично й зі світлом під відеодзвінки","🧠 Мінімум, фокус, навушники на голові"],
+["У барі ти призначений…","🎉 Заводій хаосу","🚕 Відповідальний, що розвозить усіх по домівках","📣 Генератор хайпу","🛟 Людина-емоційна-підтримка"],
+["Як ти переживаєш дуже довгу чергу?","😤 Уголос думаєш просто піти","😌 Заводиш балачку з сусідом по черзі","🤳 Робиш із цього контент","🧘 Зникаєш у власних думках"],
+["Твій фірмовий танцювальний рух:","🤸 Безбашений, на повну, без жодної техніки","👏 Той, що змушує інших приєднатися","🕺 Плавний, відрепетируваний, чесно іконічний","🫠 Непомітне переступання з ноги на ногу під стіною"],
+["Що зараз у тебе в сумці?","🔦 Щось ледь хаотичне","🩹 Пластир, м'ятні цукерки, запаска для тебе","💄 Найнеобхідніше, красиво підібране","📓 Блокнот і три ручки"],
+["План змінюється в останню мить. Ти…","🙌 Кайфуєш — так навіть краще","🛠 Тихо лагодиш усю логістику","🎲 Перекручуєш це на щось іще веселіше","😮‍💨 Береш хвилинку, щоб перелаштуватися"],
+["Хтось кричить «спільне фото!». Ти:","🔥 вистрибуєш наперед з дурним обличчям","🌿 зганяєш відсталих, щоб нікого не лишити","✨ уже знаєш свій ракурс і своє світло","🌊 відпливаєш до краю й напівховаєшся ззаду"],
+["Твоя мова любові — це…","🎢 Пригоди разом","🍲 Турбота вчинками (і суп)","🎁 Подарунки й широкі жести","💬 Довгі, відверті, глибокі розмови"],
+["За вечерею спалахує суперечка. Ти…","🥊 Кидаєшся в неї, обираєш бік, стоїш до кінця","🕊 Намагаєшся знайти золоту середину","🎤 Легенько підкидаєш дровець заради видовища","🤫 Тихо тримаєш насправді найкращий аргумент"],
+["Як ти прокидаєшся?","🚀 Будильник раз, підйом, ПОГНАЛИ","☕ Повільно, чайник на плиту, ніжно","🌅 Одразу в телефон","😴 Дрімота, роздуми, врешті встаю"],
+["Обери побічний квест:","🧗 Залізти туди, куди не можна","🛒 Допомогти комусь із переїздом","🎤 Завалитися в караоке-бар","🗺 Годинами блукати незнайомим містом самому"],
+["Як тебе прозвали в компанії:","🌶 Загроза (з любов'ю)","🐻 Мама/тато компанії","⭐ Головна подія","🦉 Мудрець"],
+["Приносять рахунок. Ти…","💳 «Я заплачу — потім скинетесь»","➗ Тихо рахуєш справедливу частку кожного","😅 Уже встиг відлучитися в туалет","🧮 Рахуєш точно, до копійки"],
+["Ідеальний вечір удома:","🎮 Турнір, снеки, підколки","🍪 Спекти щось і ввімкнути фільм","🍷 Вечеря, яку ти сам оформив зі смаком","📺 Одна людина, один серіал, без розмов"],
+["Плануєте поїздку з друзями. Ти той, хто:","🏍 хоче без плану й «подивитися, що буде»","🚐 організовує бус, щоб усі помістилися","✈️ планує приїзд так, щоб це був справжній Момент","🚂 просто хоче довгий нічний потяг і темне вікно"],
+["Твоя реакція на справді хорошу новину?","🎆 Крик, обійми, негайні плани","🥹 Плачеш від щастя, а тоді йдеш годувати","📢 Розповідаєш геть усім","😊 Тихе, тепле, глибоке сяйво всередині"],
+["Ти відповідаєш і за плейлист, і за частування:","🌭 Гучні пісні, гаряча їжа, потужна енергія","🥪 Затишна класика, удосталь на всіх","🍸 Модні треки й гарна закусочна дошка","🎼 Настрій, вайб, повільне наростання"],
+["Твоя найгірша звичка у спільному чаті:","🚨 47 повідомлень поспіль","🥲 Лайкаю все, не відповідаю ні на що","🪞 Зводжу все назад до себе","👻 Зникаю на цілий тиждень"],
+["Ти втік на крихітний острів. Твоя робота там:","🚁 той, хто робить щось безбашене зі скель","🏡 тримаєш заїзд, годуєш кожного заблукалого","🎤 ведеш єдине на острові хаотичне ток-шоу","🔭 доглядач маяка, цілком щасливий, на самоті"],
+["Як ти даєш поради?","💢 Жорстка чесність, швидко","🤲 М'яко, з підтримкою і печивом","🪄 Чарівно переформулюю — і тобі вже добре","🧭 Вдумливі питання, поки сам не дійдеш"],
+["На вечірці вимкнули світло. Ти…","🔦 Береш керівництво й робиш із цього гру","🕯 Знаходиш свічки й усіх заспокоюєш","🎉 Оголошуєш це найкращою частиною вечора","👁 Тихо насолоджуєшся моторошним новим вайбом"],
+["Друга ночі, а ти ще не спиш, бо:","🌃 ніч навідріз відмовляється закінчуватися","🌇 перевіряю, чи всі дісталися додому","🪩 найкращі розмови щойно почалися","🌫 мозок просто не вимикається"],
+["Відкрий галерею. Там переважно:","🗡 хаотичні кадри того, що я мабуть не мав робити","🧶 люди, яких я люблю, і страви, що я їм готував","📸 образи, дзеркала й красива дурня","📚 скріншоти, цитати й 200 майже однакових неб"],
+["Хтось лізе без черги. Ти…","😠 Одразу щось кажеш","😶 Зітхаєш, відпускаєш, зберігаєш мир","🙄 Кидаєш гучну дотепну ремарку","📒 Береш на замітку й мовчки засуджуєш довіку"],
+["Ідеальний суботній ранок:","🚴 Рано встати заради великої пригоди","🥞 Млинці на всю родину","🛍 Базар, кава, себе показати","🌿 Прогулянка наодинці, поки світ ще спить"],
+["Що ти заспіваєш на біс у караоке?","🎸 Щось, про що пошкодують мої голосові зв'язки","🎶 Дует, витягую тебе теж","🌟 Гвоздь програми, який я беріг","🥲 Душевну баладу, якої ніхто не просив"],
+["Як ти заходиш у приміщення?","🚪 Гучно — двері аж розчахуються","👋 Вітаючи кожного на ім'я","💫 Наче я потай знаменитість","🤫 Прослизаю, знаходжу край, спостерігаю"],
+["Твій контакт для екстрених випадків сказав би, що ти…","🌪 Ходяча халепа і легенда","🛡 Найнадійніші руки","🎭 Ніколи не нудний, часто запізнюється","🌊 Важко зчитати, але воно того варте"],
+["Важкий день. Твоя кнопка перезавантаження:","🥊 випотіти це — зал, пробіжка, щось жорстке","🧁 спекти щось спеціально для когось іншого","🛍 маленький дарунок собі й прогулянка головного героя","📖 читати в повній тиші, телефон в іншій кімнаті"],
+["Компанію треба підбадьорити. Ти…","🎇 Плануєш щось зухвале","🍜 Готуєш і перевіряєш, як кожен","🤡 Просто стаєш розвагою","🫂 Пишеш кожному справжнє повідомлення"],
+["Шпалери на твоєму телефоні — це…","🏎 Щось швидке чи зухвале","👨‍👩‍👧 Люди, яких я люблю","🌅 Розкішний кадр, який я сам зняв","🌌 Щось мрійливе й абстрактне"],
+["Фінальний бос твоєї особистості:","🔥 «Погнали.»","🌿 «Ти поїв?»","✨ «Дивись сюди.»","🌊 «Я тут подумав…»"],
+["У парку розваг ти прямуєш одразу до:","🎢 найвищих, найстрашніших гірок — двічі","🎠 каруселі, тримаючи чиюсь малечу","🎡 колеса огляду заради краєвиду й фото","🪞 дивної кімнати кривих дзеркал, сам, і кайфую"],
+["Твоя реакція на сюрприз-вечірку:","🎉 Крик, а тоді кермуєш усією вечіркою","🥹 Плачеш, потім дякуєш кожному окремо","📸 Позуєш — це золотий контент","😳 Реально не знаєш, куди подітися"],
+["Хатня робота, яку ти потай любиш:","🔨 Агресивне генеральне прибирання-бліц","🍳 Готувати на всіх","🪟 Наводити красу","🧺 Тихе, методичне складання білизни"],
+["Обери спосіб вирішити нічию:","🪨 Камінь-ножиці-папір, до першої перемоги","🤝 Проговорити, поки всі не задоволені","🎤 Перемагає той, хто смішніше аргументує","🎲 Складна справедлива система, яку я придумаю"],
+["Ідеальний день народження:","🎆 Масштабний, божевільний загул","🏡 Близькі друзі, домашня їжа, затишок","🥂 Гламурний вечір із дрес-кодом","🌄 Кудись у тишу — просто втекти"],
+["Твоя роль у спільній поїздці?","🧭 Головний по вайбу й хаосу","💼 Скарбник і маршрут","📣 Бойовий дух і фотографії","🗺 Той, хто знаходить приховані перлини"],
+["З'явився павук. Ти…","🩴 Розбираєшся з ним, драматично","🥤 Спокійно рятуєш його склянкою і листівкою","🙀 Верещиш, потім переказуєш усю сагу","🧍 Шанобливо спостерігаєш здалеку"],
+["З'явилася машина часу. Ти негайно:","⚔️ вирушаєш туди, де дико й, мабуть, небезпечно","🏰 навідуєш затишніші, простіші часи й застрягаєш надовго","🎷 летиш у блискучі двадцяті в шикарному вбранні","🪐 пливеш у дивне далеке майбутнє — глянути, чим усе скінчиться"],
+["Як ти святкуєш перемогу?","🍾 Гучно, негайно, запрошені всі","🥧 Спекти щось і пригостити всіх","📱 Дуже ретельно зроблений допис","😌 Тихе, особисте, глибоке задоволення"],
+["Твій вираз обличчя за замовчуванням:","😼 Щось замислив","🙂 Відкритий і теплий","😏 Пустотливо-чарівний","🤨 На півдумці, десь не тут"],
+["Офіціант приніс не те. Ти…","🗣 Просиш замінити — без драми, просто виправити","🤐 З'їдаєш; не хочеш зчиняти галас","🎭 Робиш із цього милий жарт","😬 Тихо приймаєш свою нову долю"],
+["Завтра ти стаєш вірусним. За що:","🏆 трюк, який ніхто не вважав за виживний","🌍 тихо зробив щось добре, і це зняли на камеру","✨ просто за те, що ти невимушено, до дратівливості, іконічний","🧠 одна дивна геніальна ідея, що перепрошила людям мізки"],
+["Твої стосунки з планами:","🎯 Плани — для боягузів","🗓 Плани — це любов, я їх складаю","🎈 Вільні плани, потужна енергія","🧷 Детальні плани, потай, про всяк випадок"],
+["Вечірка згасає. Ти…","⚡ Воскрешаєш її дикою ідеєю","🚖 М'яко розводиш усіх безпечно по домівках","🎤 Останній сплеск чистого шоуменства","🌙 Зникаєш по-англійськи, не прощаючись"],
+["Обери, якою кухонною технікою ти був би:","🔥 Газовий пальник","🍞 Надійний тостер","☕ Модна кавомашина","🫖 Повільний терплячий чайник"],
+["Ваш чат без тебе був би…","💤 Чесно кажучи, трохи нудним","🧱 Хаосом — ніхто не організовує","🎈 Тихішим, з меншим блиском","🤔 Без свого глибокодумного"],
+["Як ти поводишся, коли неправий?","🔄 Гучний розворот — і знову з повним переконанням","🙏 Тепло вибачаюся і виправляю","😅 Чарівністю прослизаю наскрізь","🪞 Десятиліттями прокручую це в голові"],
+["Обери ятку на ярмарку вихідного дня:","🌶 Гострі соуси й виклики «на слабо»","🍲 Суп і добра розмова","🌸 Гарні речі ручної роботи","📜 Рідкісні букіністичні книжки"],
+["Ідеальний для тебе комплімент:","💪 «Ти — стихія»","🤲 «Ти завжди про всіх дбаєш»","✨ «Ти освітлюєш кімнату»","🌊 «Ти по-справжньому бачиш людей»"],
+["Вечір завершився. Твоє останнє повідомлення:","🌟 «НАЙКРАЩИЙ вечір — повторимо скоро?!»","❤️ «Дісталися додому? Напишіть»","📸 «Викладаю це негайно»","🌙 «Дякую за сьогодні. Дуже треба було.»"],
+["Обери тату, яке зробив би:","⚡ Щось зухвале й імпульсивне","🌳 Символ дому й коріння","🌹 Щось красиве й на видноті","🌊 Крихітне, значуще, таємне"],
+["Твій підхід до гострої їжі:","🌶 Найгостріше в меню — доведіть","🍚 Негостре й затишне, на всіх","🫦 Те, що в тренді й гарно виглядає","🧪 Цікаво й аналітично, по одній перчинці"],
+["На конкурсі талантів потрібен номер. Ти…","🎆 Зголошуєшся на щось небезпечне","🍰 Забезпечуєш частування й підтримку","🎩 Крадеш усе шоу, природно","🎹 Тихо бездоганно виконуєш щось тонке"],
+["Відкрився танцпол. Ти:","🦅 перший на ньому, без розігріву","🐘 витягуєш сором'язливих, щоб нікого не лишити","🦚 точно в центрі, проживаю все своє життя","🐙 стережеш куртки з келихом, цілком щасливий"],
+["Твої останні десять повідомлень — переважно:","🔥 плани, хайп і «ПОГНАЛИ»","🫶 «ти як?» і сердечка долоньками","✨ меми й гіфки, ідеально вчасно","🥲 абзаци, надіслані на шість годин пізніше"],
+["Як ти даєш раду стресу?","🏋️ Спалюю його, жорстко і швидко","🧹 Прибираю й піклуюся про інших","🎉 Відволікаюся планами й людьми","📝 Веду щоденник, перемудровую, повільно перетравлюю"],
+["Схема швидкого збагачення, на яку ти б купився:","🎰 Дика ставка з високим ризиком","🏡 «Розумна» нерухомість із другом","💼 Блискуча штука, яку всі хайплять","📈 Малозрозумілий план, який я задосліджував"],
+["Компанія не може зійтись на фільмі. Ти…","🎬 Просто вмикаєш щось гучне","🍿 Влаштовуєш чесне голосування","🌟 Просуваєш круте інді","🧠 Маєш ідеальний маловідомий варіант"],
+["Тобі подарували вазон. За пів року він:","🌋 якимось дивом квітне на чистій занедбаності","🤍 розкішно росте — я з ним щодня говорю","📷 обраний суто за вигляд (можливо, штучний)","🌧 науковий проєкт, за який я тихо переживаю"],
+["Виклик «на слабо» в барі. Ти…","😈 Уже зробив — що далі","🛟 Будеш відповідальним підстраховувачем","🎭 Робиш це з повним театром","🤔 Спершу обговориш умови"],
+["Вечір квізу — команда розраховує на тебе, щоб:","⚡ гатити по кнопці ще до кінця питання","🤝 тримати бойовий дух, коли ми ганебно програємо","🎤 заводити залу й чарувати ведучого","🧠 знати те єдине неможливе питання, якого ніхто не знав"],
+["Твоя роль на недільному сімейному обіді:","🔥 Розрізати м'ясо, з шиком","🥘 Радо готувати геть усе","🍷 Підбирати вино й накривати стіл","🥧 Тихо доводити до ідеалу підливу"],
+["Як ти прощаєшся?","🚪 Уже пішов — без церемоній","🤗 Довгі обійми, «напиши, як дійдеш»","👋 Цілий прощальний тур кімнатою","🌙 Тихий помах рукою і тепло на душі"],
+["Обери хаотично-добру справу:","🦸 Зухвалий публічний порятунок","🍞 Тихо годувати сусідів","🎁 Грандіозний жест-сюрприз","🕊 Анонімний добрий вчинок"],
+["Твоя історія пошуку викрила б у тобі:","🚨 того, хто планує щось трохи безбашене","🩹 того, хто гарячково гуглить, як допомогти другові","🛍 «найкраще [модне] поруч», авжеж","🌌 того, хто о 2-й ночі три години провалився в екзистенційну кролячу нору"],
+["Компанії потрібен лідер. Ти…","👑 Уже керуєш — не відставайте","🧭 Ведеш, тихо все владнавши","📣 Ведеш, надихаючи всіх","🗳 Висуваєш правильну людину й радиш"],
+["Тобі несподівано випав вільний день. Ти:","🏔 їдеш кудись без плану й розбираєшся на місці","🛋 гніздишся вдома й відмовляєшся вдягати нормальні штани","🥐 бранч, а потім гарненькі пустощі по місту","📚 галерея, блокнот і приємна самотність"],
+["Твоя реакція на «давай по чарці»:","🥃 Уже замовляю","💧 «Мені води — але ви давайте»","🎉 «ТІЛЬКИ якщо вип'ємо з нормальним тостом»","🤨 «Уточни, хто такі „ми“ і скільки тих „чарок“»"],
+["Біля багаття потрібна історія. Ти розповідаєш…","👻 Найстрашнішу, на повну","🔥 Теплу, до якої долучаються всі","🎭 Дико прикрашену особисту легенду","🌌 Тиху, дивну, прекрасну оповідь"],
+["Останнє замовлення на сьогодні. Твоє:","🍻 «Те саме, ще раз, на всіх!»","🫖 «Чай? Хтось? Ні? Ну тоді сам.»","🍸 «Ще одну тієї модної»","🍷 «Тільки води, дякую — насувається велика дума»"]
+];
+
+const ELEMENTS_UK = {
+  f:{key:"f", name:"Вогонь", emoji:"🔥", word:"Іскра",   hex:"#ff5a3c", blurb:"сміливий, хаотично-добрий, газ у підлогу без гальм"},
+  e:{key:"e", name:"Земля",  emoji:"🌿", word:"Вогнище", hex:"#3fae6b", blurb:"теплий, заземлений, найкращий господар на світі"},
+  a:{key:"a", name:"Повітря",emoji:"✨", word:"Блиск",   hex:"#b06bff", blurb:"товариський, дотепний, енергія головного героя"},
+  w:{key:"w", name:"Вода",   emoji:"🌊", word:"Глибина", hex:"#2f8fe0", blurb:"вдумливий, чутливий, прекрасний перемудрувач"},
+};
+
+const TITLES_UK = {
+  "fe":{t:"Затишний палій",            r:"Розпалиш багаття — а тоді переконаєшся, що в кожного є плед."},
+  "fa":{t:"Головна подія",             r:"Ти не заходиш у кімнати — ти в них стаєшся. Виснажливо. Обожнюємо."},
+  "fw":{t:"Вибух у вповільненій зйомці",r:"Тижні спокою — а потім СМС о 2-й ночі, що перетрясає весь чат."},
+  "ef":{t:"Ніжна загроза",             r:"Тихий голос — і нищівні погляди на те, як правильно вантажити посудомийку."},
+  "ea":{t:"Людина-обійми",             r:"Знаєш замовлення кожного й ім'я його колишнього. Ми завжди сідаємо біля тебе."},
+  "ew":{t:"Тиха гавань",               r:"Тобі розповідають усе. Ти жодного разу не проговорився. Поведінка святого."},
+  "af":{t:"Конфеті-гармата",           r:"100% вайбу, 0% плану — і чомусь щоразу все виходить."},
+  "ae":{t:"Блискучий господар",        r:"Влаштовуєш вечірку І миєш потім посуд. Рідкісний вид, чесно."},
+  "aw":{t:"Прекрасний перемудрувач",   r:"Найсмішніший за столом; досі щоночі переграє СМС із 2019-го."},
+  "wf":{t:"Тихий шторм",               r:"За весь вечір три слова. Усі три б'ють як грім."},
+  "we":{t:"Стара душа",                r:"Народжений на 40, молодшаєш назад, даєш поради дорожчі за борг переді мною."},
+  "wa":{t:"Мрійливий оповідач",        r:"Живеш у фільмі, який бачиш лише ти. Закадровий голос, чесно, неймовірний."},
+};
+
+const POOLS_UK = {
+  pizza:{ label:"Піца твого духу", icon:"🍕", by:{
+    f:["Гостра ндуя — занадто, навмисне","Халапеньйо з медом — спершу солодко, потім кусає","Подвійна пепероні, без вибачень"],
+    e:["Печені овочі з бринзою — тихо найкращий шматок","Чотири сири — втілений затишок","Гриби з трюфелем — скромно, але глибоко"],
+    a:["Ананас — спірно, культово, незворушно","Прошуто з рукколою — пафосно й добре про це знає","Гострий мед із рікотою — шматок інфлюенсера"],
+    w:["Анчоуси — неоцінений геній","Каперси й оливки — смак набутий і вищий","Біла піца без соусу — принципово мислить інакше"],
+  }},
+  plant:{ label:"Твоя внутрішня рослина", icon:"🪴", by:{
+    f:["Кущик чилі, що агресивно квітне на підвіконні","Венерина мухоловка — дружня, поки не зачепиш","Сансев'єрія — незнищенна, ледь загрозлива"],
+    e:["Розлогий потос, від якого всі взяли відросток","Алое — лікує інших, не просить нічого","Грядка зелені, яку ти реально доглядаєш. Хвалько."],
+    a:["Монстера — велика, фотогенічна, в кожному кадрі","Орхідея — вибаглива, того варта, і знає це","Перлинна ниточка, що драматично звисає з полиці"],
+    w:["Спатифілум — театрально никне, оживає, повторити","Папороть у ванній, що квітне в парі й почуттях","Повітряна рослина — майже нічого не треба, а всередині світи"],
+  }},
+  house:{ label:"Факультет Гоґвортсу", icon:"🪄", by:{
+    f:["Ґрифіндор — очевидно, ти сказав це двічі","Ґрифіндор зі слизеринським прожилком, коли лишився останній шматок","Ґрифіндор — Капелюх ледь торкнувся голови"],
+    e:["Гафелпаф — і, чесно, найкращі з нас","Гафелпаф-староста, снеки вже в сумці","Гафелпаф, але дуель ти б тихо виграв"],
+    a:["Рейвенклов, що прочитав книжку І подивився фільм","Слизерин у шарфі Рейвенклову заради естетики","Рейвенклов — дотепний, а не пихатий"],
+    w:["Рейвенклов — глибокі води, небезпечні факти","Слизерин — м'який зовні, стратег усередині","Сортувальний Капелюх думав над тобою довго-довго"],
+  }},
+  drink:{ label:"Напій-альтер-его", icon:"🥂", by:{
+    f:["Чарка текіли в крихітному капелюшку","Еспресо-мартіні опівночі — погана ідея, чудова ніч","Енергія «бахнути» в людській подобі"],
+    e:["Нормальний чай, дві ложки цукру, без зауважень","Кухоль розливного — надійний, улюблений","Глінтвейн — теплий, трохи занадто, у найкращому сенсі"],
+    a:["Апероль-шприц — гарний вигляд, переважно вайб","Шампанське, що святкує вівторок","Коктейль із парасолькою й цілою передісторією"],
+    w:["Червоне вино й глибока розмова в кутку","Віскі, чистий, зі значущим поглядом удалечінь","Трав'яний чай і маленький емоційний прорив"],
+  }},
+  crisp:{ label:"Снек, який ти є", icon:"🥔", by:{
+    f:["Гострі сухарики — це попередження, а не смак","Чіпси з сіллю й оцтом — різко, аж очі сльозяться, того варте","Солоний арахіс до пива — хто перший, той і з'їв"],
+    e:["Чіпси з сіллю — впевнені настільки, що більше нічого й не треба","Чіпси «сир і цибуля» — класика, надійно, без метушні","Кукурудзяні палички — затишок із дитинства"],
+    a:["Чіпси «краб» — рожеві, веселі, трохи занадто","Чіпси «солодкий чилі» — улюбленець публіки й знає це","Трюфельні чіпси — куплені почасти щоб бачили, як ти їх купуєш"],
+    w:["Сухарики з хроном — хаотична прихована глибина","Насіння соняшника — тихе, самовдоволено складне заняття","Простий попкорн — перемудровує навіть снек"],
+  }},
+  stool:{ label:"Архетип за барним столиком", icon:"🪑", by:{
+    f:["Підбурювач — «ще по одній?» це і погроза, і обіцянка","Той, хто бере на всіх і кого не спинити","Зачинатель караоке (ніхто не просив; усі вдячні)"],
+    e:["Мама компанії — пластир, таблетки і твоя спина","Хранитель курток — стереже столик, як вірний пес","Миротворець, що гасить суперечку за рахунок"],
+    a:["Оповідач — кожна історія на 20% правда, на 100% варта почути","Соціальний клей — уже знає барменів на ім'я","Той, хто чомусь знайомий з усіма"],
+    w:["Філософ із кутка — найкращі розмови коло тебе","Тихий спостерігач, що помічає геть усе","Той, хто о 2-й ночі каже правду — лагідно, нищівно, влучно"],
+  }},
+};
+
+const AURAS_UK = {
+  f:{ bright:{name:"Сонячний спалах",  hex:"#ff7a18", read:"Чиста кінетична енергія. Ти зайшов — і термостат у кімнаті піднявся."},
+      deep:  {name:"Багряний жар",     hex:"#d22f2f", read:"Притлумлений вогонь — поки спокійний, але всі знають, на що ти здатен."} },
+  e:{ bright:{name:"Весняний луг",     hex:"#6fcf6f", read:"Тепло, що росте — ледь пахне свіжим хлібом. Біля тебе люди розслабляються."},
+      deep:  {name:"Дрімучий ліс",     hex:"#2f7d4f", read:"Закорінений і незворушний. Опора, на яку спирається весь стіл."} },
+  a:{ bright:{name:"Електрична фіалка",hex:"#b06bff", read:"Іскристий і магнетичний, трохи хаотичний. Ти просто стаєшся."},
+      deep:  {name:"Рожевий кварц",    hex:"#e87fb0", read:"М'яке сяйво, гострий розум — шарм із другим лезом за спиною."} },
+  w:{ bright:{name:"Бірюзовий приплив",hex:"#36c5d6", read:"Світлий, ясний, трохи мрійливий. Твої думки глибші, ніж здаються."},
+      deep:  {name:"Опівнічний індиго",hex:"#3a4ea8", read:"Тиха вода. Ти весь вечір тихенько всіх розумів."} },
+};
+
+const UK_UI = {
+  "meta.title":"Хто ти насправді?",
+  "meta.desc":"Квіз для компанії: дай відповідь на 5 хитрих питань, отримай сканування аури просто на пристрої — і агент коронує тебе: піца твого духу, внутрішня рослина, факультет Гоґвортсу й інше. Пускайте по колу за столом і порівнюйте.",
+  "intro.h1":"Хто ти<br>насправді?",
+  "tag.agent":"🤖 ШІ-агент",
+  "tag.vision":"👁 Зір",
+  "tag.pub":"🍺 Режим бару",
+  "intro.sub":"Дай відповідь на 5 хитрих питань, а тоді ми <b>скануємо твою ауру</b> 👁 — за твоїми відповідями <i>і</i> камерою — і агент <b>коронує тебе</b>: піца, внутрішня рослина, факультет Гоґвортсу й інше, надруковані на твоєму фото у відтінку аури. Беремо щоразу свіжі з банку на <b id=\"bankCount\">120</b> питань, тож кожному випадає інша п'ятірка. Пускайте по колу за столом і порівнюйте.",
+  "intro.namelabel":"Спершу — хто грає?",
+  "intro.nameph":"Твоє ім'я…",
+  "intro.start":"Почати → 5 питань",
+  "intro.totable":"👀 Порівняти стіл (<span id=\"tableCountTop\">0</span>)",
+  "intro.qralt":"Скануй, щоб грати",
+  "intro.qrhint":"📲 Скануй, щоб грати на власному телефоні — і пускай по колу",
+  "intro.footer":"100% офлайн. Твоє фото аналізується на пристрої, показується лише тобі й ніколи не зберігається та не надсилається.",
+  "quiz.qcount":"Питання {n} з {total}",
+  "quiz.back":"← назад",
+  "result.youare_named":"{name}, ти…",
+  "result.youare":"Ти…",
+  "result.elementLine":"{emoji} стихія {name}",
+  "result.auraLine":"аура {name}",
+  "result.savecard":"📥 Зберегти / поділитися карткою аури",
+  "result.addme":"✋ Додати мене до столу",
+  "result.copytext":"📋 Скопіювати текст",
+  "result.retake":"↻ Пройти ще раз",
+  "result.footer":"📸 Або зроби скрин картки. Твоє фото лишається в тебе на телефоні.",
+  "toast.copied":"Скопійовано! Вставляй у чат 📋",
+  "share.i":"Я",
+  "share.you":"Ти",
+  "share.auraLabel":"Аура",
+  "share.tagline":"— Хто ти насправді?",
+  "card.header":"👁  ХТО ТИ НАСПРАВДІ?",
+  "card.scantoplay":"Скануй, щоб грати 📲",
+  "card.shareTitle":"Хто ти насправді?",
+  "card.building":"Будуємо твою картку…",
+  "card.cantbuild":"Не вдалося зібрати картку",
+  "card.saved":"Збережено в галерею 📥",
+  "card.tableBuilding":"Будуємо картку столу…",
+  "card.tableHeader":"🍻  СТІЛ",
+  "card.tableSub":"ХТО ТИ НАСПРАВДІ?",
+  "card.tableSupers":"✦  НОМІНАЦІЇ СТОЛУ  ✦",
+  "card.tableShareTitle":"Хто ти насправді? — стіл",
+  "table.title":"Стіл",
+  "table.sub":"Усі, кого сьогодні короновано.",
+  "table.newplayer":"+ Коронувати наступного",
+  "table.savecard":"📥 Зберегти / поділитися карткою столу",
+  "table.sharetext":"📋 Поділитися текстом",
+  "table.clear":"Очистити стіл",
+  "table.empty":"Ще нікого не короновано.<br>Давай, ти перший.",
+  "table.emptyToast":"Стіл порожній!",
+  "table.confirmClear":"Прибрати всіх зі столу?",
+  "table.copyHeader":"🍻 ХТО ТИ НАСПРАВДІ? — стіл:",
+  "table.copied":"Стіл скопійовано 📋",
+  "table.added":"Додано до столу 🍻",
+  "table.mystery":"Таємний гість",
+  "table.readingLabel":"Зведення столу:",
+  "table.readingPct":"приблизно {pct}% чистого хаосу сьогодні",
+  "super.chaotic":"Найхаотичніший",
+  "super.warmest":"Найтепліша душа",
+  "super.main":"Головний герой",
+  "super.mainBig":"Найголовніший герой",
+  "super.deepest":"Найглибший мислитель",
+  "aura.title":"👁 Сканування аури",
+  "aura.holdstill":"Не рухайся… зчитуємо твоє енергетичне поле. (Лишається в телефоні.)",
+  "aura.calibrating":"Калібруємо сенсор аури…",
+  "aura.reading":"Зчитуємо твої 5 відповідей…",
+  "aura.matching":"Зіставляємо їх із твоєю колірною температурою…",
+  "aura.crowning":"Коронуємо твою ауру ✨",
+  "aura.nocamera":"Камери нема — перемикаємось у режим ясновидіння 🔮",
+  "aura.camerashy":"Соромишся камери? Не біда — буде режим ясновидіння 🔮",
+  "aura.noread":"Не вдалося чітко зчитати — режим ясновидіння 🔮",
+  "aura.energyLine":"{emoji} енергія {name}",
+  "aura.seeresult":"Побачити повний результат →",
+  "aura.rescan":"↻ Пересканувати ауру",
+  "readout.prefix":"👁 Зчитано з твого фото:",
+  "readout.dominant":"переважає {hue}",
+  "readout.hue.red":"червоний","readout.hue.orange":"помаранчевий","readout.hue.green":"зелений",
+  "readout.hue.teal":"бірюзовий","readout.hue.blue":"синій","readout.hue.violet":"фіолетовий","readout.hue.pink":"рожевий",
+  "readout.energy.high":"висока енергія","readout.energy.calm":"спокій","readout.energy.balanced":"рівновага",
+  "readout.light.bright":"яскраве світло","readout.light.moody":"приглушене світло","readout.light.soft":"м'яке світло",
+  "readout.vibe.vivid":"насичено","readout.vibe.muted":"стримано",
+  "readout.face.closeup":"крупним планом",
+  "quote.open":"«","quote.close":"»",
+};
+
+const I18N = {
+  en:{ BANK:BANK_EN, ELEMENTS:ELEMENTS_EN, TITLES:TITLES_EN, POOLS:POOLS_EN, AURAS:AURAS_EN, ui:EN_UI },
+  uk:{ BANK:BANK_UK, ELEMENTS:ELEMENTS_UK, TITLES:TITLES_UK, POOLS:POOLS_UK, AURAS:AURAS_UK, ui:UK_UI },
 };
 let auraStream = null;
 const wait = ms => new Promise(r=>setTimeout(r,ms));
@@ -3445,14 +3935,14 @@ function analyzePhoto(src){
 }
 
 function buildReadout(domHue, edges, colourfulness, bright, skinFrac){
-  const hueName = (domHue<45||domHue>=330)?"red" : domHue<70?"orange" : domHue<170?"green"
+  const hueKey = (domHue<45||domHue>=330)?"red" : domHue<70?"orange" : domHue<170?"green"
                  : domHue<200?"teal" : domHue<260?"blue" : domHue<300?"violet" : "pink";
-  const energy = edges>0.55?"high-energy" : edges<0.3?"calm" : "balanced";
+  const energy = edges>0.55?"high" : edges<0.3?"calm" : "balanced";
   const light  = bright>0.6?"bright" : bright<0.35?"moody" : "soft";
   const vibe   = colourfulness>0.55?"vivid" : colourfulness<0.3?"muted" : "";
-  const face   = skinFrac>0.18?"close-up" : "";
-  return `👁 Read from your photo: ${hueName} dominant · ${energy} · ${light}`
-       + (vibe?` · ${vibe}`:"") + (face?` · ${face}`:"");
+  const face   = skinFrac>0.18 ? t("readout.face.closeup") : "";
+  return `${t("readout.prefix")} ${t("readout.dominant",{hue:t("readout.hue."+hueKey)})} · ${t("readout.energy."+energy)} · ${t("readout.light."+light)}`
+       + (vibe?` · ${t("readout.vibe."+vibe)}`:"") + (face?` · ${face}`:"");
 }
 
 /* final aura = camera vibe blended with the quiz answers (answers nudge it) */
@@ -3476,10 +3966,10 @@ function stopAura(){
 
 function scanningMarkup(){
   return `
-    <p class="auraTitle">👁 Aura Scan</p>
-    <p class="auraHint">Hold still… reading your energy field. (Stays on your phone.)</p>
+    <p class="auraTitle">${t("aura.title")}</p>
+    <p class="auraHint">${t("aura.holdstill")}</p>
     <div class="scanwrap"><video id="auraVideo" playsinline muted autoplay></video><div class="scangrid"></div><div class="scanline"></div></div>
-    <p class="auraHint" id="auraStatus" style="margin-top:12px">Calibrating the aura sensor…</p>`;
+    <p class="auraHint" id="auraStatus" style="margin-top:12px">${t("aura.calibrating")}</p>`;
 }
 
 async function startAura(){
@@ -3487,24 +3977,24 @@ async function startAura(){
   show("aura");
   window.__auraFeat = null; window.__auraPhoto = null; window.__auraThumb = null; window.__auraSrc = null; window.__auraReadout = null; window.__auraSubject = null; window.__auraMask = null;
   $("#auraStage").innerHTML = scanningMarkup();
-  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ return fallbackAura("No camera here — switching to psychic mode 🔮"); }
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ return fallbackAura(t("aura.nocamera")); }
   try{
     auraStream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:"user" }, audio:false });
-  }catch(e){ return fallbackAura("Camera shy? No bother — psychic mode it is 🔮"); }
+  }catch(e){ return fallbackAura(t("aura.camerashy")); }
   const video=$("#auraVideo");
   video.srcObject=auraStream;
   try{ await video.play(); }catch(e){}
   const status=$("#auraStatus");
-  await wait(700);  if(status) status.textContent="Reading your 5 answers…";
+  await wait(700);  if(status) status.textContent=t("aura.reading");
   const f1=grabFrame(video);
-  await wait(500);  if(status) status.textContent="Matching them to your colour temperature…";
+  await wait(500);  if(status) status.textContent=t("aura.matching");
   const f2=grabFrame(video);
   window.__auraSrc = captureSrcCanvas(video);                 // raw selfie, kept for aura effects
-  await wait(700);  if(status) status.textContent="Crowning your aura ✨";
+  await wait(700);  if(status) status.textContent=t("aura.crowning");
   await wait(500);
   stopAura();
   const photo = analyzePhoto(window.__auraSrc);              // real analysis of the captured selfie
-  if(!photo){ return fallbackAura("Couldn't get a clear read — psychic mode 🔮"); }
+  if(!photo){ return fallbackAura(t("aura.noread")); }
   const motion = frameMotion(f1,f2);                          // your movement = extra energy
   photo.scores.f += motion*1.1; photo.scores.a += motion*0.7;
   window.__auraFeat = { scores:photo.scores, bright:photo.bright };
@@ -3531,38 +4021,42 @@ function revealAura(note){
     ? `<img src="${window.__auraPhoto}" class="heroImg" alt="you">`
     : `<div class="heroImg heroFallback" style="background:radial-gradient(circle at 40% 35%, ${A.hex}, ${A.hex}cc)">${el.emoji}</div>`;
   $("#auraStage").innerHTML = `
-    <p class="auraTitle">👁 Aura Scan</p>
+    <p class="auraTitle">${t("aura.title")}</p>
     <div class="photoHero">
       ${heroBg}
       <div class="heroBadge"><span class="dot" style="background:${A.hex}"></span>👁 ${A.name}</div>
       <div class="heroOverlay">
         <div class="auraName" style="color:${A.hex}">${A.name}</div>
-        <div class="element">${el.emoji} ${el.name} energy</div>
+        <div class="element">${t("aura.energyLine",{emoji:el.emoji,name:el.name})}</div>
       </div>
     </div>
-    <div class="roast">“${A.read}”</div>
+    <div class="roast">${t("quote.open")}${A.read}${t("quote.close")}</div>
     ${(note || window.__auraReadout)?`<p class="auraHint">${note || window.__auraReadout}</p>`:""}
-    <button class="btn" id="auraToResult">See my full result →</button>
-    <button class="btn secondary small" id="auraRescan">↻ Rescan my aura</button>`;
+    <button class="btn" id="auraToResult">${t("aura.seeresult")}</button>
+    <button class="btn secondary small" id="auraRescan">${t("aura.rescan")}</button>`;
   $("#auraToResult").onclick=revealResult;
   $("#auraRescan").onclick=startAura;
   confetti();
 }
 
-/* boot */
-$("#bankCount").textContent = BANK.length;
-refreshTableButtons();
-// QR code to the site (offline, generated on-device): shown on intro + baked into share cards
-(function(){
+// QR code to the site (offline, generated on-device): shown on intro + baked into
+// share cards. Encodes ?lang=uk when Ukrainian, so a scanned link opens localised.
+function buildQR(){
   try{
     if(typeof qrcode!=="function") return;
-    const qr=qrcode(0,"M"); qr.addData(SITE_URL); qr.make();
+    const qr=qrcode(0,"M"); qr.addData(shareURL()); qr.make();
     const url=qr.createDataURL(6,2);
     const img=$("#qrimg"), box=$("#qrbox");
     if(img && box){ img.src=url; box.style.display="block"; }
     const qi=new Image(); qi.onload=()=>{ window.__qrImg=qi; }; qi.src=url;
   }catch(e){ /* QR is optional — ignore if unavailable */ }
-})();
+}
+
+/* boot */
+document.querySelectorAll("#langSwitch [data-lang]").forEach(b=>{
+  b.onclick=()=>setLang(b.getAttribute("data-lang"));
+});
+applyLang(resolveLang());   // binds data, fills static text, sets <html lang>, bankCount, table badges + QR
 })();
 </script>
 <script>
