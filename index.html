@@ -2585,16 +2585,13 @@ function shareURL(){ return SITE_URL + (lang==="uk" ? "?lang=uk" : ""); }
 
 /* resolution order: ?lang= → localStorage → navigator → default en */
 function resolveLang(){
+  // Language comes ONLY from the URL ?lang= param. The bare site is always
+  // English (canonical); Ukrainian is reached via ?lang=uk or the /uk/ entry.
+  // (No navigator/localStorage auto-switch, so "/" never flips to Ukrainian.)
   try{
     const q = new URLSearchParams(location.search).get("lang");
     if(q==="uk" || q==="en") return q;
   }catch(e){}
-  try{
-    const stored = localStorage.getItem("war_lang");
-    if(stored==="uk" || stored==="en") return stored;
-  }catch(e){}
-  const nav = (navigator.language || "").toLowerCase();
-  if(nav.startsWith("uk")) return "uk";
   return "en";
 }
 
