@@ -23,11 +23,11 @@ const OUT = resolve(root, "uk", "index.html");
 const UK_HEAD = `<!-- I18N-HEAD:START — GENERATED for /uk/ by scripts/build-uk.mjs; do not edit here, edit index.html -->
 <title>Ну і хто ж ти?</title>
 <link rel="manifest" href="manifest-uk.webmanifest" id="manifestLink" />
-<link rel="canonical" href="https://rostk.github.io/pub-experiment/uk/" />
+<link rel="canonical" href="https://pub.rostyslav.rocks/uk/" />
 <meta name="description" content="Квіз для компанії: дай відповідь на 5 хитрих питань, отримай сканування аури просто на пристрої — і агент виносить вердикт: піца твого духу, внутрішня рослина, факультет Гоґвортсу й інше. Пускайте по колу за столом і порівнюйте." />
 <meta property="og:locale" content="uk_UA" />
 <meta property="og:site_name" content="Ну і хто ж ти?" />
-<meta property="og:url" content="https://rostk.github.io/pub-experiment/uk/" />
+<meta property="og:url" content="https://pub.rostyslav.rocks/uk/" />
 <meta property="og:title" content="Ну і хто ж ти?" />
 <meta property="og:description" content="Квіз для компанії: 5 хитрих питань, сканування аури на пристрої — і агент виносить вердикт. Пускайте по колу за столом і порівнюйте." />
 <meta name="twitter:title" content="Ну і хто ж ти?" />

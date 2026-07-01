@@ -10,20 +10,20 @@
 <link rel="icon" href="favicon-16.png" sizes="16x16" type="image/png" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 <meta property="og:type" content="website" />
-<meta property="og:image" content="https://rostk.github.io/pub-experiment/icon-512.png" />
+<meta property="og:image" content="https://pub.rostyslav.rocks/icon-512.png" />
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:image" content="https://rostk.github.io/pub-experiment/icon-512.png" />
+<meta name="twitter:image" content="https://pub.rostyslav.rocks/icon-512.png" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <!-- I18N-HEAD:START — GENERATED for /uk/ by scripts/build-uk.mjs; do not edit here, edit index.html -->
 <title>Ну і хто ж ти?</title>
 <link rel="manifest" href="manifest-uk.webmanifest" id="manifestLink" />
-<link rel="canonical" href="https://rostk.github.io/pub-experiment/uk/" />
+<link rel="canonical" href="https://pub.rostyslav.rocks/uk/" />
 <meta name="description" content="Квіз для компанії: дай відповідь на 5 хитрих питань, отримай сканування аури просто на пристрої — і агент виносить вердикт: піца твого духу, внутрішня рослина, факультет Гоґвортсу й інше. Пускайте по колу за столом і порівнюйте." />
 <meta property="og:locale" content="uk_UA" />
 <meta property="og:site_name" content="Ну і хто ж ти?" />
-<meta property="og:url" content="https://rostk.github.io/pub-experiment/uk/" />
+<meta property="og:url" content="https://pub.rostyslav.rocks/uk/" />
 <meta property="og:title" content="Ну і хто ж ти?" />
 <meta property="og:description" content="Квіз для компанії: 5 хитрих питань, сканування аури на пристрої — і агент виносить вердикт. Пускайте по колу за столом і порівнюйте." />
 <meta name="twitter:title" content="Ну і хто ж ти?" />
@@ -3005,7 +3005,7 @@ function resultText(R){
 
 /* ---------------- SHAREABLE AURA CARD ---------------- */
 const CARD_FONT = 'system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif';
-const SITE_URL = "https://rostk.github.io/pub-experiment/";
+const SITE_URL = "https://pub.rostyslav.rocks/";
 function rrect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y);
   ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
 /* QR (left) + "scan to play" caption + url, drawn at the bottom of a share card */
@@ -3017,10 +3017,10 @@ function drawCardFooter(ctx,W,H,hex){
     ctx.textAlign="left"; ctx.fillStyle="#fff"; ctx.font='800 34px '+CARD_FONT;
     ctx.fillText(t("card.scantoplay"), qx+qs+30, qy+qs/2-4);
     ctx.fillStyle=hex; ctx.font='700 26px '+CARD_FONT;
-    ctx.fillText("rostk.github.io/pub-experiment", qx+qs+30, qy+qs/2+42);
+    ctx.fillText("pub.rostyslav.rocks", qx+qs+30, qy+qs/2+42);
   } else {
     ctx.textAlign="center"; ctx.fillStyle=hex; ctx.font='800 30px '+CARD_FONT;
-    ctx.fillText("rostk.github.io/pub-experiment", W/2, H-52);
+    ctx.fillText("pub.rostyslav.rocks", W/2, H-52);
   }
 }
 function fitLine(ctx,t,maxW){ if(ctx.measureText(t).width<=maxW) return t;

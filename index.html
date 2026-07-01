@@ -9,20 +9,20 @@
 <link rel="icon" href="favicon-16.png" sizes="16x16" type="image/png" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 <meta property="og:type" content="website" />
-<meta property="og:image" content="https://rostk.github.io/pub-experiment/icon-512.png" />
+<meta property="og:image" content="https://pub.rostyslav.rocks/icon-512.png" />
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:image" content="https://rostk.github.io/pub-experiment/icon-512.png" />
+<meta name="twitter:image" content="https://pub.rostyslav.rocks/icon-512.png" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <!-- I18N-HEAD:START — these tags are swapped to Ukrainian in /uk/index.html by scripts/build-uk.mjs; edit them here only -->
 <title>What Are You, Really?</title>
 <link rel="manifest" href="manifest.webmanifest" id="manifestLink" />
-<link rel="canonical" href="https://rostk.github.io/pub-experiment/" />
+<link rel="canonical" href="https://pub.rostyslav.rocks/" />
 <meta name="description" content="A pub party quiz: answer 5 cheeky questions, get an on-device aura scan, and an agent crowns you — spirit pizza topping, inner houseplant, Hogwarts house and more. Run it round the table and compare." />
 <meta property="og:locale" content="en_GB" />
 <meta property="og:site_name" content="What Are You, Really?" />
-<meta property="og:url" content="https://rostk.github.io/pub-experiment/" />
+<meta property="og:url" content="https://pub.rostyslav.rocks/" />
 <meta property="og:title" content="What Are You, Really?" />
 <meta property="og:description" content="A pub party quiz: answer 5 cheeky questions, get an on-device aura scan, and an agent crowns you — spirit pizza topping, inner houseplant, Hogwarts house and more." />
 <meta name="twitter:title" content="What Are You, Really?" />
@@ -3004,7 +3004,7 @@ function resultText(R){
 
 /* ---------------- SHAREABLE AURA CARD ---------------- */
 const CARD_FONT = 'system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif';
-const SITE_URL = "https://rostk.github.io/pub-experiment/";
+const SITE_URL = "https://pub.rostyslav.rocks/";
 function rrect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y);
   ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
 /* QR (left) + "scan to play" caption + url, drawn at the bottom of a share card */
@@ -3016,10 +3016,10 @@ function drawCardFooter(ctx,W,H,hex){
     ctx.textAlign="left"; ctx.fillStyle="#fff"; ctx.font='800 34px '+CARD_FONT;
     ctx.fillText(t("card.scantoplay"), qx+qs+30, qy+qs/2-4);
     ctx.fillStyle=hex; ctx.font='700 26px '+CARD_FONT;
-    ctx.fillText("rostk.github.io/pub-experiment", qx+qs+30, qy+qs/2+42);
+    ctx.fillText("pub.rostyslav.rocks", qx+qs+30, qy+qs/2+42);
   } else {
     ctx.textAlign="center"; ctx.fillStyle=hex; ctx.font='800 30px '+CARD_FONT;
-    ctx.fillText("rostk.github.io/pub-experiment", W/2, H-52);
+    ctx.fillText("pub.rostyslav.rocks", W/2, H-52);
   }
 }
 function fitLine(ctx,t,maxW){ if(ctx.measureText(t).width<=maxW) return t;
