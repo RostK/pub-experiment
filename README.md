@@ -22,7 +22,8 @@ Open the page on any phone or laptop. No install, no sign-up, no API key.
 
 ## How it works
 
-Two inputs, blended. No server, no model call, no network request of any kind.
+Two inputs, blended. No server, and at runtime no model call or network
+request of any kind.
 
 **The camera read.** Two frames are grabbed from `getUserMedia` a beat apart.
 The captured frame is analysed on-device for colour and brightness and for where
@@ -35,9 +36,13 @@ uploaded.
 
 **The answers.** Each answer carries its own weights across the same four
 elements. The two are blended — answers at full weight, camera at 0.8 — and your
-dominant element picks the title. Each verdict is drawn from a hand-written pool
+dominant element picks the title. Each verdict is drawn from a pre-generated pool
 using a hash of your answers, so the categories decorrelate and a table gets
 varied but repeatable results.
+
+The verdicts, titles and roasts were generated ahead of time by an agent and
+frozen into the page. The AI work happens before you open it — at runtime the
+engine is deterministic, offline, and never calls a model.
 
 No camera, or permission declined, and it says so and reads the answers alone.
 
