@@ -1,39 +1,50 @@
-# 🍕 What Are You, Really?
+# What Are You, Really?
 
-A pub party game. Answer **5 cheeky questions** and a single-prompt "agent" reads
-your inputs and **crowns you** — your spirit pizza topping, inner houseplant,
-Hogwarts house, drink alter-ego, crisp flavour and bar-stool archetype — plus an
-overall **Title + a one-line roast** to read aloud. Then run it round the table
-and **compare**.
+A pub party game, built in a pub in about an hour. Answer five questions, let it
+read your aura through the camera, and it crowns you — spirit pizza topping,
+inner houseplant, Hogwarts house, drink alter-ego, crisp flavour and bar-stool
+archetype — plus a title and a one-line roast to read aloud. Then pass the phone
+round the table and compare.
 
-> Built from a pub challenge brief: *"WHAT ARE YOU, REALLY? — Answer 5 questions.
-> Meet your spirit pizza topping… then an agent crowns you. Run it round the
-> table and compare."* — tags: `AI Agent`, `Vision`.
+Live at **[pub.rostyslav.rocks](https://pub.rostyslav.rocks/)**.
 
 ## How to play
 
-Open **`index.html`** in any browser (phone or laptop). No install, no internet,
-no API key — **it runs 100% offline and nothing leaves the device.**
+Open the page on any phone or laptop. No install, no sign-up, no API key.
 
-1. Type your name → answer 5 questions.
-2. Watch the agent "read your inputs", then get crowned.
-3. Tap **Add me to the table**, pass the phone to the next person.
-4. Hit **Compare the table** for everyone's results + cheeky superlatives
-   (Most chaotic, Warmest soul, Biggest main character, Deepest thinker…).
-5. **Copy my result** / **Share the table** drops a ready-made message into the
-   group chat.
+1. Type your name, answer five questions.
+2. Let it read your aura through the camera — or decline, and it works from the
+   answers alone.
+3. Get crowned. Tap **Add me to the table** and pass the phone on.
+4. **Compare the table** for everyone's results and the superlatives — most
+   chaotic, warmest soul, biggest main character, deepest thinker.
+5. Save an aura card as an image, or share the whole table into the group chat.
 
-## How the "agent" works
+## How it works
 
-There's no model call — it's a deterministic **4-element spirit engine** (Fire 🔥
-/ Earth 🌿 / Air ✨ / Water 🌊). Every answer carries weights across the four
-elements; your dominant + secondary element pick your Title, and each verdict is
-selected from a hand-written pool using a hash of your answers, so the categories
-decorrelate and tables get varied, repeatable results. All 1,024 answer
-combinations are covered — no dead ends.
+Two inputs, blended. No server, no model call, no network request of any kind.
+
+**The camera read.** Two frames are grabbed from `getUserMedia` a beat apart.
+The captured frame is analysed on-device for colour and brightness and for where
+you are in it; the difference between the two frames gives your movement, which
+feeds extra energy into Fire and Air. That produces a score across four elements
+— Fire, Earth, Air, Water — plus a brightness value that decides whether your
+aura comes out bright or deep. The camera stream is stopped as soon as the read
+finishes. The frame stays in the page to render your aura card and is never
+uploaded.
+
+**The answers.** Each answer carries its own weights across the same four
+elements. The two are blended — answers at full weight, camera at 0.8 — and your
+dominant element picks the title. Each verdict is drawn from a hand-written pool
+using a hash of your answers, so the categories decorrelate and a table gets
+varied but repeatable results.
+
+No camera, or permission declined, and it says so and reads the answers alone.
+
+Everything is one `index.html`: plain JavaScript and HTML, no build step, no
+dependencies. English and Ukrainian.
 
 ## Tweak it
 
-Everything lives in one file. Edit the `QUESTIONS`, `TITLES` and `POOLS` data at
-the top of the `<script>` block to change questions or add your own verdict
-categories. Cheeky-but-kind by design — swap the lines for house-rules spice.
+`QUESTIONS`, `TITLES` and `POOLS` at the top of the `<script>` block hold the
+content. Cheeky-but-kind by design — swap the lines for house rules.
